@@ -1,12 +1,12 @@
 import { FC } from "react";
 import styled from "@emotion/styled";
+import LogsViewer from "../../../Components/LogsViewer";
 
 const Container = styled.div`
   display: flex;
   flex: 1;
+  flex-direction: column;
   margin-top: 60px;
-  margin-left: 50px;
-  margin-right: 50px;
 `;
 
 const Title = styled.div`
@@ -19,7 +19,9 @@ const Header = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 100%;
+  margin-bottom: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
 `;
 
 const RunButton = styled.button`
@@ -30,6 +32,11 @@ const RunButton = styled.button`
   font-weight: 600;
   width: 150px;
   cursor: pointer;
+`;
+
+const LogsWrapper = styled.div`
+  height: calc(100vh - 60px);
+  overflow: auto;
 `;
 
 export type MainContentProps = {
@@ -44,6 +51,9 @@ const MainContent: FC<MainContentProps> = (props) => {
         <Title>{title}</Title>
         <RunButton>Run</RunButton>
       </Header>
+      <LogsWrapper>
+        <LogsViewer />
+      </LogsWrapper>
     </Container>
   );
 };
