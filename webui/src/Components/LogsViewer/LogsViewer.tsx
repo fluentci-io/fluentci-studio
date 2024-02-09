@@ -12,6 +12,9 @@ const LineNumber = styled.span`
   text-align: right;
   padding-right: 10px;
   color: #a8adb3;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 `;
 
 const Row = styled.div`
