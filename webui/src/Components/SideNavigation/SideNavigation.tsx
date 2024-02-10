@@ -102,17 +102,17 @@ const SideNavigation: FC<SideNavigationProps> = (props) => {
                   fontFamily: $theme.primaryFontFamily,
                   color: "#fff",
                   ":hover": {
-                    color: "#0ce5f1",
+                    color: "#24ffb5",
                   },
                 };
               return {
                 fontFamily: $theme.primaryFontFamily,
                 backgroundImage: "#fff",
-                borderLeftColor: "#0ce5f1",
-                color: "#0ce5f1",
+                borderLeftColor: "#24ffb5",
+                color: "#24ffb5",
                 backgroundColor: "#004f547a",
                 ":hover": {
-                  color: "#0ce5f1",
+                  color: "#24ffb5",
                 },
               };
             },

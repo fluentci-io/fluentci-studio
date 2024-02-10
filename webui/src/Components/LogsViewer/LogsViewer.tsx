@@ -1,6 +1,12 @@
-import { FC } from "react";
+import { FC, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 import "@fontsource/inconsolata";
+import Ansi from "ansi-to-react";
+
+const Container = styled.div`
+  height: calc(100vh - 125px);
+  overflow: auto;
+`;
 
 const Line = styled.div`
   line-height: 20px;
@@ -30,20 +36,36 @@ const Row = styled.div`
 
 export type LogsViewerProps = {
   logs: string[];
+  updatedLogs?: string[];
 };
 
 const LogsViewer: FC<LogsViewerProps> = (props) => {
-  const { logs } = props;
+  const logContainerRef = useRef<HTMLDivElement>(null);
+  const { logs, updatedLogs } = props;
+
+  useEffect(() => {
+    // Scroll to the bottom whenever logs change
+    if (logContainerRef.current && (updatedLogs?.length || 0) > 0) {
+      logContainerRef.current.scrollTop = logContainerRef.current.scrollHeight;
+    }
+  }, [updatedLogs]);
+
   return (
-    <div>
+    <Container ref={logContainerRef}>
       {logs.map((log, index) => (
         <Row>
           <LineNumber>{index + 1}</LineNumber>
-          <Line key={index}>{log}</Line>
+          <Line key={index}>
+            <Ansi>{log}</Ansi>
+          </Line>
         </Row>
       ))}
-    </div>
+    </Container>
   );
+};
+
+LogsViewer.defaultProps = {
+  updatedLogs: [],
 };
 
 export default LogsViewer;

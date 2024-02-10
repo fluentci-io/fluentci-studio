@@ -26,18 +26,18 @@ const Header = styled.div`
 
 const RunButton = styled.button`
   height: 40px;
-  background-color: #0ce5f1;
+  background-color: #24ffb5;
   color: #000;
   border: none;
   font-weight: 600;
   width: 150px;
   cursor: pointer;
+  &:hover {
+    background-color: #18d193;
+  }
 `;
 
-const LogsWrapper = styled.div`
-  height: calc(100vh - 60px);
-  overflow: auto;
-`;
+const LogsWrapper = styled.div``;
 
 export type MainContentProps = {
   title: string;
