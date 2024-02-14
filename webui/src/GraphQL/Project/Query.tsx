@@ -13,8 +13,14 @@ export const GET_PROJECTS = gql`
 export const GET_PROJECT = gql`
   query GetProject($id: ID!) {
     project(id: $id) {
-      ...ProjectFragment
+      id
+      name
+      path
+      createdAt
+      logs {
+        id
+        message
+      }
     }
   }
-  ${ProjectFragment}
 `;

@@ -35,10 +35,13 @@ const RunButton = styled.button`
 export type SideNavigationProps = {
   currentTab: string;
   setCurrentTab: (tab: string) => void;
+  onRun: (id: string) => void;
+  jobs: { id: string; name: string }[];
+  project: { id: string; name: string };
 };
 
 const SideNavigation: FC<SideNavigationProps> = (props) => {
-  const { setCurrentTab, currentTab } = props;
+  const { setCurrentTab, currentTab, onRun, project, jobs } = props;
   const [activeItemId, setActiveItemId] = useState(`#${currentTab}`);
 
   useEffect(() => {
@@ -54,39 +57,35 @@ const SideNavigation: FC<SideNavigationProps> = (props) => {
             title: (
               <Row>
                 <PackageIcon size={24} />
-                <div style={{ marginLeft: 15, flex: 1 }}>Deno Pipeline</div>
-                <RunButton>
+                <div style={{ marginLeft: 15, flex: 1 }}>{project.name}</div>
+                <RunButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onRun(project.id);
+                  }}
+                >
                   <PlayCircle size={20} />
                 </RunButton>
               </Row>
             ),
             itemId: "#jobs",
-            subNav: [
-              {
-                title: (
-                  <Row>
-                    <CodeCurly size={20} />
-                    <div style={{ marginLeft: 15, flex: 1 }}>Build</div>
-                    <RunButton onClick={() => {}}>
-                      <PlayCircle size={20} />
-                    </RunButton>
-                  </Row>
-                ),
-                itemId: "#build",
-              },
-              {
-                title: (
-                  <Row>
-                    <CodeCurly size={20} />
-                    <div style={{ marginLeft: 15, flex: 1 }}>Deploy</div>
-                    <RunButton>
-                      <PlayCircle size={20} />
-                    </RunButton>
-                  </Row>
-                ),
-                itemId: "#deploy",
-              },
-            ],
+            subNav: jobs.map((job) => ({
+              title: (
+                <Row>
+                  <CodeCurly size={20} />
+                  <div style={{ marginLeft: 15, flex: 1 }}>{job.name}</div>
+                  <RunButton
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onRun(job.id);
+                    }}
+                  >
+                    <PlayCircle size={20} />
+                  </RunButton>
+                </Row>
+              ),
+              itemId: `#${job.id}`,
+            })),
           },
         ]}
         activeItemId={activeItemId}

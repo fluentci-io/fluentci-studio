@@ -11,10 +11,17 @@ export const GET_JOBS = gql`
 `;
 
 export const GET_JOB = gql`
-  query GetJob($id: ID!) {
+  query GetJob($id: ID) {
     job(id: $id) {
-      ...JobFragment
+      id
+      projectId
+      name
+      status
+      createdAt
+      logs {
+        id
+        message
+      }
     }
   }
-  ${JobFragment}
 `;

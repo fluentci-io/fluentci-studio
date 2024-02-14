@@ -7,6 +7,7 @@ import { theme } from "./Themes/index.tsx";
 import { BaseProvider } from "baseui";
 import App from "./App.tsx";
 import "./index.css";
+import ApolloProvider from "./Providers/ApolloProvider.tsx";
 
 const engine = new Styletron();
 
@@ -15,7 +16,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <StyletronProvider value={engine}>
       <BaseProvider theme={theme}>
         <RecoilRoot>
-          <App />
+          <ApolloProvider>
+            <App />
+          </ApolloProvider>
         </RecoilRoot>
       </BaseProvider>
     </StyletronProvider>

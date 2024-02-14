@@ -40,16 +40,18 @@ const RunButton = styled.button`
 const LogsWrapper = styled.div``;
 
 export type MainContentProps = {
+  id: string;
   title: string;
+  onRun: (id: string) => void;
 };
 
 const MainContent: FC<MainContentProps> = (props) => {
-  const { title } = props;
+  const { id, title, onRun } = props;
   return (
     <Container>
       <Header>
         <Title>{title}</Title>
-        <RunButton>Run</RunButton>
+        <RunButton onClick={() => onRun(id)}>Run</RunButton>
       </Header>
       <LogsWrapper>
         <LogsViewer />
