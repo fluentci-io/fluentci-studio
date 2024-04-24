@@ -31,6 +31,7 @@
     "@styled-icons/heroicons-outline": "^10.47.0",
     "@styled-icons/ionicons-outline": "^10.46.0",
     "@styled-icons/ionicons-solid": "^10.46.0",
+    "@styled-icons/remix-line": "^10.46.0",
     "ansi-to-react": "^6.1.6",
     "baseui": "14",
     "dayjs": "^1.11.10",
