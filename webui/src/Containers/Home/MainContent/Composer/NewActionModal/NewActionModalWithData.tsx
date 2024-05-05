@@ -66,6 +66,7 @@ export type Pipeline = {
   id: string;
   name: string;
   actionName?: string;
+  active?: boolean;
   command: string;
   description: string;
   githubUrl: string;

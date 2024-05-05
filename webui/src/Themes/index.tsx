@@ -18,6 +18,8 @@ const primitives = {
     inputFill: "#0f0124",
     inputFillActive: "#0f0124",
     inputBorder: "#24ffb5",
+    tableHeadBackgroundColor: "#0f0124",
+    tableBackground: "#0f0124",
   },
   grid: {
     columns: [4, 8, 12],

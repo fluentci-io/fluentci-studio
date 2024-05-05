@@ -30,6 +30,7 @@ const MainContent: FC<MainContentProps> = (props) => {
       <Header>
         <Title>{title}</Title>
         <StatefulPopover
+          placement="bottomRight"
           content={({ close }) => (
             <StatefulMenu
               items={[

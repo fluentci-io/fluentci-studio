@@ -3,12 +3,14 @@ import { Modal, ModalBody } from "baseui/modal";
 import { Tabs, Tab } from "baseui/tabs-motion";
 import { PackageIcon } from "@styled-icons/feather";
 import { Play, Options } from "@styled-icons/fluentui-system-regular";
+import { Variable } from "@styled-icons/heroicons-outline";
 import { Pipeline } from "../NewActionModal/NewActionModalWithData";
 import { Button } from "./styles";
 import styles from "./styles";
 import Commands from "./Commands";
 import OptionsTab from "./OptionsTab";
 import ModuleSettingsTab from "./ModuleSettingsTab";
+import Variables from "./VariablesTab";
 
 export type SetupActionModalProps = {
   onClose: () => void;
@@ -97,6 +99,17 @@ const SetupActionModal: FC<SetupActionModalProps> = (props) => {
               <Tab
                 title={
                   <>
+                    <Variable size={24} />
+                    <span style={{ marginLeft: 15 }}>Variables</span>
+                  </>
+                }
+                overrides={styles.Tab}
+              >
+                <Variables />
+              </Tab>
+              <Tab
+                title={
+                  <>
                     <Options size={24} />
                     <span style={{ marginLeft: 15 }}>Options</span>
                   </>
@@ -112,7 +125,7 @@ const SetupActionModal: FC<SetupActionModalProps> = (props) => {
               <Button
                 onClick={(e: BaseSyntheticEvent) => {
                   setActiveKey("0");
-                  onAddThisAction(selectedAction);
+                  onAddThisAction({ ...selectedAction, active: true });
                   handleSubmit(e);
                 }}
               >

@@ -1,20 +1,10 @@
 import { FC, useState } from "react";
 import { PlusLg } from "@styled-icons/bootstrap";
-import { Terminal } from "@styled-icons/bootstrap";
-import { EllipsisVertical } from "@styled-icons/fa-solid";
-import { StatefulPopover } from "baseui/popover";
+import Action from "./Action";
 import NewActionModal from "./NewActionModal";
 import SetupActionModal from "./SetupActionModal";
 import { Pipeline } from "./NewActionModal/NewActionModalWithData";
-import {
-  Action,
-  ActionName,
-  Connector,
-  ConnectorContainer,
-  PlusButton,
-  PopoverButton,
-} from "./styles";
-import { StatefulMenu } from "baseui/menu";
+import { Connector, ConnectorContainer, PlusButton } from "./styles";
 
 export type ComposerProps = {
   actions: Pipeline[];
@@ -88,115 +78,12 @@ const Composer: FC<ComposerProps> = (props) => {
             <Connector />
           </ConnectorContainer>
           <Action
-            onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-              if (
-                (e.target as HTMLElement).closest("svg") ||
-                (e.target as HTMLElement).closest("button") ||
-                (e.target as HTMLElement).closest("li")
-              ) {
-                return;
-              }
-              onClickAction(action, index ? 1 : index);
-            }}
-          >
-            {action.logo && (
-              <img
-                src={action.logo}
-                alt={action.name}
-                style={{
-                  backgroundColor:
-                    action.name.startsWith("deno") ||
-                    action.name.startsWith("github") ||
-                    action.name.startsWith("rust") ||
-                    action.name.startsWith("trivy") ||
-                    action.name.startsWith("symfony") ||
-                    action.name.startsWith("flakestry") ||
-                    action.name.startsWith("symfony") ||
-                    action.name.startsWith("heroku") ||
-                    action.name.startsWith("django") ||
-                    action.name.startsWith("terraform") ||
-                    action.name.startsWith("prisma")
-                      ? "#fff"
-                      : "initial",
-                  maxWidth: 34,
-                  borderRadius: 2,
-                  padding: 5,
-                  marginRight: 15,
-                }}
-              />
-            )}
-            {!action.logo && (
-              <Terminal
-                size={32}
-                color="#fff"
-                style={{ marginLeft: 4, marginRight: 15 }}
-              />
-            )}
-            <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
-              <ActionName>
-                {action.actionName || action.command?.split("\n")?.reverse()[0]}
-              </ActionName>
-            </div>
-            <StatefulPopover
-              placement="bottomRight"
-              content={({ close }) => (
-                <StatefulMenu
-                  items={[
-                    { label: <span style={{ color: "#fff" }}>Duplicate</span> },
-                    {
-                      label: (
-                        <span style={{ color: "#ff0094" }}>Delete action</span>
-                      ),
-                    },
-                  ]}
-                  overrides={{
-                    List: {
-                      style: {
-                        border: "1px solid rgb(71 5 94 / 29%)",
-                      },
-                    },
-                    Option: {
-                      props: {
-                        overrides: {
-                          ListItem: {
-                            style: ({
-                              $theme,
-                            }: {
-                              $theme: { primaryFontFamily: string };
-                            }) => ({
-                              fontFamily: $theme.primaryFontFamily,
-                            }),
-                          },
-                        },
-                      },
-                    },
-                  }}
-                  onItemSelect={({
-                    item,
-                  }: {
-                    item: { label: { props: { children: string } } };
-                  }) => {
-                    switch (item.label.props.children) {
-                      case "Delete action":
-                        onDelete(index);
-                        break;
-                      case "Duplicate":
-                        onDuplicate(index);
-                        break;
-                      default:
-                        break;
-                    }
-                    close();
-                  }}
-                />
-              )}
-              accessibilityType={"tooltip"}
-            >
-              <PopoverButton onClick={(e) => e.stopPropagation()}>
-                <EllipsisVertical size={20} />
-              </PopoverButton>
-            </StatefulPopover>
-          </Action>
+            action={action}
+            index={index}
+            onClickAction={onClickAction}
+            onDelete={onDelete}
+            onDuplicate={onDuplicate}
+          />
           <ConnectorContainer>
             <Connector />
           </ConnectorContainer>
