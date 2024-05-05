@@ -1,46 +1,19 @@
 import { FC, useState } from "react";
 import { Tabs, Tab } from "baseui/tabs-motion";
-import styled from "@emotion/styled";
 import { CollectionPlay } from "@styled-icons/bootstrap";
 import { SettingsOutline } from "@styled-icons/evaicons-outline";
+import { EllipsisVertical } from "@styled-icons/fa-solid";
+import { StatefulPopover } from "baseui/popover";
 import Runs from "./Runs";
 import Composer from "./Composer";
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 80vw;
-  margin: 0 auto;
-  margin-top: 60px;
-`;
-
-const Title = styled.div`
-  font-size: 25px;
-  margin-bottom: 20px;
-  font-weight: 500;
-`;
-
-const Header = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  margin-left: 50px;
-  margin-right: 50px;
-`;
-
-const RunButton = styled.button`
-  height: 40px;
-  background-color: #24ffb5;
-  color: #000;
-  border: none;
-  font-weight: 600;
-  width: 150px;
-  cursor: pointer;
-  &:hover {
-    background-color: #18d193;
-  }
-`;
+import { StatefulMenu } from "baseui/menu";
+import styles, {
+  Container,
+  Header,
+  Title,
+  RunButton,
+  PopoverButton,
+} from "./styles";
 
 export type MainContentProps = {
   id: string;
@@ -56,6 +29,28 @@ const MainContent: FC<MainContentProps> = (props) => {
     <Container>
       <Header>
         <Title>{title}</Title>
+        <StatefulPopover
+          content={({ close }) => (
+            <StatefulMenu
+              items={[
+                {
+                  label: "Export ...",
+                },
+                {
+                  label: "Clear cache ...",
+                },
+              ]}
+              onItemSelect={() => {
+                close();
+              }}
+              overrides={styles.StatefulMenu}
+            />
+          )}
+        >
+          <PopoverButton onClick={(e) => e.stopPropagation()}>
+            <EllipsisVertical size={20} />
+          </PopoverButton>
+        </StatefulPopover>
         <RunButton onClick={() => onRun(id)}>Run</RunButton>
       </Header>
       <Tabs
@@ -64,18 +59,7 @@ const MainContent: FC<MainContentProps> = (props) => {
           setActiveKey(activeKey.toString());
         }}
         activateOnFocus
-        overrides={{
-          TabHighlight: {
-            style: {
-              backgroundColor: "#24ffb5",
-            },
-          },
-          TabBorder: {
-            style: {
-              height: "0px",
-            },
-          },
-        }}
+        overrides={styles.Tabs}
       >
         <Tab
           title={
@@ -84,20 +68,7 @@ const MainContent: FC<MainContentProps> = (props) => {
               <span style={{ marginLeft: 15 }}>Runs</span>
             </>
           }
-          overrides={{
-            Tab: {
-              style: ({ $isActive, $theme }) => ({
-                backgroundColor: "#0f0124",
-                color: $isActive ? "#24ffb5" : "#fff",
-                fontFamily: $theme.primaryFontFamily,
-                fontSize: "16px",
-                ":hover": {
-                  color: "#24ffb5",
-                  backgroundColor: "#0f0124",
-                },
-              }),
-            },
-          }}
+          overrides={styles.Tab}
         >
           <Runs />
         </Tab>
@@ -108,20 +79,7 @@ const MainContent: FC<MainContentProps> = (props) => {
               <span style={{ marginLeft: 15 }}>Actions</span>
             </>
           }
-          overrides={{
-            Tab: {
-              style: ({ $isActive, $theme }) => ({
-                backgroundColor: "#0f0124",
-                color: $isActive ? "#24ffb5" : "#fff",
-                fontFamily: $theme.primaryFontFamily,
-                fontSize: "16px",
-                ":hover": {
-                  color: "#24ffb5",
-                  backgroundColor: "#0f0124",
-                },
-              }),
-            },
-          }}
+          overrides={styles.Tab}
         >
           <Composer />
         </Tab>

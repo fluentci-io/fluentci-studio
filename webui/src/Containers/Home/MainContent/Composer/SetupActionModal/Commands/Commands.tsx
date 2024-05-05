@@ -24,6 +24,7 @@ const Commands: FC = () => {
         render={({ field }) => (
           <Textarea
             {...field}
+            clearable
             autoFocus
             overrides={styles.Textarea}
             placeholder="Call a function exposed by the plugin here, e.g. build"

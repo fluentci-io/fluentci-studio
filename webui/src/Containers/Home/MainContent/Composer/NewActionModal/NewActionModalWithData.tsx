@@ -65,6 +65,7 @@ const filters = [
 export type Pipeline = {
   id: string;
   name: string;
+  actionName?: string;
   command: string;
   description: string;
   githubUrl: string;

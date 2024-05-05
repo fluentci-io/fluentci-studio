@@ -18,14 +18,16 @@ import { StatefulMenu } from "baseui/menu";
 
 export type ComposerProps = {
   actions: Pipeline[];
+  setActions: (values: Pipeline[]) => void;
 };
 
 const Composer: FC<ComposerProps> = (props) => {
-  const [actions, setActions] = useState<Pipeline[]>(props.actions);
+  const { actions, setActions } = props;
   const [isOpen, setIsOpen] = useState(false);
   const [selectedAction, setSelectedAction] = useState<Pipeline | null>(null);
   const [isSetupActionModalOpen, setIsSetupActionModalOpen] = useState(false);
   const [editAction, setEditAction] = useState(false);
+  const [actionPosition, setActionPosition] = useState<number | null>(null);
   const [clickedPosition, setClickedPosition] = useState(0);
 
   function close() {
@@ -40,7 +42,8 @@ const Composer: FC<ComposerProps> = (props) => {
     setActions(updated);
   }
 
-  function onClickAction(action: Pipeline) {
+  function onClickAction(action: Pipeline, index: number) {
+    setActionPosition(index);
     setSelectedAction(action);
     setEditAction(true);
     setIsSetupActionModalOpen(true);
@@ -53,23 +56,34 @@ const Composer: FC<ComposerProps> = (props) => {
 
   function onDuplicate(position: number) {
     const updated = [...actions];
-    updated.splice(clickedPosition, 0, actions[position]);
+    updated.splice(position, 0, actions[position]);
     setActions(updated);
   }
 
   return (
     <div style={{ display: "flex", flexDirection: "column", marginTop: 20 }}>
-      <PlusButton
-        onClick={() => {
-          setEditAction(false);
-          setIsOpen(true);
-          setClickedPosition(0);
-        }}
-      >
-        <PlusLg size={15} color="#fff" />
-      </PlusButton>
+      {actions.length === 0 && (
+        <PlusButton
+          onClick={() => {
+            setEditAction(false);
+            setIsOpen(true);
+            setClickedPosition(0);
+          }}
+        >
+          <PlusLg size={15} color="#fff" />
+        </PlusButton>
+      )}
       {actions.map((action, index) => (
         <div key={action.id}>
+          <PlusButton
+            onClick={() => {
+              setEditAction(false);
+              setIsOpen(true);
+              setClickedPosition(index);
+            }}
+          >
+            <PlusLg size={15} color="#fff" />
+          </PlusButton>
           <ConnectorContainer>
             <Connector />
           </ConnectorContainer>
@@ -82,7 +96,7 @@ const Composer: FC<ComposerProps> = (props) => {
               ) {
                 return;
               }
-              onClickAction(action);
+              onClickAction(action, index ? 1 : index);
             }}
           >
             {action.logo && (
@@ -119,14 +133,16 @@ const Composer: FC<ComposerProps> = (props) => {
               />
             )}
             <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
-              <ActionName>{action.command}</ActionName>
+              <ActionName>
+                {action.actionName || action.command?.split("\n")?.reverse()[0]}
+              </ActionName>
             </div>
             <StatefulPopover
               placement="bottomRight"
               content={({ close }) => (
                 <StatefulMenu
                   items={[
-                    { label: <span>Duplicate</span> },
+                    { label: <span style={{ color: "#fff" }}>Duplicate</span> },
                     {
                       label: (
                         <span style={{ color: "#ff0094" }}>Delete action</span>
@@ -134,6 +150,11 @@ const Composer: FC<ComposerProps> = (props) => {
                     },
                   ]}
                   overrides={{
+                    List: {
+                      style: {
+                        border: "1px solid rgb(71 5 94 / 29%)",
+                      },
+                    },
                     Option: {
                       props: {
                         overrides: {
@@ -179,15 +200,17 @@ const Composer: FC<ComposerProps> = (props) => {
           <ConnectorContainer>
             <Connector />
           </ConnectorContainer>
-          <PlusButton
-            onClick={() => {
-              setEditAction(false);
-              setClickedPosition(index + 1);
-              setIsOpen(true);
-            }}
-          >
-            <PlusLg size={15} color="#fff" />
-          </PlusButton>
+          {index === actions.length - 1 && (
+            <PlusButton
+              onClick={() => {
+                setEditAction(false);
+                setClickedPosition(index + 1);
+                setIsOpen(true);
+              }}
+            >
+              <PlusLg size={15} color="#fff" />
+            </PlusButton>
+          )}
         </div>
       ))}
       <NewActionModal
@@ -204,6 +227,7 @@ const Composer: FC<ComposerProps> = (props) => {
         onAddThisAction={onAddNewAction}
         selectedAction={selectedAction!}
         editAction={editAction}
+        actionPosition={actionPosition}
         onSaveChanges={() => {
           setIsSetupActionModalOpen(false);
         }}

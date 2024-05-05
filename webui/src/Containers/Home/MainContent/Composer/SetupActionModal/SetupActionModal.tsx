@@ -28,7 +28,6 @@ const SetupActionModal: FC<SetupActionModalProps> = (props) => {
     selectedAction,
     handleSubmit,
     editAction,
-    onSaveChanges,
   } = props;
   const [activeKey, setActiveKey] = useState("0");
 
@@ -120,11 +119,7 @@ const SetupActionModal: FC<SetupActionModalProps> = (props) => {
                 Add this action
               </Button>
             )}
-            {editAction && (
-              <Button onClick={() => onSaveChanges(selectedAction)}>
-                Save changes
-              </Button>
-            )}
+            {editAction && <Button onClick={handleSubmit}>Save changes</Button>}
           </>
         </div>
       </ModalBody>
