@@ -13,59 +13,21 @@ export const PlusButton = styled.button`
   justify-content: center;
   margin-left: 25px;
   box-shadow: 2px 4px #5324ff20;
+  -webkit-animation: zoom-in-zoom-out 500ms; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: zoom-in-zoom-out 500ms; /* Firefox < 16 */
+  -ms-animation: zoom-in-zoom-out 500ms; /* Internet Explorer */
+  -o-animation: zoom-in-zoom-out 500ms; /* Opera < 12.1 */
+  animation: zoom-in-zoom-out 500ms;
 
-  -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
-  -moz-animation: fadein 1s; /* Firefox < 16 */
-  -ms-animation: fadein 1s; /* Internet Explorer */
-  -o-animation: fadein 1s; /* Opera < 12.1 */
-  animation: fadein 1s;
-
-  @keyframes fadein {
-    from {
-      opacity: 0;
+  @keyframes zoom-in-zoom-out {
+    0% {
+      transform: scale(1, 1);
     }
-    to {
-      opacity: 1;
+    50% {
+      transform: scale(1.5, 1.5);
     }
-  }
-
-  /* Firefox < 16 */
-  @-moz-keyframes fadein {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  /* Safari, Chrome and Opera > 12.1 */
-  @-webkit-keyframes fadein {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  /* Internet Explorer */
-  @-ms-keyframes fadein {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  /* Opera < 12.1 */
-  @-o-keyframes fadein {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
+    100% {
+      transform: scale(1, 1);
     }
   }
 `;
@@ -83,58 +45,21 @@ export const Connector = styled.div`
 `;
 
 export const Animated = styled.div`
-  -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
-  -moz-animation: fadein 1s; /* Firefox < 16 */
-  -ms-animation: fadein 1s; /* Internet Explorer */
-  -o-animation: fadein 1s; /* Opera < 12.1 */
-  animation: fadein 1s;
+  -webkit-animation: zoom-in-zoom-out 500ms; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: zoom-in-zoom-out 500ms; /* Firefox < 16 */
+  -ms-animation: zoom-in-zoom-out 500ms; /* Internet Explorer */
+  -o-animation: zoom-in-zoom-out 500ms; /* Opera < 12.1 */
+  animation: zoom-in-zoom-out 500ms;
 
-  @keyframes fadein {
-    from {
-      opacity: 0;
+  @keyframes zoom-in-zoom-out {
+    0% {
+      transform: scale(1, 1);
     }
-    to {
-      opacity: 1;
+    50% {
+      transform: scale(1.5, 1.5);
     }
-  }
-
-  /* Firefox < 16 */
-  @-moz-keyframes fadein {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  /* Safari, Chrome and Opera > 12.1 */
-  @-webkit-keyframes fadein {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  /* Internet Explorer */
-  @-ms-keyframes fadein {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  /* Opera < 12.1 */
-  @-o-keyframes fadein {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
+    100% {
+      transform: scale(1, 1);
     }
   }
 `;
@@ -158,4 +83,18 @@ export const ActionName = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+`;
+
+export const PopoverButton = styled.button`
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  background-color: initial;
+  border: none;
+  color: #fff;
+`;
+
+export const Popover = styled.div`
+  background-color: #0f0124;
+  color: #fff;
 `;

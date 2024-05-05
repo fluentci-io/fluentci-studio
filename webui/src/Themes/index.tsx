@@ -1,4 +1,4 @@
-import { createTheme } from "baseui";
+import { createDarkTheme } from "baseui";
 
 const primitives = {
   primaryFontFamily: "Lexend",
@@ -11,6 +11,10 @@ const primitives = {
     linkText: "#FFFFFF",
     linkVisited: "#FFFFFF",
     linkHover: "#460cf1 !important",
+    menuFill: "#0f0124",
+    menuFillHover: "#0f0124",
+    menuFontHighlighted: "#fff",
+    menuFontDefault: "#fff",
   },
   grid: {
     columns: [4, 8, 12],
@@ -21,4 +25,4 @@ const primitives = {
   },
 };
 
-export const theme = createTheme(primitives);
+export const theme = createDarkTheme(primitives);

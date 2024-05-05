@@ -2,6 +2,7 @@ import { FC, useState } from "react";
 import { PlusLg } from "@styled-icons/bootstrap";
 import { Terminal } from "@styled-icons/bootstrap";
 import { EllipsisVertical } from "@styled-icons/fa-solid";
+import { StatefulPopover } from "baseui/popover";
 import NewActionModal from "./NewActionModal";
 import SetupActionModal from "./SetupActionModal";
 import { Pipeline } from "./NewActionModal/NewActionModalWithData";
@@ -11,7 +12,9 @@ import {
   Connector,
   ConnectorContainer,
   PlusButton,
+  PopoverButton,
 } from "./styles";
+import { StatefulMenu } from "baseui/menu";
 
 export type ComposerProps = {
   actions: Pipeline[];
@@ -31,7 +34,7 @@ const Composer: FC<ComposerProps> = (props) => {
 
   function onAddNewAction(item: Pipeline) {
     setIsOpen(false);
-    setTimeout(() => setIsSetupActionModalOpen(false), 50);
+    setIsSetupActionModalOpen(false);
     const updated = [...actions];
     updated.splice(clickedPosition, 0, item);
     setActions(updated);
@@ -41,6 +44,17 @@ const Composer: FC<ComposerProps> = (props) => {
     setSelectedAction(action);
     setEditAction(true);
     setIsSetupActionModalOpen(true);
+  }
+
+  function onDelete(position: number) {
+    const updated = actions.filter((_, index) => index !== position);
+    setActions(updated);
+  }
+
+  function onDuplicate(position: number) {
+    const updated = [...actions];
+    updated.splice(clickedPosition, 0, actions[position]);
+    setActions(updated);
   }
 
   return (
@@ -59,7 +73,18 @@ const Composer: FC<ComposerProps> = (props) => {
           <ConnectorContainer>
             <Connector />
           </ConnectorContainer>
-          <Action onClick={() => onClickAction(action)}>
+          <Action
+            onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+              if (
+                (e.target as HTMLElement).closest("svg") ||
+                (e.target as HTMLElement).closest("button") ||
+                (e.target as HTMLElement).closest("li")
+              ) {
+                return;
+              }
+              onClickAction(action);
+            }}
+          >
             {action.logo && (
               <img
                 src={action.logo}
@@ -96,7 +121,60 @@ const Composer: FC<ComposerProps> = (props) => {
             <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
               <ActionName>{action.command}</ActionName>
             </div>
-            <EllipsisVertical size={20} />
+            <StatefulPopover
+              placement="bottomRight"
+              content={({ close }) => (
+                <StatefulMenu
+                  items={[
+                    { label: <span>Duplicate</span> },
+                    {
+                      label: (
+                        <span style={{ color: "#ff0094" }}>Delete action</span>
+                      ),
+                    },
+                  ]}
+                  overrides={{
+                    Option: {
+                      props: {
+                        overrides: {
+                          ListItem: {
+                            style: ({
+                              $theme,
+                            }: {
+                              $theme: { primaryFontFamily: string };
+                            }) => ({
+                              fontFamily: $theme.primaryFontFamily,
+                            }),
+                          },
+                        },
+                      },
+                    },
+                  }}
+                  onItemSelect={({
+                    item,
+                  }: {
+                    item: { label: { props: { children: string } } };
+                  }) => {
+                    switch (item.label.props.children) {
+                      case "Delete action":
+                        onDelete(index);
+                        break;
+                      case "Duplicate":
+                        onDuplicate(index);
+                        break;
+                      default:
+                        break;
+                    }
+                    close();
+                  }}
+                />
+              )}
+              accessibilityType={"tooltip"}
+            >
+              <PopoverButton onClick={(e) => e.stopPropagation()}>
+                <EllipsisVertical size={20} />
+              </PopoverButton>
+            </StatefulPopover>
           </Action>
           <ConnectorContainer>
             <Connector />
@@ -116,8 +194,8 @@ const Composer: FC<ComposerProps> = (props) => {
         onClose={close}
         isOpen={isOpen}
         onAdd={(item: Pipeline) => {
-          setSelectedAction(item);
           setIsSetupActionModalOpen(true);
+          setSelectedAction(item);
         }}
       />
       <SetupActionModal
