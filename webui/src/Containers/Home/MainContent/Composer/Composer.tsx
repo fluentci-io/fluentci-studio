@@ -1,94 +1,65 @@
 import { FC, useState } from "react";
 import { PlusLg } from "@styled-icons/bootstrap";
-import styled from "@emotion/styled";
 import { Terminal } from "@styled-icons/bootstrap";
+import { EllipsisVertical } from "@styled-icons/fa-solid";
 import NewActionModal from "./NewActionModal";
 import SetupActionModal from "./SetupActionModal";
 import { Pipeline } from "./NewActionModal/NewActionModalWithData";
-
-const PlusButton = styled.button`
-  height: 30px;
-  width: 30px;
-  background-color: initial;
-  border-style: none;
-  border: 1px solid #5324ffa3;
-  border-radius: 15px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 25px;
-  box-shadow: 2px 4px #5324ff20;
-`;
-
-const ConnectorContainer = styled.div`
-  width: 30px;
-  margin-left: 25px;
-`;
-
-const Connector = styled.div`
-  height: 50px;
-  width: 1px;
-  background-color: #5324ffa3;
-  margin: 0 auto;
-`;
-
-const Action = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  border-radius: 8px;
-  padding: 10px;
-  border: 1px solid #5324ffa3;
-  height: 78px;
-  box-shadow: 2px 4px #5324ff20;
-  padding-left: 18px;
-  padding-right: 18px;
-  cursor: pointer;
-`;
-
-const ActionName = styled.div`
-  color: #fff;
-`;
-
-export type Action = {
-  id: string;
-  name: string;
-  command: string;
-  logo?: string;
-};
+import {
+  Action,
+  ActionName,
+  Connector,
+  ConnectorContainer,
+  PlusButton,
+} from "./styles";
 
 export type ComposerProps = {
-  actions: Action[];
+  actions: Pipeline[];
 };
 
 const Composer: FC<ComposerProps> = (props) => {
-  const [actions, setActions] = useState<Action[]>(props.actions);
+  const [actions, setActions] = useState<Pipeline[]>(props.actions);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedAction, setSelectedAction] = useState<Pipeline | null>(null);
   const [isSetupActionModalOpen, setIsSetupActionModalOpen] = useState(false);
+  const [editAction, setEditAction] = useState(false);
+  const [clickedPosition, setClickedPosition] = useState(0);
 
   function close() {
     setIsOpen(false);
   }
 
-  function onAddNewAction(item: Action) {
+  function onAddNewAction(item: Pipeline) {
     setIsOpen(false);
     setTimeout(() => setIsSetupActionModalOpen(false), 50);
-    setActions([...actions, item]);
+    const updated = [...actions];
+    updated.splice(clickedPosition, 0, item);
+    setActions(updated);
+  }
+
+  function onClickAction(action: Pipeline) {
+    setSelectedAction(action);
+    setEditAction(true);
+    setIsSetupActionModalOpen(true);
   }
 
   return (
     <div style={{ display: "flex", flexDirection: "column", marginTop: 20 }}>
-      <PlusButton onClick={() => setIsOpen(true)}>
+      <PlusButton
+        onClick={() => {
+          setEditAction(false);
+          setIsOpen(true);
+          setClickedPosition(0);
+        }}
+      >
         <PlusLg size={15} color="#fff" />
       </PlusButton>
-      {actions.map((action) => (
+      {actions.map((action, index) => (
         <div key={action.id}>
           <ConnectorContainer>
             <Connector />
           </ConnectorContainer>
-          <Action>
+          <Action onClick={() => onClickAction(action)}>
             {action.logo && (
               <img
                 src={action.logo}
@@ -122,12 +93,21 @@ const Composer: FC<ComposerProps> = (props) => {
                 style={{ marginLeft: 4, marginRight: 15 }}
               />
             )}
-            <ActionName>{action.command}</ActionName>
+            <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+              <ActionName>{action.command}</ActionName>
+            </div>
+            <EllipsisVertical size={20} />
           </Action>
           <ConnectorContainer>
             <Connector />
           </ConnectorContainer>
-          <PlusButton onClick={() => setIsOpen(true)}>
+          <PlusButton
+            onClick={() => {
+              setEditAction(false);
+              setClickedPosition(index + 1);
+              setIsOpen(true);
+            }}
+          >
             <PlusLg size={15} color="#fff" />
           </PlusButton>
         </div>
@@ -145,6 +125,10 @@ const Composer: FC<ComposerProps> = (props) => {
         isOpen={isSetupActionModalOpen}
         onAddThisAction={onAddNewAction}
         selectedAction={selectedAction!}
+        editAction={editAction}
+        onSaveChanges={() => {
+          setIsSetupActionModalOpen(false);
+        }}
       />
     </div>
   );

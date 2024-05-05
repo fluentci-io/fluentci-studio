@@ -65,6 +65,7 @@ const filters = [
 export type Pipeline = {
   id: string;
   name: string;
+  command: string;
   description: string;
   githubUrl: string;
   logo: string;
@@ -94,6 +95,7 @@ const NewActionModalWithData: FC<NewActionModalWithDataProps> = (props) => {
           all: data.map((x: any) => ({
             id: x.id,
             name: x.name,
+            command: x.command,
             description: x.description,
             githubUrl: x.github_url,
             logo: x.logo_url,

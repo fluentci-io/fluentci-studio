@@ -1,3 +1,3 @@
-import SetupActionModal from "./SetupActionModal";
+import SetupActionModal from "./SetupActionModalWithData";
 
 export default SetupActionModal;

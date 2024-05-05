@@ -1,62 +1,47 @@
-import { FC, useState } from "react";
+import { BaseSyntheticEvent, FC, useState } from "react";
 import { Modal, ModalBody } from "baseui/modal";
 import { Tabs, Tab } from "baseui/tabs-motion";
-import styled from "@emotion/styled";
 import { PackageIcon } from "@styled-icons/feather";
-import { Play } from "@styled-icons/fluentui-system-regular";
+import { Play, Options } from "@styled-icons/fluentui-system-regular";
 import { Pipeline } from "../NewActionModal/NewActionModalWithData";
-
-const RunButton = styled.button`
-  height: 40px;
-  background-color: #24ffb5;
-  color: #000;
-  border: none;
-  font-weight: 600;
-  width: 100%;
-  cursor: pointer;
-  &:hover {
-    background-color: #18d193;
-  }
-`;
+import { Button } from "./styles";
+import styles from "./styles";
+import Commands from "./Commands";
+import OptionsTab from "./OptionsTab";
+import ModuleSettingsTab from "./ModuleSettingsTab";
 
 export type SetupActionModalProps = {
   onClose: () => void;
-  onAddThisAction: (action: {
-    id: string;
-    name: string;
-    command: string;
-    logo?: string;
-  }) => void;
+  onAddThisAction: (action: Pipeline) => void;
+  onSaveChanges: (action: Pipeline) => void;
   isOpen: boolean;
   selectedAction: Pipeline;
+  editAction: boolean;
+  handleSubmit: (e: BaseSyntheticEvent) => void;
 };
 
 const SetupActionModal: FC<SetupActionModalProps> = (props) => {
-  const { onClose, onAddThisAction, isOpen, selectedAction } = props;
+  const {
+    onClose,
+    onAddThisAction,
+    isOpen,
+    selectedAction,
+    handleSubmit,
+    editAction,
+    onSaveChanges,
+  } = props;
   const [activeKey, setActiveKey] = useState("0");
 
   return (
     <Modal
+      autoFocus
       onClose={() => {
         onClose();
         setActiveKey("0");
       }}
       isOpen={isOpen}
       size={"auto"}
-      overrides={{
-        Dialog: {
-          style: ({ $theme }) => ({
-            backgroundColor: "#0f0124",
-            color: "#fff",
-            fontFamily: $theme.primaryFontFamily,
-          }),
-        },
-        Close: {
-          style: {
-            color: "#fff",
-          },
-        },
-      }}
+      overrides={styles.Modal}
     >
       <ModalBody
         style={{
@@ -84,18 +69,7 @@ const SetupActionModal: FC<SetupActionModalProps> = (props) => {
                 setActiveKey(activeKey.toString());
               }}
               activateOnFocus
-              overrides={{
-                TabHighlight: {
-                  style: {
-                    backgroundColor: "#24ffb5",
-                  },
-                },
-                TabBorder: {
-                  style: {
-                    height: "0px",
-                  },
-                },
-              }}
+              overrides={styles.Tab}
             >
               <Tab
                 title={
@@ -104,21 +78,10 @@ const SetupActionModal: FC<SetupActionModalProps> = (props) => {
                     <span style={{ marginLeft: 15 }}>Run</span>
                   </>
                 }
-                overrides={{
-                  Tab: {
-                    style: ({ $isActive, $theme }) => ({
-                      backgroundColor: "#0f0124",
-                      color: $isActive ? "#24ffb5" : "#fff",
-                      fontFamily: $theme.primaryFontFamily,
-                      fontSize: "16px",
-                      ":hover": {
-                        color: "#24ffb5",
-                        backgroundColor: "#0f0124",
-                      },
-                    }),
-                  },
-                }}
-              ></Tab>
+                overrides={styles.Tab}
+              >
+                <Commands />
+              </Tab>
               <Tab
                 title={
                   <>
@@ -128,36 +91,41 @@ const SetupActionModal: FC<SetupActionModalProps> = (props) => {
                     </span>
                   </>
                 }
-                overrides={{
-                  Tab: {
-                    style: ({ $isActive, $theme }) => ({
-                      backgroundColor: "#0f0124",
-                      color: $isActive ? "#24ffb5" : "#fff",
-                      fontFamily: $theme.primaryFontFamily,
-                      fontSize: "16px",
-                      ":hover": {
-                        color: "#24ffb5",
-                        backgroundColor: "#0f0124",
-                      },
-                    }),
-                  },
-                }}
-              ></Tab>
+                overrides={styles.Tab}
+              >
+                <ModuleSettingsTab />
+              </Tab>
+              <Tab
+                title={
+                  <>
+                    <Options size={24} />
+                    <span style={{ marginLeft: 15 }}>Options</span>
+                  </>
+                }
+                overrides={styles.Tab}
+              >
+                <OptionsTab />
+              </Tab>
             </Tabs>
           </div>
-          <RunButton
-            onClick={() => {
-              setActiveKey("0");
-              onAddThisAction({
-                id: selectedAction.id,
-                logo: selectedAction.logo,
-                name: selectedAction.name,
-                command: "build",
-              });
-            }}
-          >
-            Add this action
-          </RunButton>
+          <>
+            {!editAction && (
+              <Button
+                onClick={(e: BaseSyntheticEvent) => {
+                  setActiveKey("0");
+                  onAddThisAction(selectedAction);
+                  handleSubmit(e);
+                }}
+              >
+                Add this action
+              </Button>
+            )}
+            {editAction && (
+              <Button onClick={() => onSaveChanges(selectedAction)}>
+                Save changes
+              </Button>
+            )}
+          </>
         </div>
       </ModalBody>
     </Modal>
