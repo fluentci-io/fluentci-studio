@@ -18,7 +18,7 @@ type NewActionModalProps = {
       }
     | undefined;
   isOpen: boolean;
-  onSearch: (keyword: string) => void;
+  onSearch: (keyword: string) => Promise<void>;
 };
 
 const NewActionModal: FC<NewActionModalProps> = (props) => {
@@ -27,7 +27,7 @@ const NewActionModal: FC<NewActionModalProps> = (props) => {
   const keyword = watch("search");
 
   useEffect(() => {
-    _.debounce(() => onSearch(keyword), 600)();
+    _.debounce(async () => await onSearch(keyword), 650)();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword]);
 

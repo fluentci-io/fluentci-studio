@@ -156,12 +156,12 @@ const NewActionModalWithData: FC<NewActionModalWithDataProps> = (props) => {
       .catch((err) => console.log(err));
   };
 
-  const onSearch = useCallback((keyword: string) => {
+  const onSearch = useCallback(async (keyword: string) => {
     if (keyword?.length === 0) {
-      loadPipelines();
+      await loadPipelines();
       return;
     }
-    fetch(`${SEARCH_API}?q=${keyword}`)
+    await fetch(`${SEARCH_API}?q=${keyword}`)
       .then((res) => res.json())
       .then((data) =>
         setPipelines({
@@ -185,8 +185,7 @@ const NewActionModalWithData: FC<NewActionModalWithDataProps> = (props) => {
               } || [])
           ),
         })
-      )
-      .catch((err) => console.log(err));
+      );
   }, []);
 
   const onClose = () => {
