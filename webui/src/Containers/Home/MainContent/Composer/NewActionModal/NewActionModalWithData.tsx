@@ -161,6 +161,11 @@ const NewActionModalWithData: FC<NewActionModalWithDataProps> = (props) => {
       await loadPipelines();
       return;
     }
+
+    if (keyword?.length < 3) {
+      return;
+    }
+
     await fetch(`${SEARCH_API}?q=${keyword}`)
       .then((res) => res.json())
       .then((data) =>

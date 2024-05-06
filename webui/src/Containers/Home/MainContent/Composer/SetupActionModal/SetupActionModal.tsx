@@ -35,7 +35,7 @@ const SetupActionModal: FC<SetupActionModalProps> = (props) => {
     actionPosition,
   } = props;
   const [activeKey, setActiveKey] = useState("0");
-  const { formState, watch } = useFormContext();
+  const { watch } = useFormContext();
   const actionName = watch("name");
   const command = watch("commands");
   const useWasmPlugin = watch("useWasmPlugin");
@@ -156,7 +156,7 @@ const SetupActionModal: FC<SetupActionModalProps> = (props) => {
             {editAction && (
               <Button
                 onClick={(e) => {
-                  if (!formState.isValid) {
+                  if (!actionName || !command) {
                     return;
                   }
                   setActiveKey("0");
