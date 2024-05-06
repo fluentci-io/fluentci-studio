@@ -24,7 +24,7 @@ const SetupActionModalWithData: FC<SetupActionModalWithDataProps> = (props) => {
     resolver: zodResolver(schema),
     defaultValues: {
       commands: props.selectedAction?.command,
-      name: props.selectedAction?.command?.split("\n")?.reverse()[0],
+      name: props.selectedAction?.command?.trimEnd().split("\n")?.reverse()[0],
       useWasmPlugin: props.selectedAction?.useWasmPlugin,
     },
   });
@@ -34,7 +34,7 @@ const SetupActionModalWithData: FC<SetupActionModalWithDataProps> = (props) => {
     methods.setValue(
       "name",
       props.selectedAction?.actionName ||
-        props.selectedAction?.command?.split("\n")?.reverse()[0]
+        props.selectedAction?.command?.trimEnd().split("\n")?.reverse()[0]
     );
     methods.setValue(
       "useWasmPlugin",

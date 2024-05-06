@@ -42,3 +42,7 @@ h1 {
 a {
   color: #5324ff;
 }
+
+li {
+  border-bottom-color: #1b0657 !important; 
+}

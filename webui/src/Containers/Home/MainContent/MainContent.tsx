@@ -2,18 +2,10 @@ import { FC, useState } from "react";
 import { Tabs, Tab } from "baseui/tabs-motion";
 import { CollectionPlay } from "@styled-icons/bootstrap";
 import { SettingsOutline } from "@styled-icons/evaicons-outline";
-import { EllipsisVertical } from "@styled-icons/fa-solid";
-import { StatefulPopover } from "baseui/popover";
 import Runs from "./Runs";
 import Composer from "./Composer";
-import { StatefulMenu } from "baseui/menu";
-import styles, {
-  Container,
-  Header,
-  Title,
-  RunButton,
-  PopoverButton,
-} from "./styles";
+import styles, { Container } from "./styles";
+import Header from "../../../Components/Header";
 
 export type MainContentProps = {
   id: string;
@@ -21,39 +13,12 @@ export type MainContentProps = {
   onRun: (id: string) => void;
 };
 
-const MainContent: FC<MainContentProps> = (props) => {
-  const { id, title, onRun } = props;
+const MainContent: FC<MainContentProps> = () => {
   const [activeKey, setActiveKey] = useState("0");
 
   return (
     <Container>
-      <Header>
-        <Title>{title}</Title>
-        <StatefulPopover
-          placement="bottomRight"
-          content={({ close }) => (
-            <StatefulMenu
-              items={[
-                {
-                  label: "Export ...",
-                },
-                {
-                  label: "Clear cache ...",
-                },
-              ]}
-              onItemSelect={() => {
-                close();
-              }}
-              overrides={styles.StatefulMenu}
-            />
-          )}
-        >
-          <PopoverButton onClick={(e) => e.stopPropagation()}>
-            <EllipsisVertical size={20} />
-          </PopoverButton>
-        </StatefulPopover>
-        <RunButton onClick={() => onRun(id)}>Run</RunButton>
-      </Header>
+      <Header />
       <Tabs
         activeKey={activeKey}
         onChange={({ activeKey }) => {

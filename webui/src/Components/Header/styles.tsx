@@ -1,11 +1,11 @@
 import styled from "@emotion/styled";
+import { Link as DefaultLink } from "react-router-dom";
 
-export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 80vw;
-  margin: 0 auto;
-  margin-top: 60px;
+export const Link = styled(DefaultLink)`
+  color: #fff;
+  &:hover {
+    color: #24ffb5 !important;
+  }
 `;
 
 export const Title = styled.div`
@@ -15,13 +15,11 @@ export const Title = styled.div`
   flex: 1;
 `;
 
-export const Header = styled.div`
+export const Container = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 20px;
-  margin-left: 50px;
-  margin-right: 50px;
 `;
 
 export const RunButton = styled.button`
@@ -57,7 +55,7 @@ export default {
         $isActive: string;
         $theme: { primaryFontFamily: string };
       }) => ({
-        backgroundColor: "#0f0124 !important",
+        backgroundColor: "#0f0124",
         color: $isActive ? "#24ffb5" : "#fff",
         fontFamily: $theme.primaryFontFamily,
         fontSize: "16px",

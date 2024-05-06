@@ -19,7 +19,7 @@ export default {
   Tab: {
     Tab: {
       style: ({ $isActive, $theme }: Theme) => ({
-        backgroundColor: "#0f0124",
+        backgroundColor: "#0f0124 !important",
         color: $isActive ? "#24ffb5" : "#fff",
         fontFamily: $theme.primaryFontFamily,
         fontSize: "16px",
