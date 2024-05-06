@@ -1,3 +1,3 @@
-import ModuleSettings from "./ModuleSettingsTab";
+import ModuleSettings from "./ModuleSettingsTabWithData";
 
 export default ModuleSettings;

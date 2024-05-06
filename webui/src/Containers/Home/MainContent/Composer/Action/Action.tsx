@@ -24,7 +24,10 @@ const Action: FC<ActionProps> = (props) => {
       active={action.active}
       className="action"
       onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        if (!(e.target as HTMLElement).className.includes("action")) {
+        if (
+          !(e.target as HTMLElement).className?.includes("action") &&
+          !(e.target as HTMLElement).className?.includes("css")
+        ) {
           return;
         }
         onClickAction(action, index ? 1 : index);
@@ -32,6 +35,7 @@ const Action: FC<ActionProps> = (props) => {
     >
       {action.logo && (
         <img
+          className="action"
           src={action.logo}
           alt={action.name}
           style={{
@@ -63,7 +67,10 @@ const Action: FC<ActionProps> = (props) => {
           style={{ marginLeft: 4, marginRight: 15 }}
         />
       )}
-      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+      <div
+        className="action"
+        style={{ display: "flex", flex: 1, overflow: "hidden" }}
+      >
         <ActionName>
           {action.actionName || action.command?.split("\n")?.reverse()[0]}
         </ActionName>

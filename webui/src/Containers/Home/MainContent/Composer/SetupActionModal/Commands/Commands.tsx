@@ -5,7 +5,8 @@ import { useFormContext, Controller } from "react-hook-form";
 import styles from "./styles";
 
 const Commands: FC = () => {
-  const { control } = useFormContext();
+  const { control, watch } = useFormContext();
+  const commands = watch("commands");
   return (
     <div style={{ paddingTop: 20 }}>
       <div
@@ -31,6 +32,11 @@ const Commands: FC = () => {
           />
         )}
       />
+      {!commands.length && (
+        <div style={{ color: "#ff0077" }}>
+          Please provide at least one command
+        </div>
+      )}
     </div>
   );
 };

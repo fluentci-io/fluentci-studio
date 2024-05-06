@@ -11,6 +11,7 @@ import Commands from "./Commands";
 import OptionsTab from "./OptionsTab";
 import ModuleSettingsTab from "./ModuleSettingsTab";
 import Variables from "./VariablesTab";
+import { useFormContext } from "react-hook-form";
 
 export type SetupActionModalProps = {
   onClose: () => void;
@@ -20,6 +21,7 @@ export type SetupActionModalProps = {
   selectedAction: Pipeline;
   editAction: boolean;
   handleSubmit: (e: BaseSyntheticEvent) => void;
+  actionPosition?: number | null;
 };
 
 const SetupActionModal: FC<SetupActionModalProps> = (props) => {
@@ -30,8 +32,13 @@ const SetupActionModal: FC<SetupActionModalProps> = (props) => {
     selectedAction,
     handleSubmit,
     editAction,
+    actionPosition,
   } = props;
   const [activeKey, setActiveKey] = useState("0");
+  const { formState, watch } = useFormContext();
+  const actionName = watch("name");
+  const command = watch("commands");
+  const useWasmPlugin = watch("useWasmPlugin");
 
   return (
     <Modal
@@ -94,19 +101,24 @@ const SetupActionModal: FC<SetupActionModalProps> = (props) => {
                 }
                 overrides={styles.Tab}
               >
-                <ModuleSettingsTab />
+                <ModuleSettingsTab
+                  plugin={selectedAction}
+                  actionPosition={actionPosition}
+                />
               </Tab>
-              <Tab
-                title={
-                  <>
-                    <Variable size={24} />
-                    <span style={{ marginLeft: 15 }}>Variables</span>
-                  </>
-                }
-                overrides={styles.Tab}
-              >
-                <Variables />
-              </Tab>
+              {false && (
+                <Tab
+                  title={
+                    <>
+                      <Variable size={24} />
+                      <span style={{ marginLeft: 15 }}>Variables</span>
+                    </>
+                  }
+                  overrides={styles.Tab}
+                >
+                  <Variables />
+                </Tab>
+              )}
               <Tab
                 title={
                   <>
@@ -124,15 +136,36 @@ const SetupActionModal: FC<SetupActionModalProps> = (props) => {
             {!editAction && (
               <Button
                 onClick={(e: BaseSyntheticEvent) => {
+                  if (!formState.isValid) {
+                    return;
+                  }
                   setActiveKey("0");
-                  onAddThisAction({ ...selectedAction, active: true });
+                  onAddThisAction({
+                    ...selectedAction,
+                    actionName,
+                    useWasmPlugin,
+                    command,
+                    active: true,
+                  });
                   handleSubmit(e);
                 }}
               >
                 Add this action
               </Button>
             )}
-            {editAction && <Button onClick={handleSubmit}>Save changes</Button>}
+            {editAction && (
+              <Button
+                onClick={(e) => {
+                  if (!formState.isValid) {
+                    return;
+                  }
+                  setActiveKey("0");
+                  handleSubmit(e);
+                }}
+              >
+                Save changes
+              </Button>
+            )}
           </>
         </div>
       </ModalBody>

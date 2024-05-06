@@ -3,6 +3,9 @@ import NewActionModal from "./NewActionModal";
 
 const BASE_URL = "https://api.fluentci.io/v1";
 const filters = [
+  "buildx",
+  "nixpacks",
+  "base_pipeline",
   "bazel_pipeline",
   "buf_pipeline",
   "atlas_pipeline",
@@ -67,6 +70,7 @@ export type Pipeline = {
   name: string;
   actionName?: string;
   active?: boolean;
+  useWasmPlugin?: boolean;
   command: string;
   description: string;
   githubUrl: string;

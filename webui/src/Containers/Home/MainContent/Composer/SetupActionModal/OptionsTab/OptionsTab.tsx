@@ -3,7 +3,8 @@ import { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 const Options: FC = () => {
-  const { control } = useFormContext();
+  const { control, watch } = useFormContext();
+  const name = watch("name");
   return (
     <>
       <Controller
@@ -34,6 +35,11 @@ const Options: FC = () => {
           </>
         )}
       />
+      {!name.length && (
+        <div style={{ color: "#ff0077", marginTop: 5 }}>
+          Please provide a name for the action
+        </div>
+      )}
     </>
   );
 };

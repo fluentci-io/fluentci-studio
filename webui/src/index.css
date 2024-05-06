@@ -38,3 +38,7 @@ h1 {
 ::-ms-input-placeholder { /* Edge 12 -18 */
   color: rgb(158, 148, 183) !important;
 }
+
+a {
+  color: #5324ff;
+}

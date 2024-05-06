@@ -4,6 +4,8 @@ import { FC, useEffect } from "react";
 import { Pipeline } from "../NewActionModal/NewActionModalWithData";
 import { useRecoilState } from "recoil";
 import { ComposerState } from "../ComposerState";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { schema } from "./schema";
 
 export type SetupActionModalWithDataProps = {
   onClose: () => void;
@@ -18,9 +20,12 @@ export type SetupActionModalWithDataProps = {
 const SetupActionModalWithData: FC<SetupActionModalWithDataProps> = (props) => {
   const [actions, setActions] = useRecoilState(ComposerState);
   const methods = useForm({
+    mode: "onChange",
+    resolver: zodResolver(schema),
     defaultValues: {
       commands: props.selectedAction?.command,
       name: props.selectedAction?.command?.split("\n")?.reverse()[0],
+      useWasmPlugin: props.selectedAction?.useWasmPlugin,
     },
   });
 
@@ -31,9 +36,19 @@ const SetupActionModalWithData: FC<SetupActionModalWithDataProps> = (props) => {
       props.selectedAction?.actionName ||
         props.selectedAction?.command?.split("\n")?.reverse()[0]
     );
+    methods.setValue(
+      "useWasmPlugin",
+      props.selectedAction?.useWasmPlugin == undefined
+        ? true
+        : props.selectedAction?.useWasmPlugin
+    );
   }, [props.selectedAction, methods]);
 
-  const onSubmit = (data: { name: string; commands: string }) => {
+  const onSubmit = (data: {
+    name: string;
+    commands: string;
+    useWasmPlugin?: boolean;
+  }) => {
     props.onSaveChanges();
     if (!props.editAction) {
       return;
@@ -43,6 +58,7 @@ const SetupActionModalWithData: FC<SetupActionModalWithDataProps> = (props) => {
       ...updated[props.actionPosition!],
       command: data.commands,
       actionName: data.name,
+      useWasmPlugin: data.useWasmPlugin,
     };
     setActions(updated);
   };

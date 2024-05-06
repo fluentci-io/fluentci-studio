@@ -20,6 +20,7 @@
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@fontsource/inconsolata": "^5.0.16",
+    "@hookform/resolvers": "^3.3.4",
     "@styled-icons/bootstrap": "^10.47.0",
     "@styled-icons/boxicons-regular": "^10.47.0",
     "@styled-icons/evaicons-outline": "^10.46.0",
