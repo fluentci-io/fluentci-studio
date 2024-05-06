@@ -7,6 +7,7 @@ import { Download } from "@styled-icons/remix-line";
 import { Pipeline } from "./NewActionModalWithData";
 import { CardFooter, Inner } from "./styles";
 import { Controller, useForm } from "react-hook-form";
+import _ from "lodash";
 
 type NewActionModalProps = {
   onClose: () => void;
@@ -30,18 +31,16 @@ const NewActionModal: FC<NewActionModalProps> = (props) => {
   const keyword = watch("search");
 
   useEffect(() => {
-    onSearch(keyword);
-  }, [keyword, onSearch]);
-
-  useEffect(() => {
-    if (!isOpen) {
-      reset();
-    }
-  }, [isOpen]);
+    _.debounce(() => onSearch(keyword), 500)();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [keyword]);
 
   return (
     <Modal
-      onClose={onClose}
+      onClose={() => {
+        reset();
+        onClose();
+      }}
       isOpen={isOpen}
       size={"auto"}
       overrides={{

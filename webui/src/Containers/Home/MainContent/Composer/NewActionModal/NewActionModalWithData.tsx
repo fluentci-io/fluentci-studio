@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState, useCallback } from "react";
 import NewActionModal from "./NewActionModal";
 
 const BASE_URL = "https://api.fluentci.io/v1";
@@ -150,8 +150,8 @@ const NewActionModalWithData: FC<NewActionModalWithDataProps> = (props) => {
       .catch((err) => console.log(err));
   };
 
-  const onSearch = (keyword: string) => {
-    if (!keyword) {
+  const onSearch = useCallback((keyword: string) => {
+    if (keyword?.length === 0) {
       loadPipelines();
       return;
     }
@@ -181,14 +181,20 @@ const NewActionModalWithData: FC<NewActionModalWithDataProps> = (props) => {
         })
       )
       .catch((err) => console.log(err));
-  };
-
-  useEffect(() => {
-    loadPipelines();
   }, []);
 
+  const onClose = () => {
+    props.onClose();
+    loadPipelines();
+  };
+
   return (
-    <NewActionModal pipelines={pipelines} {...props} onSearch={onSearch} />
+    <NewActionModal
+      pipelines={pipelines}
+      {...props}
+      onClose={onClose}
+      onSearch={onSearch}
+    />
   );
 };
 
