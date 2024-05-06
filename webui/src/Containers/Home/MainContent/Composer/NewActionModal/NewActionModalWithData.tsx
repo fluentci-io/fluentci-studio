@@ -2,9 +2,39 @@ import { FC, useEffect, useState } from "react";
 import NewActionModal from "./NewActionModal";
 
 const BASE_URL = "https://api.fluentci.io/v1";
+const SEARCH_API = "https://search.fluentci.io";
+
 const filters = [
   "buildx",
   "nixpacks",
+  "oxc",
+  "moon",
+  "uv",
+  "biome",
+  "java",
+  "ruff",
+  "rye",
+  "apko",
+  "sbt",
+  "pkl",
+  "cue",
+  "trufflehog",
+  "yamllint",
+  "jsonlint",
+  "sqlfluff",
+  "sqruff",
+  "dhall",
+  "tinygo",
+  "maven",
+  "ansible",
+  "ansible-lint",
+  "open-policy-agent",
+  "dagger",
+  "teller",
+  "black",
+  "kubeconform",
+  "purescript",
+  "haskell",
   "base_pipeline",
   "bazel_pipeline",
   "buf_pipeline",
@@ -92,33 +122,74 @@ type NewActionModalWithDataProps = {
 
 const NewActionModalWithData: FC<NewActionModalWithDataProps> = (props) => {
   const [pipelines, setPipelines] = useState<{ all: Pipeline[] }>();
-  useEffect(() => {
+
+  const loadPipelines = () => {
     fetch(`${BASE_URL}/pipelines?q=${filters.join(",")}`)
+      .then((res) => res.json())
+      .then((data) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const results = data.map((x: any) => ({
+          id: x.id,
+          name: x.name,
+          command: x.command,
+          description: x.description,
+          githubUrl: x.github_url,
+          logo: x.logo_url,
+          packageId: x.name,
+          downloads: x.downloads,
+          version: x.version,
+          license: x.license,
+          defaultBranch: x.default_branch,
+          updatedAt: x.updatedAt,
+          comingSoon: false,
+        }));
+        setPipelines({
+          all: results,
+        });
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const onSearch = (keyword: string) => {
+    if (!keyword) {
+      loadPipelines();
+      return;
+    }
+    fetch(`${SEARCH_API}?q=${keyword}`)
       .then((res) => res.json())
       .then((data) =>
         setPipelines({
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          all: data.map((x: any) => ({
-            id: x.id,
-            name: x.name,
-            command: x.command,
-            description: x.description,
-            githubUrl: x.github_url,
-            logo: x.logo_url,
-            packageId: x.name,
-            downloads: x.downloads,
-            version: x.version,
-            license: x.license,
-            defaultBranch: x.default_branch,
-            updatedAt: x.updatedAt,
-            comingSoon: false,
-          })),
+          all: data?.results?.map(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (x: any) =>
+              ({
+                id: x.id,
+                name: x.name,
+                command: x.command,
+                description: x.description,
+                githubUrl: x.github_url,
+                logo: x.logo_url,
+                packageId: x.name,
+                downloads: x.downloads,
+                version: x.version,
+                license: x.license,
+                defaultBranch: x.default_branch,
+                updatedAt: x.updatedAt,
+                comingSoon: false,
+              } || [])
+          ),
         })
       )
       .catch((err) => console.log(err));
-  }, [setPipelines]);
+  };
 
-  return <NewActionModal pipelines={pipelines} {...props} />;
+  useEffect(() => {
+    loadPipelines();
+  }, []);
+
+  return (
+    <NewActionModal pipelines={pipelines} {...props} onSearch={onSearch} />
+  );
 };
 
 export default NewActionModalWithData;

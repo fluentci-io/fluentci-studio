@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Modal, ModalHeader, ModalBody } from "baseui/modal";
 import { Grid } from "@chakra-ui/react";
 import { Input } from "baseui/input";
@@ -6,6 +6,7 @@ import { PackageIcon } from "@styled-icons/feather";
 import { Download } from "@styled-icons/remix-line";
 import { Pipeline } from "./NewActionModalWithData";
 import { CardFooter, Inner } from "./styles";
+import { Controller, useForm } from "react-hook-form";
 
 type NewActionModalProps = {
   onClose: () => void;
@@ -16,10 +17,28 @@ type NewActionModalProps = {
       }
     | undefined;
   isOpen: boolean;
+  onSearch: (keyword: string) => void;
 };
 
 const NewActionModal: FC<NewActionModalProps> = (props) => {
-  const { onClose, onAdd, isOpen, pipelines } = props;
+  const { onClose, onAdd, isOpen, pipelines, onSearch } = props;
+  const { control, watch, reset } = useForm({
+    defaultValues: {
+      search: "",
+    },
+  });
+  const keyword = watch("search");
+
+  useEffect(() => {
+    onSearch(keyword);
+  }, [keyword, onSearch]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      reset();
+    }
+  }, [isOpen]);
+
   return (
     <Modal
       onClose={onClose}
@@ -45,34 +64,41 @@ const NewActionModal: FC<NewActionModalProps> = (props) => {
           borderBottom: "1px solid #2e194d",
         }}
       >
-        <Input
-          onChange={() => {}}
-          placeholder="Search"
-          clearOnEscape
-          overrides={{
-            Root: {
-              style: {
-                border: "none",
-                BorderRadius: "0px !important",
-              },
-            },
-            Input: {
-              style: ({ $theme }) => ({
-                color: "#fff",
-                backgroundColor: "#0f0124",
-                border: "none !important",
-                outline: "none",
-                caretColor: "#fff",
-                fontFamily: $theme.primaryFontFamily,
-              }),
-            },
-            InputContainer: {
-              style: {
-                outline: "none",
-                borderBottom: "none !important",
-              },
-            },
-          }}
+        <Controller
+          name="search"
+          control={control}
+          render={({ field }) => (
+            <Input
+              {...field}
+              placeholder="Search"
+              clearable
+              clearOnEscape
+              overrides={{
+                Root: {
+                  style: {
+                    border: "none",
+                    BorderRadius: "0px !important",
+                  },
+                },
+                Input: {
+                  style: ({ $theme }) => ({
+                    color: "#fff",
+                    backgroundColor: "#0f0124",
+                    border: "none !important",
+                    outline: "none",
+                    caretColor: "#fff",
+                    fontFamily: $theme.primaryFontFamily,
+                  }),
+                },
+                InputContainer: {
+                  style: {
+                    outline: "none",
+                    borderBottom: "none !important",
+                  },
+                },
+              }}
+            />
+          )}
         />
       </ModalHeader>
       <ModalBody
