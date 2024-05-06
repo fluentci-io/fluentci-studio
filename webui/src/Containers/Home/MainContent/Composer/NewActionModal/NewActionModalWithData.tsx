@@ -162,7 +162,7 @@ const NewActionModalWithData: FC<NewActionModalWithDataProps> = (props) => {
       return;
     }
 
-    if (keyword?.length < 3) {
+    if (keyword?.length < 2) {
       return;
     }
 
