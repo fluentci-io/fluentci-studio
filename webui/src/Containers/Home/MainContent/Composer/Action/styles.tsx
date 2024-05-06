@@ -1,27 +1,7 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
-export const Animated = styled.div`
-  -webkit-animation: zoom-in-zoom-out 500ms; /* Safari, Chrome and Opera > 12.1 */
-  -moz-animation: zoom-in-zoom-out 500ms; /* Firefox < 16 */
-  -ms-animation: zoom-in-zoom-out 500ms; /* Internet Explorer */
-  -o-animation: zoom-in-zoom-out 500ms; /* Opera < 12.1 */
-  animation: zoom-in-zoom-out 500ms;
-
-  @keyframes zoom-in-zoom-out {
-    0% {
-      transform: scale(1, 1);
-    }
-    50% {
-      transform: scale(1.5, 1.5);
-    }
-    100% {
-      transform: scale(1, 1);
-    }
-  }
-`;
-
-export const Container = styled(Animated)<{ active?: boolean }>`
+export const Container = styled.div<{ active?: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
