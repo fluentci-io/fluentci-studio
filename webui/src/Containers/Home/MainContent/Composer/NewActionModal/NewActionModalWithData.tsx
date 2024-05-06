@@ -1,5 +1,6 @@
-import { FC, useState, useCallback } from "react";
+import { FC, useState, useCallback, useEffect } from "react";
 import NewActionModal from "./NewActionModal";
+import { useForm, FormProvider } from "react-hook-form";
 
 const BASE_URL = "https://api.fluentci.io/v1";
 const SEARCH_API = "https://search.fluentci.io";
@@ -122,6 +123,11 @@ type NewActionModalWithDataProps = {
 
 const NewActionModalWithData: FC<NewActionModalWithDataProps> = (props) => {
   const [pipelines, setPipelines] = useState<{ all: Pipeline[] }>();
+  const methods = useForm({
+    defaultValues: {
+      search: "",
+    },
+  });
 
   const loadPipelines = () => {
     fetch(`${BASE_URL}/pipelines?q=${filters.join(",")}`)
@@ -188,13 +194,18 @@ const NewActionModalWithData: FC<NewActionModalWithDataProps> = (props) => {
     loadPipelines();
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => methods.reset(), [props.isOpen]);
+
   return (
-    <NewActionModal
-      pipelines={pipelines}
-      {...props}
-      onClose={onClose}
-      onSearch={onSearch}
-    />
+    <FormProvider {...methods}>
+      <NewActionModal
+        pipelines={pipelines}
+        {...props}
+        onClose={onClose}
+        onSearch={onSearch}
+      />
+    </FormProvider>
   );
 };
 

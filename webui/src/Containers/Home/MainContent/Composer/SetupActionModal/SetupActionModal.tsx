@@ -136,7 +136,7 @@ const SetupActionModal: FC<SetupActionModalProps> = (props) => {
             {!editAction && (
               <Button
                 onClick={(e: BaseSyntheticEvent) => {
-                  if (!formState.isValid) {
+                  if (!actionName || !command) {
                     return;
                   }
                   setActiveKey("0");

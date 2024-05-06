@@ -6,7 +6,7 @@ import { PackageIcon } from "@styled-icons/feather";
 import { Download } from "@styled-icons/remix-line";
 import { Pipeline } from "./NewActionModalWithData";
 import { CardFooter, Inner } from "./styles";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import _ from "lodash";
 
 type NewActionModalProps = {
@@ -23,15 +23,11 @@ type NewActionModalProps = {
 
 const NewActionModal: FC<NewActionModalProps> = (props) => {
   const { onClose, onAdd, isOpen, pipelines, onSearch } = props;
-  const { control, watch, reset } = useForm({
-    defaultValues: {
-      search: "",
-    },
-  });
+  const { control, watch, reset } = useFormContext();
   const keyword = watch("search");
 
   useEffect(() => {
-    _.debounce(() => onSearch(keyword), 500)();
+    _.debounce(() => onSearch(keyword), 600)();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword]);
 
