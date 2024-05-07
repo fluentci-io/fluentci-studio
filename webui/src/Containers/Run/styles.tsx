@@ -79,8 +79,13 @@ export default {
         backgroundColor: "#0f0124",
         color: "#fff",
         fontFamily: $theme.primaryFontFamily,
-        margin: "0px",
+        margin: "0px !important",
       }),
+    },
+    DialogContainer: {
+      style: {
+        margin: "0px !important",
+      },
     },
     Close: {
       style: {
