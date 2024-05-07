@@ -105,7 +105,7 @@ const Run: FC<RunProps> = (props) => {
               <FullscreenExit size={15} color="#fff" />
             </FullscreenButton>
           </ModalHeader>
-          <LogsViewer height="calc(100vh - 10px)" />
+          <LogsViewer height="calc(100vh - 36px)" />
         </Modal>
       </Container>
     </Wrapper>
