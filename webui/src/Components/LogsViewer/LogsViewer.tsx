@@ -3,9 +3,10 @@ import styled from "@emotion/styled";
 import "@fontsource/inconsolata";
 import Ansi from "ansi-to-react";
 
-const Container = styled.div`
+const Container = styled.div<{ height?: string }>`
   height: calc(100vh - 125px);
   overflow: auto;
+  ${(props) => props.height && `height: ${props.height};`}
 `;
 
 const Line = styled.div`
@@ -37,6 +38,7 @@ const Row = styled.div`
 export type LogsViewerProps = {
   logs: string[];
   updatedLogs?: string[];
+  height?: string;
 };
 
 const LogsViewer: FC<LogsViewerProps> = (props) => {
@@ -51,7 +53,7 @@ const LogsViewer: FC<LogsViewerProps> = (props) => {
   }, [updatedLogs]);
 
   return (
-    <Container ref={logContainerRef}>
+    <Container ref={logContainerRef} height={props.height}>
       {logs.map((log, index) => (
         <Row>
           <LineNumber>{index + 1}</LineNumber>
