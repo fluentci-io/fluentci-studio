@@ -71,7 +71,7 @@ export default {
   Modal: {
     Root: {
       style: {
-        margin: 0,
+        margin: "0px",
       },
     },
     Dialog: {
@@ -79,6 +79,7 @@ export default {
         backgroundColor: "#0f0124",
         color: "#fff",
         fontFamily: $theme.primaryFontFamily,
+        margin: "0px",
       }),
     },
     Close: {
