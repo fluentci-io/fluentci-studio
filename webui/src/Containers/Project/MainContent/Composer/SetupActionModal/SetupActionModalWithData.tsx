@@ -6,6 +6,8 @@ import { useRecoilState } from "recoil";
 import { ComposerState } from "../ComposerState";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "./schema";
+import { useSaveActionsMutation } from "../../../../../Hooks/GraphQL";
+import { useParams } from "react-router-dom";
 
 export type SetupActionModalWithDataProps = {
   onClose: () => void;
@@ -18,7 +20,25 @@ export type SetupActionModalWithDataProps = {
 };
 
 const SetupActionModalWithData: FC<SetupActionModalWithDataProps> = (props) => {
+  const { id } = useParams();
+  const [saveAction] = useSaveActionsMutation();
   const [actions, setActions] = useRecoilState(ComposerState);
+  const _setActions = (actions: Pipeline[]) => {
+    setActions(actions);
+    saveAction({
+      variables: {
+        projectId: id!,
+        actions: actions.map((action) => ({
+          commands: action.command,
+          enabled: !!action.active,
+          logo: action.logo,
+          name: action.actionName!,
+          plugin: action.name!,
+          useWasm: !!action.useWasmPlugin,
+        })),
+      },
+    });
+  };
   const methods = useForm({
     mode: "onChange",
     resolver: zodResolver(schema),
@@ -60,7 +80,7 @@ const SetupActionModalWithData: FC<SetupActionModalWithDataProps> = (props) => {
       actionName: data.name,
       useWasmPlugin: data.useWasmPlugin,
     };
-    setActions(updated);
+    _setActions(updated);
   };
 
   return (

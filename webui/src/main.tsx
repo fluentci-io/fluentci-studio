@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { Client as Styletron } from "styletron-engine-atomic";
 import { Provider as StyletronProvider } from "styletron-react";
 import { RecoilRoot } from "recoil";
+import { RecoilDevTools } from "recoil-toolkit";
 import { theme } from "./Themes/index.tsx";
 import { BaseProvider } from "baseui";
 import App from "./App.tsx";
@@ -18,6 +19,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <BaseProvider theme={theme}>
         <RecoilRoot>
           <DebugObserver />
+          <RecoilDevTools forceSerialize={true} />
           <ApolloProvider>
             <App />
           </ApolloProvider>

@@ -35,7 +35,7 @@ const Run: FC<RunProps> = (props) => {
   return (
     <Wrapper>
       <Container>
-        <Header title="Run: #5" />
+        <Header />
         <Accordion
           onChange={({ expanded }) => {
             setExpandedIndex(_.get(expanded, "0", null) as string | null);

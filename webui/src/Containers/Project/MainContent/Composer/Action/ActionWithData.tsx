@@ -3,6 +3,8 @@ import Action from "./Action";
 import { useRecoilState } from "recoil";
 import { ComposerState } from "../ComposerState";
 import { Pipeline } from "../NewActionModal/NewActionModalWithData";
+import { useSaveActionsMutation } from "../../../../../Hooks/GraphQL";
+import { useParams } from "react-router-dom";
 
 export type ActionWithDataProps = {
   action: Pipeline;
@@ -13,6 +15,8 @@ export type ActionWithDataProps = {
 };
 
 const ActionWithData: FC<ActionWithDataProps> = (props) => {
+  const { id } = useParams();
+  const [saveAction] = useSaveActionsMutation();
   const [actions, setActions] = useRecoilState(ComposerState);
   const activate = (checked: boolean) => {
     const updated = [...actions];
@@ -20,8 +24,26 @@ const ActionWithData: FC<ActionWithDataProps> = (props) => {
       ...updated[props.index],
       active: checked,
     };
-    setActions(updated);
+    _setActions(updated);
   };
+
+  const _setActions = (actions: Pipeline[]) => {
+    setActions(actions);
+    saveAction({
+      variables: {
+        projectId: id!,
+        actions: actions.map((action) => ({
+          commands: action.command,
+          enabled: !!action.active,
+          logo: action.logo,
+          name: action.actionName!,
+          plugin: action.name!,
+          useWasm: !!action.useWasmPlugin,
+        })),
+      },
+    });
+  };
+
   return <Action {...props} activate={activate} />;
 };
 

@@ -1,57 +1,31 @@
-import { FC, useState } from "react";
-import { Tabs, Tab } from "baseui/tabs-motion";
-import { CollectionPlay } from "@styled-icons/bootstrap";
-import { SettingsOutline } from "@styled-icons/evaicons-outline";
-import Runs from "./Runs";
-import Composer from "./Composer";
-import styles, { Container } from "./styles";
-import Header from "../../../Components/Header";
+import { FC } from "react";
+import { Container, RunButton, Header, Title, ProjectWrapper } from "./styles";
+import { Project } from "../../../Hooks/GraphQL";
+import { Link } from "react-router-dom";
 
 export type MainContentProps = {
-  id: string;
-  title: string;
-  onRun: (id: string) => void;
+  projects?: Project[];
 };
 
-const MainContent: FC<MainContentProps> = () => {
-  const [activeKey, setActiveKey] = useState("0");
-
+const MainContent: FC<MainContentProps> = (props) => {
+  const { projects } = props;
   return (
     <Container>
-      <Header />
-      <Tabs
-        activeKey={activeKey}
-        onChange={({ activeKey }) => {
-          setActiveKey(activeKey.toString());
-        }}
-        activateOnFocus
-        overrides={styles.Tabs}
-      >
-        <Tab
-          title={
-            <>
-              <CollectionPlay size={24} />
-              <span style={{ marginLeft: 15 }}>Runs</span>
-            </>
-          }
-          overrides={styles.Tab}
-        >
-          <Runs />
-        </Tab>
-        <Tab
-          title={
-            <>
-              <SettingsOutline size={24} />
-              <span style={{ marginLeft: 15 }}>Actions</span>
-            </>
-          }
-          overrides={styles.Tab}
-        >
-          <Composer />
-        </Tab>
-      </Tabs>
+      <Header>
+        <Title>Projects</Title>
+        <RunButton>New Project</RunButton>
+      </Header>
+      {projects!.map((item, index) => (
+        <Link to={`/project/${item.id}`} key={index}>
+          <ProjectWrapper>{item.name}</ProjectWrapper>
+        </Link>
+      ))}
     </Container>
   );
+};
+
+MainContent.defaultProps = {
+  projects: [],
 };
 
 export default MainContent;

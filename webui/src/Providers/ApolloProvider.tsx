@@ -6,7 +6,7 @@ import {
 } from "@apollo/client";
 import { FC, ReactNode } from "react";
 
-const uri = import.meta.env.VITE_APP_API_URL || "http://127.0.0.1:6077/graphql";
+const uri = import.meta.env.VITE_APP_API_URL || "http://127.0.0.1:6076/graphql";
 
 const link = createHttpLink({
   uri,

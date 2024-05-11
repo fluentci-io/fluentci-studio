@@ -20,7 +20,45 @@ export const LogFragment = gql`
 export const JobFragment = gql`
   fragment JobFragment on Job {
     id
-    projectId
     name
+    createdAt
+    projectId
+    status
+  }
+`;
+
+export const RunFragment = gql`
+  fragment RunFragment on Run {
+    id
+    branch
+    commit
+    date
+    project
+    projectId
+    duration
+    jobs {
+      id
+      name
+      createdAt
+      projectId
+      status
+    }
+    message
+    name
+    title
+    cursor
+    status
+  }
+`;
+
+export const ActionFragment = gql`
+  fragment ActionFragment on Action {
+    id
+    commands
+    enabled
+    logo
+    name
+    plugin
+    useWasm
   }
 `;

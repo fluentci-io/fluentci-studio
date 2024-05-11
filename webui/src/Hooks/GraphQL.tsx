@@ -15,6 +15,27 @@ export type Scalars = {
   Float: number;
 };
 
+/** An action is a command that is run in a job. */
+export type Action = {
+  __typename?: 'Action';
+  commands: Scalars['String'];
+  enabled: Scalars['Boolean'];
+  id?: Maybe<Scalars['ID']>;
+  logo?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  plugin: Scalars['String'];
+  useWasm: Scalars['Boolean'];
+};
+
+export type ActionInput = {
+  commands: Scalars['String'];
+  enabled: Scalars['Boolean'];
+  logo?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  plugin: Scalars['String'];
+  useWasm: Scalars['Boolean'];
+};
+
 /** A job is a task that is run in a project. */
 export type Job = {
   __typename?: 'Job';
@@ -39,7 +60,8 @@ export type Mutation = {
   __typename?: 'Mutation';
   createProject: Project;
   runJob: Job;
-  runPipeline: Project;
+  runPipeline: Run;
+  saveActions: Array<Action>;
 };
 
 
@@ -53,10 +75,17 @@ export type MutationRunPipelineArgs = {
   projectId?: InputMaybe<Scalars['ID']>;
 };
 
-/** A project is a collection of jobs. */
+
+export type MutationSaveActionsArgs = {
+  actions: Array<ActionInput>;
+  projectId: Scalars['ID'];
+};
+
+/** A project is a collection of actions. */
 export type Project = {
   __typename?: 'Project';
   createdAt: Scalars['String'];
+  cursor?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   logs?: Maybe<Log>;
   name: Scalars['String'];
@@ -65,12 +94,32 @@ export type Project = {
 
 export type Query = {
   __typename?: 'Query';
+  actions?: Maybe<Array<Action>>;
+  getRun?: Maybe<Run>;
+  getRuns?: Maybe<Array<Run>>;
   job?: Maybe<Job>;
   jobs: Array<Job>;
   log?: Maybe<Log>;
   logs: Array<Log>;
   project?: Maybe<Project>;
   projects: Array<Project>;
+};
+
+
+export type QueryActionsArgs = {
+  projectId: Scalars['ID'];
+};
+
+
+export type QueryGetRunArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryGetRunsArgs = {
+  cursor?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  projectId: Scalars['ID'];
 };
 
 
@@ -89,11 +138,54 @@ export type QueryProjectArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
 
+
+export type QueryProjectsArgs = {
+  cursor?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['Int']>;
+};
+
+/** A Pipeline execution */
+export type Run = {
+  __typename?: 'Run';
+  branch?: Maybe<Scalars['String']>;
+  commit?: Maybe<Scalars['String']>;
+  cursor?: Maybe<Scalars['String']>;
+  date: Scalars['String'];
+  duration: Scalars['Int'];
+  id: Scalars['ID'];
+  jobs: Array<Job>;
+  message?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  project: Scalars['String'];
+  projectId: Scalars['String'];
+  status?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
+};
+
+export type SaveActionsMutationVariables = Exact<{
+  projectId: Scalars['ID'];
+  actions: Array<ActionInput> | ActionInput;
+}>;
+
+
+export type SaveActionsMutation = { __typename?: 'Mutation', saveActions: Array<{ __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean }> };
+
+export type GetActionsQueryVariables = Exact<{
+  projectId: Scalars['ID'];
+}>;
+
+
+export type GetActionsQuery = { __typename?: 'Query', actions?: Array<{ __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean }> | null };
+
 export type ProjectFragmentFragment = { __typename?: 'Project', id: string, name: string, path: string, createdAt: string };
 
 export type LogFragmentFragment = { __typename?: 'Log', id: string, message: string, createdAt: string };
 
-export type JobFragmentFragment = { __typename?: 'Job', id: string, projectId: string, name: string };
+export type JobFragmentFragment = { __typename?: 'Job', id: string, name: string, createdAt: string, projectId: string, status: string };
+
+export type RunFragmentFragment = { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration: number, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, projectId: string, status: string }> };
+
+export type ActionFragmentFragment = { __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean };
 
 export type RunJobMutationVariables = Exact<{
   projectId?: InputMaybe<Scalars['ID']>;
@@ -106,7 +198,7 @@ export type RunJobMutation = { __typename?: 'Mutation', runJob: { __typename?: '
 export type GetJobsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetJobsQuery = { __typename?: 'Query', jobs: Array<{ __typename?: 'Job', id: string, projectId: string, name: string }> };
+export type GetJobsQuery = { __typename?: 'Query', jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, projectId: string, status: string }> };
 
 export type GetJobQueryVariables = Exact<{
   id?: InputMaybe<Scalars['ID']>;
@@ -123,14 +215,15 @@ export type GetLogsQueryVariables = Exact<{
 
 export type GetLogsQuery = { __typename?: 'Query', logs: Array<{ __typename?: 'Log', id: string, message: string, createdAt: string }> };
 
-export type RunPipelineMutationVariables = Exact<{
-  projectId?: InputMaybe<Scalars['ID']>;
+export type CreateProjectMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'Project', id: string, name: string, path: string, createdAt: string } };
+
+export type GetProjectsQueryVariables = Exact<{
+  cursor?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['Int']>;
 }>;
-
-
-export type RunPipelineMutation = { __typename?: 'Mutation', runPipeline: { __typename?: 'Project', id: string, name: string, path: string, createdAt: string } };
-
-export type GetProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', id: string, name: string, path: string, createdAt: string }> };
@@ -140,7 +233,30 @@ export type GetProjectQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: string, name: string, path: string, createdAt: string, logs?: { __typename?: 'Log', id: string, message: string } | null } | null };
+export type GetProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: string, name: string, path: string, createdAt: string, cursor?: string | null } | null };
+
+export type RunPipelineMutationVariables = Exact<{
+  projectId: Scalars['ID'];
+}>;
+
+
+export type RunPipelineMutation = { __typename?: 'Mutation', runPipeline: { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration: number, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, projectId: string, status: string }> } };
+
+export type GetRunQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetRunQuery = { __typename?: 'Query', getRun?: { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration: number, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, projectId: string, status: string }> } | null };
+
+export type GetRunsQueryVariables = Exact<{
+  projectId: Scalars['ID'];
+  cursor?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetRunsQuery = { __typename?: 'Query', getRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration: number, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, projectId: string, status: string }> }> | null };
 
 export const ProjectFragmentFragmentDoc = gql`
     fragment ProjectFragment on Project {
@@ -160,10 +276,115 @@ export const LogFragmentFragmentDoc = gql`
 export const JobFragmentFragmentDoc = gql`
     fragment JobFragment on Job {
   id
-  projectId
   name
+  createdAt
+  projectId
+  status
 }
     `;
+export const RunFragmentFragmentDoc = gql`
+    fragment RunFragment on Run {
+  id
+  branch
+  commit
+  date
+  project
+  projectId
+  duration
+  jobs {
+    id
+    name
+    createdAt
+    projectId
+    status
+  }
+  message
+  name
+  title
+  cursor
+  status
+}
+    `;
+export const ActionFragmentFragmentDoc = gql`
+    fragment ActionFragment on Action {
+  id
+  commands
+  enabled
+  logo
+  name
+  plugin
+  useWasm
+}
+    `;
+export const SaveActionsDocument = gql`
+    mutation SaveActions($projectId: ID!, $actions: [ActionInput!]!) {
+  saveActions(projectId: $projectId, actions: $actions) {
+    ...ActionFragment
+  }
+}
+    ${ActionFragmentFragmentDoc}`;
+export type SaveActionsMutationFn = Apollo.MutationFunction<SaveActionsMutation, SaveActionsMutationVariables>;
+
+/**
+ * __useSaveActionsMutation__
+ *
+ * To run a mutation, you first call `useSaveActionsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSaveActionsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [saveActionsMutation, { data, loading, error }] = useSaveActionsMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      actions: // value for 'actions'
+ *   },
+ * });
+ */
+export function useSaveActionsMutation(baseOptions?: Apollo.MutationHookOptions<SaveActionsMutation, SaveActionsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SaveActionsMutation, SaveActionsMutationVariables>(SaveActionsDocument, options);
+      }
+export type SaveActionsMutationHookResult = ReturnType<typeof useSaveActionsMutation>;
+export type SaveActionsMutationResult = Apollo.MutationResult<SaveActionsMutation>;
+export type SaveActionsMutationOptions = Apollo.BaseMutationOptions<SaveActionsMutation, SaveActionsMutationVariables>;
+export const GetActionsDocument = gql`
+    query GetActions($projectId: ID!) {
+  actions(projectId: $projectId) {
+    ...ActionFragment
+  }
+}
+    ${ActionFragmentFragmentDoc}`;
+
+/**
+ * __useGetActionsQuery__
+ *
+ * To run a query within a React component, call `useGetActionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetActionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetActionsQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useGetActionsQuery(baseOptions: Apollo.QueryHookOptions<GetActionsQuery, GetActionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetActionsQuery, GetActionsQueryVariables>(GetActionsDocument, options);
+      }
+export function useGetActionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetActionsQuery, GetActionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetActionsQuery, GetActionsQueryVariables>(GetActionsDocument, options);
+        }
+export type GetActionsQueryHookResult = ReturnType<typeof useGetActionsQuery>;
+export type GetActionsLazyQueryHookResult = ReturnType<typeof useGetActionsLazyQuery>;
+export type GetActionsQueryResult = Apollo.QueryResult<GetActionsQuery, GetActionsQueryVariables>;
 export const RunJobDocument = gql`
     mutation RunJob($projectId: ID, $jobName: String) {
   runJob(projectId: $projectId, jobName: $jobName) {
@@ -315,45 +536,41 @@ export function useGetLogsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ge
 export type GetLogsQueryHookResult = ReturnType<typeof useGetLogsQuery>;
 export type GetLogsLazyQueryHookResult = ReturnType<typeof useGetLogsLazyQuery>;
 export type GetLogsQueryResult = Apollo.QueryResult<GetLogsQuery, GetLogsQueryVariables>;
-export const RunPipelineDocument = gql`
-    mutation RunPipeline($projectId: ID) {
-  runPipeline(projectId: $projectId) {
-    id
-    name
-    path
-    createdAt
+export const CreateProjectDocument = gql`
+    mutation CreateProject {
+  createProject {
+    ...ProjectFragment
   }
 }
-    `;
-export type RunPipelineMutationFn = Apollo.MutationFunction<RunPipelineMutation, RunPipelineMutationVariables>;
+    ${ProjectFragmentFragmentDoc}`;
+export type CreateProjectMutationFn = Apollo.MutationFunction<CreateProjectMutation, CreateProjectMutationVariables>;
 
 /**
- * __useRunPipelineMutation__
+ * __useCreateProjectMutation__
  *
- * To run a mutation, you first call `useRunPipelineMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRunPipelineMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateProjectMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [runPipelineMutation, { data, loading, error }] = useRunPipelineMutation({
+ * const [createProjectMutation, { data, loading, error }] = useCreateProjectMutation({
  *   variables: {
- *      projectId: // value for 'projectId'
  *   },
  * });
  */
-export function useRunPipelineMutation(baseOptions?: Apollo.MutationHookOptions<RunPipelineMutation, RunPipelineMutationVariables>) {
+export function useCreateProjectMutation(baseOptions?: Apollo.MutationHookOptions<CreateProjectMutation, CreateProjectMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RunPipelineMutation, RunPipelineMutationVariables>(RunPipelineDocument, options);
+        return Apollo.useMutation<CreateProjectMutation, CreateProjectMutationVariables>(CreateProjectDocument, options);
       }
-export type RunPipelineMutationHookResult = ReturnType<typeof useRunPipelineMutation>;
-export type RunPipelineMutationResult = Apollo.MutationResult<RunPipelineMutation>;
-export type RunPipelineMutationOptions = Apollo.BaseMutationOptions<RunPipelineMutation, RunPipelineMutationVariables>;
+export type CreateProjectMutationHookResult = ReturnType<typeof useCreateProjectMutation>;
+export type CreateProjectMutationResult = Apollo.MutationResult<CreateProjectMutation>;
+export type CreateProjectMutationOptions = Apollo.BaseMutationOptions<CreateProjectMutation, CreateProjectMutationVariables>;
 export const GetProjectsDocument = gql`
-    query GetProjects {
-  projects {
+    query GetProjects($cursor: String, $limit: Int) {
+  projects(cursor: $cursor, limit: $limit) {
     ...ProjectFragment
   }
 }
@@ -371,6 +588,8 @@ export const GetProjectsDocument = gql`
  * @example
  * const { data, loading, error } = useGetProjectsQuery({
  *   variables: {
+ *      cursor: // value for 'cursor'
+ *      limit: // value for 'limit'
  *   },
  * });
  */
@@ -392,10 +611,7 @@ export const GetProjectDocument = gql`
     name
     path
     createdAt
-    logs {
-      id
-      message
-    }
+    cursor
   }
 }
     `;
@@ -427,3 +643,108 @@ export function useGetProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetProjectQueryHookResult = ReturnType<typeof useGetProjectQuery>;
 export type GetProjectLazyQueryHookResult = ReturnType<typeof useGetProjectLazyQuery>;
 export type GetProjectQueryResult = Apollo.QueryResult<GetProjectQuery, GetProjectQueryVariables>;
+export const RunPipelineDocument = gql`
+    mutation RunPipeline($projectId: ID!) {
+  runPipeline(projectId: $projectId) {
+    ...RunFragment
+  }
+}
+    ${RunFragmentFragmentDoc}`;
+export type RunPipelineMutationFn = Apollo.MutationFunction<RunPipelineMutation, RunPipelineMutationVariables>;
+
+/**
+ * __useRunPipelineMutation__
+ *
+ * To run a mutation, you first call `useRunPipelineMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRunPipelineMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [runPipelineMutation, { data, loading, error }] = useRunPipelineMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useRunPipelineMutation(baseOptions?: Apollo.MutationHookOptions<RunPipelineMutation, RunPipelineMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RunPipelineMutation, RunPipelineMutationVariables>(RunPipelineDocument, options);
+      }
+export type RunPipelineMutationHookResult = ReturnType<typeof useRunPipelineMutation>;
+export type RunPipelineMutationResult = Apollo.MutationResult<RunPipelineMutation>;
+export type RunPipelineMutationOptions = Apollo.BaseMutationOptions<RunPipelineMutation, RunPipelineMutationVariables>;
+export const GetRunDocument = gql`
+    query GetRun($id: ID!) {
+  getRun(id: $id) {
+    ...RunFragment
+  }
+}
+    ${RunFragmentFragmentDoc}`;
+
+/**
+ * __useGetRunQuery__
+ *
+ * To run a query within a React component, call `useGetRunQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRunQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRunQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetRunQuery(baseOptions: Apollo.QueryHookOptions<GetRunQuery, GetRunQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRunQuery, GetRunQueryVariables>(GetRunDocument, options);
+      }
+export function useGetRunLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRunQuery, GetRunQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRunQuery, GetRunQueryVariables>(GetRunDocument, options);
+        }
+export type GetRunQueryHookResult = ReturnType<typeof useGetRunQuery>;
+export type GetRunLazyQueryHookResult = ReturnType<typeof useGetRunLazyQuery>;
+export type GetRunQueryResult = Apollo.QueryResult<GetRunQuery, GetRunQueryVariables>;
+export const GetRunsDocument = gql`
+    query GetRuns($projectId: ID!, $cursor: String, $limit: Int) {
+  getRuns(projectId: $projectId, cursor: $cursor, limit: $limit) {
+    ...RunFragment
+  }
+}
+    ${RunFragmentFragmentDoc}`;
+
+/**
+ * __useGetRunsQuery__
+ *
+ * To run a query within a React component, call `useGetRunsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRunsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRunsQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      cursor: // value for 'cursor'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useGetRunsQuery(baseOptions: Apollo.QueryHookOptions<GetRunsQuery, GetRunsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRunsQuery, GetRunsQueryVariables>(GetRunsDocument, options);
+      }
+export function useGetRunsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRunsQuery, GetRunsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRunsQuery, GetRunsQueryVariables>(GetRunsDocument, options);
+        }
+export type GetRunsQueryHookResult = ReturnType<typeof useGetRunsQuery>;
+export type GetRunsLazyQueryHookResult = ReturnType<typeof useGetRunsLazyQuery>;
+export type GetRunsQueryResult = Apollo.QueryResult<GetRunsQuery, GetRunsQueryVariables>;

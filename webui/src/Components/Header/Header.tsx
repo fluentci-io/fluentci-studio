@@ -7,13 +7,13 @@ import styles, { Link, Container, RunButton, PopoverButton } from "./styles";
 
 export type HeaderProps = {
   id: string;
-  title?: string;
   onRun: (id: string) => void;
   menu?: string[];
+  breadcrumbs?: { title: string; link?: string }[];
 };
 
 const Header: FC<HeaderProps> = (props) => {
-  const { id, title, onRun, menu } = props;
+  const { id, breadcrumbs, onRun, menu } = props;
   return (
     <Container>
       <Breadcrumbs
@@ -32,10 +32,16 @@ const Header: FC<HeaderProps> = (props) => {
           },
         }}
       >
-        <Link to="/" style={{ color: "#ffffffa8" }}>
-          Demo
-        </Link>
-        {title && <span>{title}</span>}
+        {breadcrumbs?.map(({ title, link }) => (
+          <>
+            {link && (
+              <Link to={link} style={{ color: "#ffffffa8" }}>
+                {title}
+              </Link>
+            )}
+            {!link && <span>{title}</span>}
+          </>
+        ))}
       </Breadcrumbs>
       {!!menu?.length && (
         <StatefulPopover
@@ -62,6 +68,12 @@ const Header: FC<HeaderProps> = (props) => {
 
 Header.defaultProps = {
   menu: [],
+  breadcrumbs: [
+    {
+      title: "Projects",
+      link: "/",
+    },
+  ],
 };
 
 export default Header;

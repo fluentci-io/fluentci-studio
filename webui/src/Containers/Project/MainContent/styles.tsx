@@ -9,23 +9,22 @@ export const Container = styled.div`
 `;
 
 export const Title = styled.div`
-  font-size: 20px;
+  font-size: 25px;
   margin-bottom: 20px;
   font-weight: 500;
   flex: 1;
-  font-family: "Lexend";
-  color: #fff;
 `;
 
 export const Header = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
 `;
 
 export const RunButton = styled.button`
-  font-family: "Lexend";
   height: 40px;
   background-color: #24ffb5;
   color: #000;
@@ -46,18 +45,6 @@ export const PopoverButton = styled.button`
   border: none;
   color: #fff;
   margin-right: 10px;
-`;
-
-export const ProjectWrapper = styled.div`
-  color: #fff;
-  background-color: #10072c;
-  height: 80px;
-  border: 1px solid #ffffff1f;
-  border-radius: 6px;
-  padding: 20px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 `;
 
 export default {
