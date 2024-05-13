@@ -24,11 +24,19 @@ const Action: FC<ActionProps> = (props) => {
       active={action.active}
       className="action"
       onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        if (
-          !(e.target as HTMLElement).className?.includes("action") &&
-          !(e.target as HTMLElement).className?.includes("css")
-        ) {
+        if (!(e.target as HTMLElement).className) {
           return;
+        }
+        if ((e.target as HTMLElement).className) {
+          if (typeof (e.target as HTMLElement).className === "object") {
+            return;
+          }
+          if (
+            !(e.target as HTMLElement).className.includes("action") &&
+            !(e.target as HTMLElement).className.includes("css")
+          ) {
+            return;
+          }
         }
         onClickAction(action, index ? 1 : index);
       }}

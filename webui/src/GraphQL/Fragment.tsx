@@ -22,7 +22,7 @@ export const JobFragment = gql`
     id
     name
     createdAt
-    projectId
+    duration
     status
   }
 `;
@@ -40,8 +40,8 @@ export const RunFragment = gql`
       id
       name
       createdAt
-      projectId
       status
+      duration
     }
     message
     name

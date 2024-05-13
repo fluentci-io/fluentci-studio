@@ -32,16 +32,16 @@ const Header: FC<HeaderProps> = (props) => {
           },
         }}
       >
-        {breadcrumbs?.map(({ title, link }) => (
-          <>
-            {link && (
-              <Link to={link} style={{ color: "#ffffffa8" }}>
+        {breadcrumbs?.map(({ title, link }, index) => {
+          if (link) {
+            return (
+              <Link key={index} to={link} style={{ color: "#ffffffb0" }}>
                 {title}
               </Link>
-            )}
-            {!link && <span>{title}</span>}
-          </>
-        ))}
+            );
+          }
+          return <span key={index}>{title}</span>;
+        })}
       </Breadcrumbs>
       {!!menu?.length && (
         <StatefulPopover

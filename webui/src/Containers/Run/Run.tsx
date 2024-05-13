@@ -14,10 +14,11 @@ import styles, {
 } from "./styles";
 import { ChevronRight, ChevronDown } from "@styled-icons/boxicons-solid";
 import _ from "lodash";
-import LogsViewer from "../../Components/LogsViewer";
+import LogsViewer from "../../Components/LogsViewer/LogsViewer";
 import { Spinner } from "baseui/spinner";
 import { Fullscreen, FullscreenExit } from "@styled-icons/bootstrap";
 import { Modal, ModalHeader, SIZE } from "baseui/modal";
+import { CloseCircle } from "@styled-icons/ionicons-sharp";
 
 export type RunProps = {
   actions: {
@@ -25,11 +26,13 @@ export type RunProps = {
     name: string;
     duration: string;
     status: "SUCCESS" | "FAILURE" | "RUNNING" | "PENDING";
+    logs?: string[];
   }[];
 };
 
 const Run: FC<RunProps> = (props) => {
   const { actions } = props;
+  const [logs, setLogs] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [expandedIndex, setExpandedIndex] = useState<string | null>(null);
   return (
@@ -61,6 +64,11 @@ const Run: FC<RunProps> = (props) => {
                     {item.status == "SUCCESS" && (
                       <CheckCircle size={"24px"} color="#24ffa0" />
                     )}
+                    {item.status === "FAILURE" && (
+                      <div style={{ marginRight: 15 }}>
+                        <CloseCircle size={"24px"} color="#ff246d" />
+                      </div>
+                    )}
                     {item.status == "RUNNING" && (
                       <Spinner
                         $size={"15px"}
@@ -80,10 +88,15 @@ const Run: FC<RunProps> = (props) => {
               }
             >
               <div style={{ position: "relative" }}>
-                <FullscreenButton onClick={() => setIsOpen(true)}>
+                <FullscreenButton
+                  onClick={() => {
+                    setLogs(item.logs || []);
+                    setIsOpen(true);
+                  }}
+                >
                   <Fullscreen size={15} color="#fff" />
                 </FullscreenButton>
-                <LogsViewer />
+                <LogsViewer logs={item.logs || []} />
               </div>
             </Panel>
           ))}
@@ -105,7 +118,7 @@ const Run: FC<RunProps> = (props) => {
               <FullscreenExit size={15} color="#fff" />
             </FullscreenButton>
           </ModalHeader>
-          <LogsViewer height="calc(100vh - 36px)" />
+          <LogsViewer height="calc(100vh - 36px)" logs={logs} />
         </Modal>
       </Container>
     </Wrapper>

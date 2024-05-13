@@ -58,6 +58,9 @@ export const ProjectWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  &:hover {
+    border: 1px solid #4304ff;
+  }
 `;
 
 export default {

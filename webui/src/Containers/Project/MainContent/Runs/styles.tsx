@@ -12,17 +12,19 @@ export const RunItem = styled.div`
 
 export const Branch = styled.span`
   font-size: 14px;
-  color: #5b00f9;
-  background-color: #5b00f938;
+  color: #00e3f9;
+  background-color: #00e3f92e;
   padding: 5px;
   border-radius: 5px;
   &:hover {
-    border: 1px solid #5d00ff;
+    border: 1px solid #00e3f9;
   }
 `;
 
 export const Title = styled.div`
   flex: 1;
+  color: #ffffffbf;
+  font-size: 15px;
 `;
 
 export const Duration = styled.div`

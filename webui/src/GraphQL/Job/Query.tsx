@@ -14,13 +14,14 @@ export const GET_JOB = gql`
   query GetJob($id: ID) {
     job(id: $id) {
       id
-      projectId
       name
       status
       createdAt
+      duration
       logs {
         id
         message
+        createdAt
       }
     }
   }

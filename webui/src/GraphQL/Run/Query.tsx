@@ -4,10 +4,32 @@ import { RunFragment } from "../Fragment";
 export const GET_RUN = gql`
   query GetRun($id: ID!) {
     getRun(id: $id) {
-      ...RunFragment
+      id
+      branch
+      commit
+      date
+      project
+      projectId
+      duration
+      jobs {
+        id
+        name
+        createdAt
+        status
+        duration
+        logs {
+          id
+          message
+          createdAt
+        }
+      }
+      message
+      name
+      title
+      cursor
+      status
     }
   }
-  ${RunFragment}
 `;
 
 export const GET_RUNS = gql`

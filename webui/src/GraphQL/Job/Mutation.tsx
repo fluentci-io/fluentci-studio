@@ -4,8 +4,8 @@ export const RUN_JOB = gql`
   mutation RunJob($projectId: ID, $jobName: String) {
     runJob(projectId: $projectId, jobName: $jobName) {
       id
-      projectId
       name
+      duration
       status
       createdAt
     }

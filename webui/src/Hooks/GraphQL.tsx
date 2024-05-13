@@ -40,10 +40,10 @@ export type ActionInput = {
 export type Job = {
   __typename?: 'Job';
   createdAt: Scalars['String'];
+  duration?: Maybe<Scalars['Int']>;
   id: Scalars['ID'];
-  logs?: Maybe<Log>;
+  logs?: Maybe<Array<Log>>;
   name: Scalars['String'];
-  projectId: Scalars['ID'];
   status: Scalars['String'];
 };
 
@@ -52,7 +52,7 @@ export type Log = {
   __typename?: 'Log';
   createdAt: Scalars['String'];
   id: Scalars['ID'];
-  jobId: Scalars['ID'];
+  jobId?: Maybe<Scalars['ID']>;
   message: Scalars['String'];
 };
 
@@ -147,6 +147,7 @@ export type QueryProjectsArgs = {
 /** A Pipeline execution */
 export type Run = {
   __typename?: 'Run';
+  author?: Maybe<Scalars['String']>;
   branch?: Maybe<Scalars['String']>;
   commit?: Maybe<Scalars['String']>;
   cursor?: Maybe<Scalars['String']>;
@@ -181,9 +182,9 @@ export type ProjectFragmentFragment = { __typename?: 'Project', id: string, name
 
 export type LogFragmentFragment = { __typename?: 'Log', id: string, message: string, createdAt: string };
 
-export type JobFragmentFragment = { __typename?: 'Job', id: string, name: string, createdAt: string, projectId: string, status: string };
+export type JobFragmentFragment = { __typename?: 'Job', id: string, name: string, createdAt: string, duration?: number | null, status: string };
 
-export type RunFragmentFragment = { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration: number, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, projectId: string, status: string }> };
+export type RunFragmentFragment = { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration: number, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> };
 
 export type ActionFragmentFragment = { __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean };
 
@@ -193,19 +194,19 @@ export type RunJobMutationVariables = Exact<{
 }>;
 
 
-export type RunJobMutation = { __typename?: 'Mutation', runJob: { __typename?: 'Job', id: string, projectId: string, name: string, status: string, createdAt: string } };
+export type RunJobMutation = { __typename?: 'Mutation', runJob: { __typename?: 'Job', id: string, name: string, duration?: number | null, status: string, createdAt: string } };
 
 export type GetJobsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetJobsQuery = { __typename?: 'Query', jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, projectId: string, status: string }> };
+export type GetJobsQuery = { __typename?: 'Query', jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, duration?: number | null, status: string }> };
 
 export type GetJobQueryVariables = Exact<{
   id?: InputMaybe<Scalars['ID']>;
 }>;
 
 
-export type GetJobQuery = { __typename?: 'Query', job?: { __typename?: 'Job', id: string, projectId: string, name: string, status: string, createdAt: string, logs?: { __typename?: 'Log', id: string, message: string } | null } | null };
+export type GetJobQuery = { __typename?: 'Query', job?: { __typename?: 'Job', id: string, name: string, status: string, createdAt: string, duration?: number | null, logs?: Array<{ __typename?: 'Log', id: string, message: string, createdAt: string }> | null } | null };
 
 export type GetLogsQueryVariables = Exact<{
   projectId?: InputMaybe<Scalars['ID']>;
@@ -240,14 +241,14 @@ export type RunPipelineMutationVariables = Exact<{
 }>;
 
 
-export type RunPipelineMutation = { __typename?: 'Mutation', runPipeline: { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration: number, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, projectId: string, status: string }> } };
+export type RunPipelineMutation = { __typename?: 'Mutation', runPipeline: { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration: number, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> } };
 
 export type GetRunQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetRunQuery = { __typename?: 'Query', getRun?: { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration: number, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, projectId: string, status: string }> } | null };
+export type GetRunQuery = { __typename?: 'Query', getRun?: { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration: number, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null, logs?: Array<{ __typename?: 'Log', id: string, message: string, createdAt: string }> | null }> } | null };
 
 export type GetRunsQueryVariables = Exact<{
   projectId: Scalars['ID'];
@@ -256,7 +257,7 @@ export type GetRunsQueryVariables = Exact<{
 }>;
 
 
-export type GetRunsQuery = { __typename?: 'Query', getRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration: number, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, projectId: string, status: string }> }> | null };
+export type GetRunsQuery = { __typename?: 'Query', getRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration: number, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null };
 
 export const ProjectFragmentFragmentDoc = gql`
     fragment ProjectFragment on Project {
@@ -278,7 +279,7 @@ export const JobFragmentFragmentDoc = gql`
   id
   name
   createdAt
-  projectId
+  duration
   status
 }
     `;
@@ -295,8 +296,8 @@ export const RunFragmentFragmentDoc = gql`
     id
     name
     createdAt
-    projectId
     status
+    duration
   }
   message
   name
@@ -389,8 +390,8 @@ export const RunJobDocument = gql`
     mutation RunJob($projectId: ID, $jobName: String) {
   runJob(projectId: $projectId, jobName: $jobName) {
     id
-    projectId
     name
+    duration
     status
     createdAt
   }
@@ -461,13 +462,14 @@ export const GetJobDocument = gql`
     query GetJob($id: ID) {
   job(id: $id) {
     id
-    projectId
     name
     status
     createdAt
+    duration
     logs {
       id
       message
+      createdAt
     }
   }
 }
@@ -679,10 +681,33 @@ export type RunPipelineMutationOptions = Apollo.BaseMutationOptions<RunPipelineM
 export const GetRunDocument = gql`
     query GetRun($id: ID!) {
   getRun(id: $id) {
-    ...RunFragment
+    id
+    branch
+    commit
+    date
+    project
+    projectId
+    duration
+    jobs {
+      id
+      name
+      createdAt
+      status
+      duration
+      logs {
+        id
+        message
+        createdAt
+      }
+    }
+    message
+    name
+    title
+    cursor
+    status
   }
 }
-    ${RunFragmentFragmentDoc}`;
+    `;
 
 /**
  * __useGetRunQuery__

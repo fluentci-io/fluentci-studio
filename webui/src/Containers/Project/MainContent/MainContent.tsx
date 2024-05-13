@@ -7,13 +7,7 @@ import Composer from "./Composer";
 import styles, { Container } from "./styles";
 import Header from "../../../Components/Header";
 
-export type MainContentProps = {
-  id: string;
-  title: string;
-  onRun: (id: string) => void;
-};
-
-const MainContent: FC<MainContentProps> = () => {
+const MainContent: FC = () => {
   const [activeKey, setActiveKey] = useState("0");
 
   return (
