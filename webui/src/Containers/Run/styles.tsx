@@ -32,11 +32,6 @@ export const Title = styled.div`
   display: flex;
 `;
 
-export const Duration = styled.div`
-  font-size: 13px;
-  color: #ffffffb8;
-`;
-
 export const Status = styled.div`
   width: 20px;
   margin-right: 15px;

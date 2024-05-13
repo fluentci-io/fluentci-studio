@@ -5,7 +5,6 @@ import { CheckCircle } from "@styled-icons/boxicons-solid";
 import styles, {
   Action,
   Container,
-  Duration,
   Loader,
   Status,
   Title,
@@ -19,12 +18,14 @@ import { Spinner } from "baseui/spinner";
 import { Fullscreen, FullscreenExit } from "@styled-icons/bootstrap";
 import { Modal, ModalHeader, SIZE } from "baseui/modal";
 import { CloseCircle } from "@styled-icons/ionicons-sharp";
+import Duration from "../../Components/Duration";
 
 export type RunProps = {
   actions: {
     id: string;
     name: string;
-    duration: string;
+    startedAt?: string;
+    duration?: number | null;
     status: "SUCCESS" | "FAILURE" | "RUNNING" | "PENDING";
     logs?: string[];
   }[];
@@ -83,7 +84,12 @@ const Run: FC<RunProps> = (props) => {
                     )}
                   </Loader>
                   <Title>{item.name}</Title>
-                  <Duration>{item.duration}</Duration>
+                  {item.status === "RUNNING" && (
+                    <Duration startDate={item.startedAt} />
+                  )}
+                  {item.status !== "RUNNING" && (
+                    <Duration value={item.duration} />
+                  )}
                 </Action>
               }
             >

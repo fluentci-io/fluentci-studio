@@ -24,10 +24,5 @@ export const Branch = styled.span`
 export const Title = styled.div`
   flex: 1;
   color: #ffffffbf;
-  font-size: 15px;
-`;
-
-export const Duration = styled.div`
-  font-size: 13px;
-  color: #ffffffb8;
+  font-size: 14px;
 `;

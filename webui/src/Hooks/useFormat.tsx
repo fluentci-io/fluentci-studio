@@ -13,20 +13,31 @@ export function useFormat() {
       const hours = value.hours();
       const minutes = value.minutes();
       const seconds = value.seconds();
+      const milliseconds = value.milliseconds();
 
       // Construct the formatted string
       if (days > 0) {
+        if (days < 10) {
+          result += "0";
+        }
         result += days + "d ";
       }
       if (hours > 0) {
+        if (hours < 10) {
+          result += "0";
+        }
         result += hours + "h ";
       }
       if (minutes > 0) {
+        if (minutes < 10) {
+          result += "0";
+        }
         result += minutes + "m ";
       }
-      if (seconds > 0) {
-        result += seconds + "s";
+      if (seconds < 10) {
+        result += "0";
       }
+      result += seconds + "." + Math.floor(milliseconds / 100) + "s";
 
       return result.trim();
     },

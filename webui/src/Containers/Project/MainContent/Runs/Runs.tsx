@@ -1,15 +1,15 @@
 import { FC } from "react";
 import Placeholder from "./Placeholder";
 import { Run } from "../../../../Hooks/GraphQL";
-import { RunItem, Branch, Title, Duration } from "./styles";
+import { RunItem, Branch, Title } from "./styles";
 import { Link } from "react-router-dom";
 import { CheckCircle } from "@styled-icons/boxicons-solid";
 import { GitBranch } from "@styled-icons/boxicons-regular";
 import { Spinner } from "baseui/spinner";
 import { CloseCircle } from "@styled-icons/ionicons-sharp";
-import { useFormat } from "../../../../Hooks/useFormat";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
+import Duration from "../../../../Components/Duration";
 
 dayjs.extend(duration);
 
@@ -19,7 +19,6 @@ export type RunsProps = {
 
 const Runs: FC<RunsProps> = (props) => {
   const { data } = props;
-  const { formatDuration } = useFormat();
   return (
     <>
       {data.length === 0 && <Placeholder />}
@@ -70,11 +69,12 @@ const Runs: FC<RunsProps> = (props) => {
                     </Branch>
                   )}
                 </div>
-                <Duration>
-                  {item.duration
-                    ? formatDuration(dayjs.duration(item.duration))
-                    : ""}
-                </Duration>
+                {item.status === "RUNNING" && (
+                  <Duration startDate={item.date} />
+                )}
+                {item.status !== "RUNNING" && (
+                  <Duration value={item.duration} />
+                )}
               </RunItem>
             </Link>
           ))}
