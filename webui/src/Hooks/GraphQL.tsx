@@ -44,6 +44,7 @@ export type Job = {
   id: Scalars['ID'];
   logs?: Maybe<Array<Log>>;
   name: Scalars['String'];
+  startedAt?: Maybe<Scalars['String']>;
   status: Scalars['String'];
 };
 
@@ -248,7 +249,7 @@ export type GetRunQueryVariables = Exact<{
 }>;
 
 
-export type GetRunQuery = { __typename?: 'Query', getRun?: { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration: number, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null, logs?: Array<{ __typename?: 'Log', id: string, message: string, createdAt: string }> | null }> } | null };
+export type GetRunQuery = { __typename?: 'Query', getRun?: { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration: number, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null, startedAt?: string | null, logs?: Array<{ __typename?: 'Log', id: string, message: string, createdAt: string }> | null }> } | null };
 
 export type GetRunsQueryVariables = Exact<{
   projectId: Scalars['ID'];
@@ -699,6 +700,7 @@ export const GetRunDocument = gql`
         message
         createdAt
       }
+      startedAt
     }
     message
     name

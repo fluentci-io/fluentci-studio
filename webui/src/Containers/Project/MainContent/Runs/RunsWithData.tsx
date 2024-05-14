@@ -10,19 +10,21 @@ const WS_URL = `ws://${
 
 const RunsWithData: FC = () => {
   const { id } = useParams();
-  const { lastJsonMessage, readyState } = useWebSocket<{
+  const { lastJsonMessage } = useWebSocket<{
     channel: string;
     data: Record<string, unknown>;
   }>(WS_URL, {
+    share: true,
     shouldReconnect: () => true,
+    heartbeat: {
+      interval: 1,
+    },
   });
   const { data, refetch } = useGetRunsQuery({
     variables: {
       projectId: id!,
     },
   });
-
-  console.log(">> ws", readyState, lastJsonMessage);
 
   useEffect(() => {
     refetch();

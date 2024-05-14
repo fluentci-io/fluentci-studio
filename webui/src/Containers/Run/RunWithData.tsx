@@ -19,7 +19,7 @@ const RunWithData: FC = () => {
     {
       id: string;
       name: string;
-      startedAt?: string;
+      startedAt?: string | null;
       duration?: number | null;
       status: "SUCCESS" | "FAILURE" | "RUNNING" | "PENDING";
       logs?: string[];
@@ -43,7 +43,9 @@ const RunWithData: FC = () => {
       jobId: string;
     };
   }>(WS_URL, {
+    share: true,
     shouldReconnect: () => true,
+    heartbeat: { interval: 1 },
   });
 
   useEffect(() => {
@@ -54,6 +56,7 @@ const RunWithData: FC = () => {
         status: x.status as "RUNNING" | "SUCCESS" | "FAILURE" | "PENDING",
         duration: x.duration,
         logs: x.logs?.map((y) => y.message.split("\n")).flat(),
+        startedAt: x.startedAt,
       })) || []
     );
   }, [data]);

@@ -24,7 +24,7 @@ export type RunProps = {
   actions: {
     id: string;
     name: string;
-    startedAt?: string;
+    startedAt?: string | null;
     duration?: number | null;
     status: "SUCCESS" | "FAILURE" | "RUNNING" | "PENDING";
     logs?: string[];

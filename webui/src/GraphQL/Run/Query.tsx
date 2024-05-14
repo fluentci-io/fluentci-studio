@@ -22,6 +22,7 @@ export const GET_RUN = gql`
           message
           createdAt
         }
+        startedAt
       }
       message
       name
