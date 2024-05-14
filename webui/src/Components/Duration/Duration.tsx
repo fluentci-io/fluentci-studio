@@ -8,7 +8,7 @@ import { interval } from "rxjs";
 dayjs.extend(durationPlugin);
 
 export type DurationProps = {
-  startDate?: string;
+  startDate?: string | null;
   value?: number | null;
 };
 
