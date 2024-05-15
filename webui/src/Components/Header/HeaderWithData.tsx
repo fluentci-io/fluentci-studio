@@ -4,16 +4,20 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import {
   Project,
   Run,
+  useGetActionsQuery,
   useGetProjectLazyQuery,
   useGetRunLazyQuery,
   useRunPipelineMutation,
 } from "../../Hooks/GraphQL";
+import { useRecoilValue } from "recoil";
+import { ComposerState } from "../../Containers/Project/MainContent/Composer/ComposerState";
 
 export type HeaderWithDataProps = {
   breadcrumbs?: { title: string; link?: string }[];
 };
 
 const HeaderWithData: FC<HeaderWithDataProps> = () => {
+  const composerState = useRecoilValue(ComposerState);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { id } = useParams();
@@ -30,6 +34,11 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
     },
   });
   const [runPipeline] = useRunPipelineMutation();
+  const { data, refetch } = useGetActionsQuery({
+    variables: {
+      projectId: project?.id || "",
+    },
+  });
 
   useEffect(() => {
     if (pathname.startsWith("/run")) {
@@ -81,7 +90,19 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
     });
   }
 
-  return <Header id="1" onRun={onRun} breadcrumbs={breadcrumbs} />;
+  useEffect(() => {
+    refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [composerState]);
+
+  return (
+    <Header
+      id="1"
+      onRun={onRun}
+      breadcrumbs={breadcrumbs}
+      hideRunButton={!data?.actions?.filter((x) => x.enabled).length}
+    />
+  );
 };
 
 export default HeaderWithData;

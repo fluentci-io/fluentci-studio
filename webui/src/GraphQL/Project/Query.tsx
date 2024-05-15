@@ -2,8 +2,8 @@ import { gql } from "@apollo/client";
 import { ProjectFragment } from "../Fragment";
 
 export const GET_PROJECTS = gql`
-  query GetProjects($cursor: String, $limit: Int) {
-    projects(cursor: $cursor, limit: $limit) {
+  query GetProjects($cursor: String, $limit: Int, $skip: Int) {
+    projects(cursor: $cursor, limit: $limit, skip: $skip) {
       ...ProjectFragment
     }
   }
@@ -19,5 +19,11 @@ export const GET_PROJECT = gql`
       createdAt
       cursor
     }
+  }
+`;
+
+export const COUNT_PROJECTS = gql`
+  query CountProjects {
+    countProjects
   }
 `;

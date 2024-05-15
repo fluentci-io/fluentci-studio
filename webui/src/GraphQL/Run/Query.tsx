@@ -34,10 +34,21 @@ export const GET_RUN = gql`
 `;
 
 export const GET_RUNS = gql`
-  query GetRuns($projectId: ID!, $cursor: String, $limit: Int) {
-    getRuns(projectId: $projectId, cursor: $cursor, limit: $limit) {
+  query GetRuns($projectId: ID!, $cursor: String, $limit: Int, $skip: Int) {
+    getRuns(
+      projectId: $projectId
+      cursor: $cursor
+      limit: $limit
+      skip: $skip
+    ) {
       ...RunFragment
     }
   }
   ${RunFragment}
+`;
+
+export const COUNT_RUNS = gql`
+  query CountRuns($projectId: ID!) {
+    countRuns(projectId: $projectId)
+  }
 `;

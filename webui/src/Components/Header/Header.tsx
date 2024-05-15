@@ -10,10 +10,11 @@ export type HeaderProps = {
   onRun: (id: string) => void;
   menu?: string[];
   breadcrumbs?: { title: string; link?: string }[];
+  hideRunButton?: boolean;
 };
 
 const Header: FC<HeaderProps> = (props) => {
-  const { id, breadcrumbs, onRun, menu } = props;
+  const { id, breadcrumbs, onRun, menu, hideRunButton } = props;
   return (
     <Container>
       <Breadcrumbs
@@ -61,7 +62,7 @@ const Header: FC<HeaderProps> = (props) => {
           </PopoverButton>
         </StatefulPopover>
       )}
-      <RunButton onClick={() => onRun(id)}>Run</RunButton>
+      {!hideRunButton && <RunButton onClick={() => onRun(id)}>Run</RunButton>}
     </Container>
   );
 };

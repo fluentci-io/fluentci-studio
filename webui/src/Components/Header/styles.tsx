@@ -20,6 +20,7 @@ export const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 20px;
+  height: 40px;
 `;
 
 export const RunButton = styled.button`

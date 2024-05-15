@@ -96,6 +96,8 @@ export type Project = {
 export type Query = {
   __typename?: 'Query';
   actions?: Maybe<Array<Action>>;
+  countProjects: Scalars['Int'];
+  countRuns: Scalars['Int'];
   getRun?: Maybe<Run>;
   getRuns?: Maybe<Array<Run>>;
   job?: Maybe<Job>;
@@ -112,6 +114,11 @@ export type QueryActionsArgs = {
 };
 
 
+export type QueryCountRunsArgs = {
+  projectId: Scalars['ID'];
+};
+
+
 export type QueryGetRunArgs = {
   id: Scalars['ID'];
 };
@@ -121,6 +128,8 @@ export type QueryGetRunsArgs = {
   cursor?: InputMaybe<Scalars['String']>;
   limit?: InputMaybe<Scalars['Int']>;
   projectId: Scalars['ID'];
+  reverse?: InputMaybe<Scalars['Boolean']>;
+  skip?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -143,6 +152,7 @@ export type QueryProjectArgs = {
 export type QueryProjectsArgs = {
   cursor?: InputMaybe<Scalars['String']>;
   limit?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
 };
 
 /** A Pipeline execution */
@@ -225,6 +235,7 @@ export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { 
 export type GetProjectsQueryVariables = Exact<{
   cursor?: InputMaybe<Scalars['String']>;
   limit?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -236,6 +247,11 @@ export type GetProjectQueryVariables = Exact<{
 
 
 export type GetProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: string, name: string, path: string, createdAt: string, cursor?: string | null } | null };
+
+export type CountProjectsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CountProjectsQuery = { __typename?: 'Query', countProjects: number };
 
 export type RunPipelineMutationVariables = Exact<{
   projectId: Scalars['ID'];
@@ -255,10 +271,18 @@ export type GetRunsQueryVariables = Exact<{
   projectId: Scalars['ID'];
   cursor?: InputMaybe<Scalars['String']>;
   limit?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
 }>;
 
 
 export type GetRunsQuery = { __typename?: 'Query', getRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration: number, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null };
+
+export type CountRunsQueryVariables = Exact<{
+  projectId: Scalars['ID'];
+}>;
+
+
+export type CountRunsQuery = { __typename?: 'Query', countRuns: number };
 
 export const ProjectFragmentFragmentDoc = gql`
     fragment ProjectFragment on Project {
@@ -572,8 +596,8 @@ export type CreateProjectMutationHookResult = ReturnType<typeof useCreateProject
 export type CreateProjectMutationResult = Apollo.MutationResult<CreateProjectMutation>;
 export type CreateProjectMutationOptions = Apollo.BaseMutationOptions<CreateProjectMutation, CreateProjectMutationVariables>;
 export const GetProjectsDocument = gql`
-    query GetProjects($cursor: String, $limit: Int) {
-  projects(cursor: $cursor, limit: $limit) {
+    query GetProjects($cursor: String, $limit: Int, $skip: Int) {
+  projects(cursor: $cursor, limit: $limit, skip: $skip) {
     ...ProjectFragment
   }
 }
@@ -593,6 +617,7 @@ export const GetProjectsDocument = gql`
  *   variables: {
  *      cursor: // value for 'cursor'
  *      limit: // value for 'limit'
+ *      skip: // value for 'skip'
  *   },
  * });
  */
@@ -646,6 +671,38 @@ export function useGetProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetProjectQueryHookResult = ReturnType<typeof useGetProjectQuery>;
 export type GetProjectLazyQueryHookResult = ReturnType<typeof useGetProjectLazyQuery>;
 export type GetProjectQueryResult = Apollo.QueryResult<GetProjectQuery, GetProjectQueryVariables>;
+export const CountProjectsDocument = gql`
+    query CountProjects {
+  countProjects
+}
+    `;
+
+/**
+ * __useCountProjectsQuery__
+ *
+ * To run a query within a React component, call `useCountProjectsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCountProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCountProjectsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCountProjectsQuery(baseOptions?: Apollo.QueryHookOptions<CountProjectsQuery, CountProjectsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CountProjectsQuery, CountProjectsQueryVariables>(CountProjectsDocument, options);
+      }
+export function useCountProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CountProjectsQuery, CountProjectsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CountProjectsQuery, CountProjectsQueryVariables>(CountProjectsDocument, options);
+        }
+export type CountProjectsQueryHookResult = ReturnType<typeof useCountProjectsQuery>;
+export type CountProjectsLazyQueryHookResult = ReturnType<typeof useCountProjectsLazyQuery>;
+export type CountProjectsQueryResult = Apollo.QueryResult<CountProjectsQuery, CountProjectsQueryVariables>;
 export const RunPipelineDocument = gql`
     mutation RunPipeline($projectId: ID!) {
   runPipeline(projectId: $projectId) {
@@ -739,8 +796,8 @@ export type GetRunQueryHookResult = ReturnType<typeof useGetRunQuery>;
 export type GetRunLazyQueryHookResult = ReturnType<typeof useGetRunLazyQuery>;
 export type GetRunQueryResult = Apollo.QueryResult<GetRunQuery, GetRunQueryVariables>;
 export const GetRunsDocument = gql`
-    query GetRuns($projectId: ID!, $cursor: String, $limit: Int) {
-  getRuns(projectId: $projectId, cursor: $cursor, limit: $limit) {
+    query GetRuns($projectId: ID!, $cursor: String, $limit: Int, $skip: Int) {
+  getRuns(projectId: $projectId, cursor: $cursor, limit: $limit, skip: $skip) {
     ...RunFragment
   }
 }
@@ -761,6 +818,7 @@ export const GetRunsDocument = gql`
  *      projectId: // value for 'projectId'
  *      cursor: // value for 'cursor'
  *      limit: // value for 'limit'
+ *      skip: // value for 'skip'
  *   },
  * });
  */
@@ -775,3 +833,36 @@ export function useGetRunsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ge
 export type GetRunsQueryHookResult = ReturnType<typeof useGetRunsQuery>;
 export type GetRunsLazyQueryHookResult = ReturnType<typeof useGetRunsLazyQuery>;
 export type GetRunsQueryResult = Apollo.QueryResult<GetRunsQuery, GetRunsQueryVariables>;
+export const CountRunsDocument = gql`
+    query CountRuns($projectId: ID!) {
+  countRuns(projectId: $projectId)
+}
+    `;
+
+/**
+ * __useCountRunsQuery__
+ *
+ * To run a query within a React component, call `useCountRunsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCountRunsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCountRunsQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useCountRunsQuery(baseOptions: Apollo.QueryHookOptions<CountRunsQuery, CountRunsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CountRunsQuery, CountRunsQueryVariables>(CountRunsDocument, options);
+      }
+export function useCountRunsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CountRunsQuery, CountRunsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CountRunsQuery, CountRunsQueryVariables>(CountRunsDocument, options);
+        }
+export type CountRunsQueryHookResult = ReturnType<typeof useCountRunsQuery>;
+export type CountRunsLazyQueryHookResult = ReturnType<typeof useCountRunsLazyQuery>;
+export type CountRunsQueryResult = Apollo.QueryResult<CountRunsQuery, CountRunsQueryVariables>;

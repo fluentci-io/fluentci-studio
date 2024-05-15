@@ -46,3 +46,8 @@ a {
 li {
   border-bottom-color: #1b0657 !important; 
 }
+
+li:last-child {
+  border-bottom: none;
+}
+

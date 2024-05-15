@@ -1,7 +1,7 @@
 import { FC } from "react";
 import Placeholder from "./Placeholder";
 import { Run } from "../../../../Hooks/GraphQL";
-import { RunItem, Branch, Title } from "./styles";
+import styles, { RunItem, Branch, Title } from "./styles";
 import { Link } from "react-router-dom";
 import { CheckCircle } from "@styled-icons/boxicons-solid";
 import { GitBranch } from "@styled-icons/boxicons-regular";
@@ -10,23 +10,39 @@ import { CloseCircle } from "@styled-icons/ionicons-sharp";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import Duration from "../../../../Components/Duration";
+import { Pagination } from "baseui/pagination";
 
 dayjs.extend(duration);
 
 export type RunsProps = {
   data: Run[];
+  pagination: {
+    cursor?: string;
+    currentPage: number;
+    limit: number;
+    numPages: number;
+  };
+  setCurrentPage: (page: number) => void;
+  loading: boolean;
+  total: number;
 };
 
 const Runs: FC<RunsProps> = (props) => {
-  const { data } = props;
+  const {
+    data,
+    pagination: { currentPage, numPages, limit },
+    setCurrentPage,
+    loading,
+    total,
+  } = props;
   return (
     <>
-      {data.length === 0 && <Placeholder />}
+      {data.length === 0 && !loading && <Placeholder />}
       {data.length > 0 && (
         <div>
-          {data.map((item) => (
+          {data.map((item, index) => (
             <Link to={`/run/${item.id}`} key={item.id}>
-              <RunItem>
+              <RunItem showBorder={index !== data.length - 1}>
                 {!item.status && (
                   <div style={{ marginRight: 15, width: 15, height: 15 }}></div>
                 )}
@@ -78,6 +94,16 @@ const Runs: FC<RunsProps> = (props) => {
               </RunItem>
             </Link>
           ))}
+          {total > limit && (
+            <Pagination
+              overrides={styles.Pagination}
+              numPages={numPages}
+              currentPage={currentPage}
+              onPageChange={({ nextPage }) => {
+                setCurrentPage(Math.min(Math.max(nextPage, 1), numPages));
+              }}
+            />
+          )}
         </div>
       )}
     </>
