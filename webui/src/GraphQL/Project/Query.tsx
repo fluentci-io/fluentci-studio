@@ -2,8 +2,13 @@ import { gql } from "@apollo/client";
 import { ProjectFragment } from "../Fragment";
 
 export const GET_PROJECTS = gql`
-  query GetProjects($cursor: String, $limit: Int, $skip: Int) {
-    projects(cursor: $cursor, limit: $limit, skip: $skip) {
+  query GetProjects(
+    $cursor: String
+    $limit: Int
+    $skip: Int
+    $reverse: Boolean
+  ) {
+    projects(cursor: $cursor, limit: $limit, skip: $skip, reverse: $reverse) {
       ...ProjectFragment
     }
   }
@@ -18,6 +23,7 @@ export const GET_PROJECT = gql`
       path
       createdAt
       cursor
+      picture
     }
   }
 `;

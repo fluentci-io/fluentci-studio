@@ -91,6 +91,7 @@ export type Project = {
   logs?: Maybe<Log>;
   name: Scalars['String'];
   path: Scalars['String'];
+  picture: Scalars['String'];
 };
 
 export type Query = {
@@ -152,6 +153,7 @@ export type QueryProjectArgs = {
 export type QueryProjectsArgs = {
   cursor?: InputMaybe<Scalars['String']>;
   limit?: InputMaybe<Scalars['Int']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
   skip?: InputMaybe<Scalars['Int']>;
 };
 
@@ -189,7 +191,7 @@ export type GetActionsQueryVariables = Exact<{
 
 export type GetActionsQuery = { __typename?: 'Query', actions?: Array<{ __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean }> | null };
 
-export type ProjectFragmentFragment = { __typename?: 'Project', id: string, name: string, path: string, createdAt: string };
+export type ProjectFragmentFragment = { __typename?: 'Project', id: string, name: string, path: string, createdAt: string, picture: string };
 
 export type LogFragmentFragment = { __typename?: 'Log', id: string, message: string, createdAt: string };
 
@@ -230,23 +232,24 @@ export type GetLogsQuery = { __typename?: 'Query', logs: Array<{ __typename?: 'L
 export type CreateProjectMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'Project', id: string, name: string, path: string, createdAt: string } };
+export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'Project', id: string, name: string, path: string, createdAt: string, picture: string } };
 
 export type GetProjectsQueryVariables = Exact<{
   cursor?: InputMaybe<Scalars['String']>;
   limit?: InputMaybe<Scalars['Int']>;
   skip?: InputMaybe<Scalars['Int']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
-export type GetProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', id: string, name: string, path: string, createdAt: string }> };
+export type GetProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', id: string, name: string, path: string, createdAt: string, picture: string }> };
 
 export type GetProjectQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: string, name: string, path: string, createdAt: string, cursor?: string | null } | null };
+export type GetProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: string, name: string, path: string, createdAt: string, cursor?: string | null, picture: string } | null };
 
 export type CountProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -290,6 +293,7 @@ export const ProjectFragmentFragmentDoc = gql`
   name
   path
   createdAt
+  picture
 }
     `;
 export const LogFragmentFragmentDoc = gql`
@@ -596,8 +600,8 @@ export type CreateProjectMutationHookResult = ReturnType<typeof useCreateProject
 export type CreateProjectMutationResult = Apollo.MutationResult<CreateProjectMutation>;
 export type CreateProjectMutationOptions = Apollo.BaseMutationOptions<CreateProjectMutation, CreateProjectMutationVariables>;
 export const GetProjectsDocument = gql`
-    query GetProjects($cursor: String, $limit: Int, $skip: Int) {
-  projects(cursor: $cursor, limit: $limit, skip: $skip) {
+    query GetProjects($cursor: String, $limit: Int, $skip: Int, $reverse: Boolean) {
+  projects(cursor: $cursor, limit: $limit, skip: $skip, reverse: $reverse) {
     ...ProjectFragment
   }
 }
@@ -618,6 +622,7 @@ export const GetProjectsDocument = gql`
  *      cursor: // value for 'cursor'
  *      limit: // value for 'limit'
  *      skip: // value for 'skip'
+ *      reverse: // value for 'reverse'
  *   },
  * });
  */
@@ -640,6 +645,7 @@ export const GetProjectDocument = gql`
     path
     createdAt
     cursor
+    picture
   }
 }
     `;

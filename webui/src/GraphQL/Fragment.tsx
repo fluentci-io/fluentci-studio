@@ -6,6 +6,7 @@ export const ProjectFragment = gql`
     name
     path
     createdAt
+    picture
   }
 `;
 

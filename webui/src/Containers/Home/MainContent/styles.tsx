@@ -48,6 +48,22 @@ export const PopoverButton = styled.button`
   margin-right: 10px;
 `;
 
+export const PictureWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  width: 50px;
+  // background-color: #33909933;
+  border-radius: 8px;
+  margin-right: 15px;
+`;
+
+export const Picture = styled.img`
+  height: 40px;
+  width: 40px;
+`;
+
 export const ProjectWrapper = styled.div`
   color: #fff;
   background-color: #10072c;

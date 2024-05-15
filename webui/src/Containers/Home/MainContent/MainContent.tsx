@@ -1,5 +1,13 @@
 import { FC } from "react";
-import { Container, RunButton, Header, Title, ProjectWrapper } from "./styles";
+import {
+  Container,
+  RunButton,
+  Header,
+  Title,
+  ProjectWrapper,
+  Picture,
+  PictureWrapper,
+} from "./styles";
 import { Project } from "../../../Hooks/GraphQL";
 import { Link } from "react-router-dom";
 
@@ -22,6 +30,9 @@ const MainContent: FC<MainContentProps> = (props) => {
           style={{ marginBottom: 25 }}
         >
           <ProjectWrapper>
+            <PictureWrapper>
+              <Picture src={item.picture} />
+            </PictureWrapper>
             <div>
               <div>{item.name}</div>
               <div style={{ fontSize: 13, color: "#06ffe0" }}>{item.path}</div>
