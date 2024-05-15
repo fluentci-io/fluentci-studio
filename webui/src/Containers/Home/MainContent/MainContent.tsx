@@ -24,7 +24,7 @@ const MainContent: FC<MainContentProps> = (props) => {
           <ProjectWrapper>
             <div>
               <div>{item.name}</div>
-              <div style={{ fontSize: 13, color: "#14ffb5" }}>{item.path}</div>
+              <div style={{ fontSize: 13, color: "#06ffe0" }}>{item.path}</div>
             </div>
           </ProjectWrapper>
         </Link>

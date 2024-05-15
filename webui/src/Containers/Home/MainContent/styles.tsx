@@ -59,7 +59,7 @@ export const ProjectWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   &:hover {
-    border: 1px solid #4304ff;
+    border: 1px solid #06ffe27d;
   }
 `;
 
