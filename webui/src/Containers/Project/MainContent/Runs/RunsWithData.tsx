@@ -24,7 +24,7 @@ const RunsWithData: FC = () => {
     },
   });
   const [pagination, setPagination] = useRecoilState(PaginationState);
-  const { data: countRunsData } = useCountRunsQuery({
+  const { data: countRunsData, refetch: refetchCount } = useCountRunsQuery({
     variables: {
       projectId: id!,
     },
@@ -55,11 +55,13 @@ const RunsWithData: FC = () => {
 
   useEffect(() => {
     refetch();
+    refetchCount();
   }, []);
 
   useEffect(() => {
     if (lastJsonMessage?.channel === "run") {
       refetch();
+      refetchCount();
     }
   }, [lastJsonMessage]);
 
