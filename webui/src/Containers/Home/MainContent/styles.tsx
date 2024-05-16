@@ -60,8 +60,8 @@ export const PictureWrapper = styled.div`
 `;
 
 export const Picture = styled.img`
-  height: 40px;
-  width: 40px;
+  height: 34px;
+  width: 34px;
 `;
 
 export const ProjectWrapper = styled.div`
