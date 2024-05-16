@@ -33,7 +33,9 @@ export type RunProps = {
 
 const Run: FC<RunProps> = (props) => {
   const { actions } = props;
-  const [logs, setLogs] = useState<string[]>([]);
+  const [clickedActionIndex, setClickedActionIndex] = useState<number | null>(
+    null
+  );
   const [isOpen, setIsOpen] = useState(false);
   const [expandedIndex, setExpandedIndex] = useState<string | null>(null);
   return (
@@ -96,13 +98,16 @@ const Run: FC<RunProps> = (props) => {
               <div style={{ position: "relative" }}>
                 <FullscreenButton
                   onClick={() => {
-                    setLogs(item.logs || []);
+                    setClickedActionIndex(key);
                     setIsOpen(true);
                   }}
                 >
                   <Fullscreen size={15} color="#fff" />
                 </FullscreenButton>
-                <LogsViewer logs={item.logs || []} />
+                <LogsViewer
+                  logs={item.logs || []}
+                  updatedLogs={item.logs || []}
+                />
               </div>
             </Panel>
           ))}
@@ -124,7 +129,19 @@ const Run: FC<RunProps> = (props) => {
               <FullscreenExit size={15} color="#fff" />
             </FullscreenButton>
           </ModalHeader>
-          <LogsViewer height="calc(100vh - 36px)" logs={logs} />
+          <LogsViewer
+            height="calc(100vh - 36px)"
+            logs={
+              clickedActionIndex !== null
+                ? actions[clickedActionIndex].logs || []
+                : []
+            }
+            updatedLogs={
+              clickedActionIndex !== null
+                ? actions[clickedActionIndex].logs
+                : []
+            }
+          />
         </Modal>
       </Container>
     </Wrapper>
