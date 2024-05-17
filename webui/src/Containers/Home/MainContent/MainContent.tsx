@@ -10,6 +10,8 @@ import {
 } from "./styles";
 import { Project } from "../../../Hooks/GraphQL";
 import { Link } from "react-router-dom";
+import BuildHistory from "./BuildHistory";
+import _ from "lodash";
 
 export type MainContentProps = {
   projects?: Project[];
@@ -33,10 +35,24 @@ const MainContent: FC<MainContentProps> = (props) => {
             <PictureWrapper>
               <Picture src={item.picture} />
             </PictureWrapper>
-            <div>
+            <div style={{ flex: 1 }}>
               <div>{item.name}</div>
               <div style={{ fontSize: 13, color: "#06ffe0" }}>{item.path}</div>
             </div>
+            {_.get(item, "recentRuns.0.status") && (
+              <BuildHistory
+                status="SUCCESS"
+                reliability={item.reliability || 0}
+                speed={item.speed || 0}
+                buildsPerWeek={item.buildsPerWeek || 0}
+                builds={
+                  Array.from(Array(18).keys()).map((i) => ({
+                    status: _.get(item, `recentRuns.${i}.status`, ""),
+                    duration: _.get(item, `recentRuns.${i}.duration`, 0),
+                  })) || []
+                }
+              />
+            )}
           </ProjectWrapper>
         </Link>
       ))}

@@ -85,6 +85,7 @@ export type MutationSaveActionsArgs = {
 /** A project is a collection of actions. */
 export type Project = {
   __typename?: 'Project';
+  buildsPerWeek?: Maybe<Scalars['Int']>;
   createdAt: Scalars['String'];
   cursor?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
@@ -92,6 +93,9 @@ export type Project = {
   name: Scalars['String'];
   path: Scalars['String'];
   picture: Scalars['String'];
+  recentRuns?: Maybe<Array<Run>>;
+  reliability?: Maybe<Scalars['Float']>;
+  speed?: Maybe<Scalars['Float']>;
 };
 
 export type Query = {
@@ -165,7 +169,7 @@ export type Run = {
   commit?: Maybe<Scalars['String']>;
   cursor?: Maybe<Scalars['String']>;
   date: Scalars['String'];
-  duration: Scalars['Int'];
+  duration?: Maybe<Scalars['Int']>;
   id: Scalars['ID'];
   jobs: Array<Job>;
   message?: Maybe<Scalars['String']>;
@@ -191,13 +195,13 @@ export type GetActionsQueryVariables = Exact<{
 
 export type GetActionsQuery = { __typename?: 'Query', actions?: Array<{ __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean }> | null };
 
-export type ProjectFragmentFragment = { __typename?: 'Project', id: string, name: string, path: string, createdAt: string, picture: string };
+export type RunFragmentFragment = { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> };
+
+export type ProjectFragmentFragment = { __typename?: 'Project', id: string, name: string, path: string, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null };
 
 export type LogFragmentFragment = { __typename?: 'Log', id: string, message: string, createdAt: string };
 
 export type JobFragmentFragment = { __typename?: 'Job', id: string, name: string, createdAt: string, duration?: number | null, status: string };
-
-export type RunFragmentFragment = { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration: number, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> };
 
 export type ActionFragmentFragment = { __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean };
 
@@ -232,7 +236,7 @@ export type GetLogsQuery = { __typename?: 'Query', logs: Array<{ __typename?: 'L
 export type CreateProjectMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'Project', id: string, name: string, path: string, createdAt: string, picture: string } };
+export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'Project', id: string, name: string, path: string, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null } };
 
 export type GetProjectsQueryVariables = Exact<{
   cursor?: InputMaybe<Scalars['String']>;
@@ -242,14 +246,14 @@ export type GetProjectsQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', id: string, name: string, path: string, createdAt: string, picture: string }> };
+export type GetProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', id: string, name: string, path: string, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null }> };
 
 export type GetProjectQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: string, name: string, path: string, createdAt: string, cursor?: string | null, picture: string } | null };
+export type GetProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: string, name: string, path: string, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null } | null };
 
 export type CountProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -261,14 +265,14 @@ export type RunPipelineMutationVariables = Exact<{
 }>;
 
 
-export type RunPipelineMutation = { __typename?: 'Mutation', runPipeline: { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration: number, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> } };
+export type RunPipelineMutation = { __typename?: 'Mutation', runPipeline: { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> } };
 
 export type GetRunQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetRunQuery = { __typename?: 'Query', getRun?: { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration: number, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null, startedAt?: string | null, logs?: Array<{ __typename?: 'Log', id: string, message: string, createdAt: string }> | null }> } | null };
+export type GetRunQuery = { __typename?: 'Query', getRun?: { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null, startedAt?: string | null, logs?: Array<{ __typename?: 'Log', id: string, message: string, createdAt: string }> | null }> } | null };
 
 export type GetRunsQueryVariables = Exact<{
   projectId: Scalars['ID'];
@@ -278,7 +282,7 @@ export type GetRunsQueryVariables = Exact<{
 }>;
 
 
-export type GetRunsQuery = { __typename?: 'Query', getRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration: number, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null };
+export type GetRunsQuery = { __typename?: 'Query', getRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null };
 
 export type CountRunsQueryVariables = Exact<{
   projectId: Scalars['ID'];
@@ -287,31 +291,6 @@ export type CountRunsQueryVariables = Exact<{
 
 export type CountRunsQuery = { __typename?: 'Query', countRuns: number };
 
-export const ProjectFragmentFragmentDoc = gql`
-    fragment ProjectFragment on Project {
-  id
-  name
-  path
-  createdAt
-  picture
-}
-    `;
-export const LogFragmentFragmentDoc = gql`
-    fragment LogFragment on Log {
-  id
-  message
-  createdAt
-}
-    `;
-export const JobFragmentFragmentDoc = gql`
-    fragment JobFragment on Job {
-  id
-  name
-  createdAt
-  duration
-  status
-}
-    `;
 export const RunFragmentFragmentDoc = gql`
     fragment RunFragment on Run {
   id
@@ -332,6 +311,37 @@ export const RunFragmentFragmentDoc = gql`
   name
   title
   cursor
+  status
+}
+    `;
+export const ProjectFragmentFragmentDoc = gql`
+    fragment ProjectFragment on Project {
+  id
+  name
+  path
+  createdAt
+  picture
+  speed
+  reliability
+  buildsPerWeek
+  recentRuns {
+    ...RunFragment
+  }
+}
+    ${RunFragmentFragmentDoc}`;
+export const LogFragmentFragmentDoc = gql`
+    fragment LogFragment on Log {
+  id
+  message
+  createdAt
+}
+    `;
+export const JobFragmentFragmentDoc = gql`
+    fragment JobFragment on Job {
+  id
+  name
+  createdAt
+  duration
   status
 }
     `;
@@ -640,15 +650,10 @@ export type GetProjectsQueryResult = Apollo.QueryResult<GetProjectsQuery, GetPro
 export const GetProjectDocument = gql`
     query GetProject($id: ID!) {
   project(id: $id) {
-    id
-    name
-    path
-    createdAt
-    cursor
-    picture
+    ...ProjectFragment
   }
 }
-    `;
+    ${ProjectFragmentFragmentDoc}`;
 
 /**
  * __useGetProjectQuery__

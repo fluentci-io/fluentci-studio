@@ -18,14 +18,11 @@ export const GET_PROJECTS = gql`
 export const GET_PROJECT = gql`
   query GetProject($id: ID!) {
     project(id: $id) {
-      id
-      name
-      path
-      createdAt
-      cursor
-      picture
+      ...ProjectFragment
     }
   }
+
+  ${ProjectFragment}
 `;
 
 export const COUNT_PROJECTS = gql`

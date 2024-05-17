@@ -1,33 +1,5 @@
 import { gql } from "@apollo/client";
 
-export const ProjectFragment = gql`
-  fragment ProjectFragment on Project {
-    id
-    name
-    path
-    createdAt
-    picture
-  }
-`;
-
-export const LogFragment = gql`
-  fragment LogFragment on Log {
-    id
-    message
-    createdAt
-  }
-`;
-
-export const JobFragment = gql`
-  fragment JobFragment on Job {
-    id
-    name
-    createdAt
-    duration
-    status
-  }
-`;
-
 export const RunFragment = gql`
   fragment RunFragment on Run {
     id
@@ -48,6 +20,41 @@ export const RunFragment = gql`
     name
     title
     cursor
+    status
+  }
+`;
+
+export const ProjectFragment = gql`
+  fragment ProjectFragment on Project {
+    id
+    name
+    path
+    createdAt
+    picture
+    speed
+    reliability
+    buildsPerWeek
+    recentRuns {
+      ...RunFragment
+    }
+  }
+  ${RunFragment}
+`;
+
+export const LogFragment = gql`
+  fragment LogFragment on Log {
+    id
+    message
+    createdAt
+  }
+`;
+
+export const JobFragment = gql`
+  fragment JobFragment on Job {
+    id
+    name
+    createdAt
+    duration
     status
   }
 `;
