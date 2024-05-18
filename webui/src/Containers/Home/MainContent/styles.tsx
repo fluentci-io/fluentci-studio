@@ -3,9 +3,14 @@ import styled from "@emotion/styled";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80vw;
+  width: 90vw;
+  min-width: 1055px;
   margin: 0 auto;
   margin-top: 60px;
+
+  @media (min-width: 1400px) {
+    width: 85vw;
+  }
 `;
 
 export const Title = styled.div`
@@ -77,6 +82,15 @@ export const ProjectWrapper = styled.div`
   &:hover {
     border: 1px solid #06ffe27d;
   }
+`;
+
+export const Path = styled.div`
+  font-size: 12.5px;
+  color: #06ffe0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100%;
 `;
 
 export default {

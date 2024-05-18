@@ -7,6 +7,7 @@ import {
   ProjectWrapper,
   Picture,
   PictureWrapper,
+  Path,
 } from "./styles";
 import { Project } from "../../../Hooks/GraphQL";
 import { Link } from "react-router-dom";
@@ -35,9 +36,9 @@ const MainContent: FC<MainContentProps> = (props) => {
             <PictureWrapper>
               <Picture src={item.picture} />
             </PictureWrapper>
-            <div style={{ flex: 1 }}>
+            <div style={{ width: "calc(50% - 40px)" }}>
               <div>{item.name}</div>
-              <div style={{ fontSize: 13, color: "#06ffe0" }}>{item.path}</div>
+              <Path>{item.path}</Path>
             </div>
             {_.get(item, "recentRuns.0.status") && (
               <BuildHistory

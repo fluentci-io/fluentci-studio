@@ -7,6 +7,7 @@ export const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
+  flex: 1;
 `;
 
 export const Bars = styled.div`
