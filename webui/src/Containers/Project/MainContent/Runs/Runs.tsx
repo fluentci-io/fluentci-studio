@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import Placeholder from "./Placeholder";
 import { Run } from "../../../../Hooks/GraphQL";
 import styles, { RunItem, Branch, Title } from "./styles";
@@ -35,6 +35,11 @@ const Runs: FC<RunsProps> = (props) => {
     loading,
     total,
   } = props;
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, []);
+
   return (
     <>
       {data.length === 0 && !loading && <Placeholder />}

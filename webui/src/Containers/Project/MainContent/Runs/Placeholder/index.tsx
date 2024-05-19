@@ -1,3 +1,3 @@
-import Placeholder from "./Placeholder";
+import Placeholder from "./PlaceholderWithData";
 
 export default Placeholder;

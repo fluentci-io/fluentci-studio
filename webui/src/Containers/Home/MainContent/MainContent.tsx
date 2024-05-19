@@ -16,15 +16,16 @@ import _ from "lodash";
 
 export type MainContentProps = {
   projects?: Project[];
+  onNewProject: () => void;
 };
 
 const MainContent: FC<MainContentProps> = (props) => {
-  const { projects } = props;
+  const { projects, onNewProject } = props;
   return (
     <Container>
       <Header>
         <Title>Projects</Title>
-        <RunButton>New Project</RunButton>
+        <RunButton onClick={onNewProject}>New Project</RunButton>
       </Header>
       {projects!.map((item, index) => (
         <Link
@@ -38,11 +39,11 @@ const MainContent: FC<MainContentProps> = (props) => {
             </PictureWrapper>
             <div style={{ width: "calc(50% - 40px)" }}>
               <div>{item.name}</div>
-              <Path>{item.path}</Path>
+              <Path>{item.path !== "empty" ? item.path : ""}</Path>
             </div>
             {_.get(item, "recentRuns.0.status") && (
               <BuildHistory
-                status="SUCCESS"
+                status={_.last(item.recentRuns)?.status || "PENDING"}
                 reliability={item.reliability || 0}
                 speed={item.speed || 0}
                 buildsPerWeek={item.buildsPerWeek || 0}

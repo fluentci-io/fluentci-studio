@@ -12,3 +12,12 @@ export const Text = styled.span`
   color: #24ffb5;
   font-size: 13px;
 `;
+
+export const Clipboard = styled.button`
+  background-color: initial;
+  border: none;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+`;

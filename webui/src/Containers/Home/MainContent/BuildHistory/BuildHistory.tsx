@@ -8,7 +8,7 @@ export type BuildHistoryProps = {
     duration: number;
     status: string;
   }[];
-  status: "SUCCESS" | "FAILURE" | "PENDING";
+  status: string;
   reliability: number;
   speed: number;
   buildsPerWeek: number;

@@ -51,3 +51,6 @@ li:last-child {
   border-bottom: none;
 }
 
+code {
+  font-family: Inconsolata, monospace;
+}
