@@ -100,7 +100,10 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
       id="1"
       onRun={onRun}
       breadcrumbs={breadcrumbs}
-      hideRunButton={!data?.actions?.filter((x) => x.enabled).length}
+      hideRunButton={
+        !data?.actions?.filter((x) => x.enabled).length ||
+        project?.path === "empty"
+      }
     />
   );
 };

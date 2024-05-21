@@ -3,6 +3,7 @@ import { Container, Text, Clipboard } from "./styles";
 import { Project } from "../../../../../Hooks/GraphQL";
 import { Terminal } from "@styled-icons/bootstrap";
 import { Copy } from "@styled-icons/ionicons-outline";
+import copyToClipboard from "copy-to-clipboard";
 
 export type PlaceholderProps = {
   data?: Project | null;
@@ -44,7 +45,7 @@ const Placeholder: FC<PlaceholderProps> = (props) => {
               }}
             >
               <span>{command}</span>
-              <Clipboard>
+              <Clipboard onClick={() => copyToClipboard(command)}>
                 <Copy size={20} color="#fff" />
               </Clipboard>
             </code>
