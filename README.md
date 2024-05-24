@@ -2,6 +2,8 @@
 
 # FluentCI Studio
 
+[![build](https://github.com/fluentci-io/fluentci-studio/actions/workflows/release.yml/badge.svg)](https://github.com/fluentci-io/fluentci-studio/actions/workflows/release.yml)
+
 FluentCI Studio is a new way for you to explore CI pipelines on FluentCI projects.
 
 ## Usage
