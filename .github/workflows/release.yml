@@ -22,4 +22,6 @@ jobs:
             run build
           working-directory: webui
       - name: build
-        run: fluentci run --wasm rust build --release --target ${{ matrix.target }}
+        run: |
+          fluentci run --wasm rust target_add ${{ matrix.target }}
+          fluentci run --wasm rust build --release --target ${{ matrix.target }}
