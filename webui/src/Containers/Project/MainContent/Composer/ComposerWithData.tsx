@@ -16,11 +16,11 @@ const ComposerWithData: FC = () => {
       projectId: id!,
     },
   });
-  const [saveAction] = useSaveActionsMutation();
+  const [saveActions] = useSaveActionsMutation();
   const [actions, setActions] = useRecoilState(ComposerState);
   const _setActions = async (actions: Pipeline[]) => {
     setActions(actions);
-    await saveAction({
+    await saveActions({
       variables: {
         projectId: id!,
         actions: actions.map((action) => ({
@@ -30,6 +30,7 @@ const ComposerWithData: FC = () => {
           name: action.actionName!,
           plugin: action.name!,
           useWasm: !!action.useWasmPlugin,
+          githubUrl: action.githubUrl,
         })),
       },
     });
@@ -47,7 +48,7 @@ const ComposerWithData: FC = () => {
           useWasmPlugin: action.useWasm,
           command: action.commands,
           description: "",
-          githubUrl: "",
+          githubUrl: action.githubUrl || "",
           logo: action.logo || "",
           packageId: action.plugin,
           downloads: 0,

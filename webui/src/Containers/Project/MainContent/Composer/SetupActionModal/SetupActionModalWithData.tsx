@@ -21,11 +21,11 @@ export type SetupActionModalWithDataProps = {
 
 const SetupActionModalWithData: FC<SetupActionModalWithDataProps> = (props) => {
   const { id } = useParams();
-  const [saveAction] = useSaveActionsMutation();
+  const [saveActions] = useSaveActionsMutation();
   const [actions, setActions] = useRecoilState(ComposerState);
   const _setActions = (actions: Pipeline[]) => {
     setActions(actions);
-    saveAction({
+    saveActions({
       variables: {
         projectId: id!,
         actions: actions.map((action) => ({
@@ -35,6 +35,7 @@ const SetupActionModalWithData: FC<SetupActionModalWithDataProps> = (props) => {
           name: action.actionName!,
           plugin: action.name!,
           useWasm: !!action.useWasmPlugin,
+          githubUrl: action.githubUrl,
         })),
       },
     });

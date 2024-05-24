@@ -16,7 +16,7 @@ export type ActionWithDataProps = {
 
 const ActionWithData: FC<ActionWithDataProps> = (props) => {
   const { id } = useParams();
-  const [saveAction] = useSaveActionsMutation();
+  const [saveActions] = useSaveActionsMutation();
   const [actions, setActions] = useRecoilState(ComposerState);
   const activate = (checked: boolean) => {
     const updated = [...actions];
@@ -29,7 +29,7 @@ const ActionWithData: FC<ActionWithDataProps> = (props) => {
 
   const _setActions = (actions: Pipeline[]) => {
     setActions(actions);
-    saveAction({
+    saveActions({
       variables: {
         projectId: id!,
         actions: actions.map((action) => ({
@@ -39,6 +39,7 @@ const ActionWithData: FC<ActionWithDataProps> = (props) => {
           name: action.actionName!,
           plugin: action.name!,
           useWasm: !!action.useWasmPlugin,
+          githubUrl: action.githubUrl,
         })),
       },
     });

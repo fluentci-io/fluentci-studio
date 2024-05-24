@@ -20,6 +20,7 @@ export type Action = {
   __typename?: 'Action';
   commands: Scalars['String'];
   enabled: Scalars['Boolean'];
+  githubUrl?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['ID']>;
   logo?: Maybe<Scalars['String']>;
   name: Scalars['String'];
@@ -30,6 +31,7 @@ export type Action = {
 export type ActionInput = {
   commands: Scalars['String'];
   enabled: Scalars['Boolean'];
+  githubUrl?: InputMaybe<Scalars['String']>;
   logo?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   plugin: Scalars['String'];
@@ -62,7 +64,7 @@ export type Mutation = {
   createProject: Project;
   runJob: Job;
   runPipeline: Run;
-  saveActions: Array<Action>;
+  saveActions?: Maybe<Array<Action>>;
 };
 
 
@@ -74,6 +76,7 @@ export type MutationRunJobArgs = {
 
 export type MutationRunPipelineArgs = {
   projectId?: InputMaybe<Scalars['ID']>;
+  wait?: InputMaybe<Scalars['Boolean']>;
 };
 
 
@@ -186,14 +189,14 @@ export type SaveActionsMutationVariables = Exact<{
 }>;
 
 
-export type SaveActionsMutation = { __typename?: 'Mutation', saveActions: Array<{ __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean }> };
+export type SaveActionsMutation = { __typename?: 'Mutation', saveActions?: Array<{ __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean, githubUrl?: string | null }> | null };
 
 export type GetActionsQueryVariables = Exact<{
   projectId: Scalars['ID'];
 }>;
 
 
-export type GetActionsQuery = { __typename?: 'Query', actions?: Array<{ __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean }> | null };
+export type GetActionsQuery = { __typename?: 'Query', actions?: Array<{ __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean, githubUrl?: string | null }> | null };
 
 export type RunFragmentFragment = { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> };
 
@@ -203,7 +206,7 @@ export type LogFragmentFragment = { __typename?: 'Log', id: string, message: str
 
 export type JobFragmentFragment = { __typename?: 'Job', id: string, name: string, createdAt: string, duration?: number | null, status: string };
 
-export type ActionFragmentFragment = { __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean };
+export type ActionFragmentFragment = { __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean, githubUrl?: string | null };
 
 export type RunJobMutationVariables = Exact<{
   projectId?: InputMaybe<Scalars['ID']>;
@@ -354,6 +357,7 @@ export const ActionFragmentFragmentDoc = gql`
   name
   plugin
   useWasm
+  githubUrl
 }
     `;
 export const SaveActionsDocument = gql`
