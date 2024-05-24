@@ -37,10 +37,10 @@ jobs:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
       - name: Upload assets to Cloudflare R2
         run: |
-          mkdir -p r2/fluentci-studio/${{ env.RELEASE_VERSION }}/darwin
-          cp fluentci-studio_${{ env.RELEASE_VERSION }}_${{ matrix.target }}.tar.gz r2/fluentci-studio/${{ env.RELEASE_VERSION }}/darwin
-          cp fluentci-studio_${{ env.RELEASE_VERSION }}_${{ matrix.target }}.tar.gz.sha256 r2/fluentci-studio/${{ env.RELEASE_VERSION }}/darwin
-          cd r2 && fluentci run --wasm r2-sync upload --endpoint-url https://$ACCOUNT_ID.r2.cloudflarestorage.com s3://assets --delete
+          mkdir -p r2/fluentci-studio/${{ env.RELEASE_VERSION }}
+          cp fluentci-studio_${{ env.RELEASE_VERSION }}_${{ matrix.target }}.tar.gz r2/fluentci-studio/${{ env.RELEASE_VERSION }}
+          cp fluentci-studio_${{ env.RELEASE_VERSION }}_${{ matrix.target }}.tar.gz.sha256 r2/fluentci-studio/${{ env.RELEASE_VERSION }}
+          cd r2 && fluentci run --wasm r2-sync upload --endpoint-url https://$ACCOUNT_ID.r2.cloudflarestorage.com s3://assets
         env:
           TAG: ${{ env.RELEASE_VERSION }}
           GITHUB_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
