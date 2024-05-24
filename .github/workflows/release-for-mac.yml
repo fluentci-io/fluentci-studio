@@ -1,8 +1,8 @@
 name: release for mac
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [created]
+
 jobs:
   build:
     runs-on: macos-12
@@ -23,13 +23,24 @@ jobs:
           working-directory: webui
         env:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - name: build
         run: |
           fluentci run --wasm rust target_add ${{ matrix.target }}
           fluentci run --wasm rust build --release --target ${{ matrix.target }}
           cp target/${{ matrix.target }}/release/fluentci-studio .
-          tar czvf fluentci-studio-${{ matrix.target }}.tar.gz fluentci-studio
-          shasum -a 256 fluentci-studio-${{ matrix.target }}.tar.gz > fluentci-studio-${{ matrix.target }}.tar.gz.sha256
+          tar czvf fluentci-studio_${{ env.RELEASE_VERSION }}_${{ matrix.target }}.tar.gz fluentci-studio
+          shasum -a 256 fluentci-studio_${{ env.RELEASE_VERSION }}_${{ matrix.target }}.tar.gz > fluentci-studio_${{ env.RELEASE_VERSION }}_${{ matrix.target }}.tar.gz.sha256
           ls -ltr
         env:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+      - name: Upload release assets
+        run: |
+          for ext in tar.gz tar.gz.sha256; do
+            export FILE=fluentci-studio_${{ env.RELEASE_VERSION }}_${{ matrix.target }}.$ext
+            fluentci run --wasm github release_upload $TAG $FILE
+          done
+        env:
+          TAG: ${{ env.RELEASE_VERSION }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
