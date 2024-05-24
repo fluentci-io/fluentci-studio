@@ -30,3 +30,7 @@ jobs:
           sudo apt-get install -y build-essential gcc-aarch64-linux-gnu libc6-arm64-cross libc6-dev-arm64-cross pkg-config
           fluentci run --wasm rust target_add ${{ matrix.target }}
           fluentci run --wasm rust build --release --target ${{ matrix.target }}
+          cp target/${{ matrix.target }}/release/fluentci-studio .
+          tar czvf fluentci-studio-${{ matrix.target }}.tar.gz fluentci-studio
+          sha256sum fluentci-studio-${{ matrix.target }}.tar.gz > fluentci-studio-${{ matrix.target }}.tar.gz.sha256
+          ls -ltr
