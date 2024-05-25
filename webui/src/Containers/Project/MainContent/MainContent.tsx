@@ -7,7 +7,11 @@ import Composer from "./Composer";
 import styles, { Container } from "./styles";
 import Header from "../../../Components/Header";
 
-const MainContent: FC = () => {
+export type MainContentProps = {
+  onTabChange: (activeKey: string) => void;
+};
+
+const MainContent: FC<MainContentProps> = ({ onTabChange }) => {
   const [activeKey, setActiveKey] = useState("0");
 
   return (
@@ -17,6 +21,7 @@ const MainContent: FC = () => {
         activeKey={activeKey}
         onChange={({ activeKey }) => {
           setActiveKey(activeKey.toString());
+          onTabChange(activeKey.toString());
         }}
         activateOnFocus
         overrides={styles.Tabs}

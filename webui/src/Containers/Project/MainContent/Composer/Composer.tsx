@@ -5,14 +5,17 @@ import NewActionModal from "./NewActionModal";
 import SetupActionModal from "./SetupActionModal";
 import { Pipeline } from "./NewActionModal/NewActionModalWithData";
 import { Connector, ConnectorContainer, PlusButton } from "./styles";
+import ViewMode from "./ViewMode";
+import CodePreview from "./CodePreview";
 
 export type ComposerProps = {
   actions: Pipeline[];
   setActions: (values: Pipeline[]) => void;
+  mode: "stacked" | "code";
 };
 
 const Composer: FC<ComposerProps> = (props) => {
-  const { actions, setActions } = props;
+  const { actions, setActions, mode } = props;
   const [isOpen, setIsOpen] = useState(false);
   const [selectedAction, setSelectedAction] = useState<Pipeline | null>(null);
   const [isSetupActionModalOpen, setIsSetupActionModalOpen] = useState(false);
@@ -51,55 +54,67 @@ const Composer: FC<ComposerProps> = (props) => {
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", marginTop: 20 }}>
-      {actions.length === 0 && (
-        <PlusButton
-          onClick={() => {
-            setEditAction(false);
-            setIsOpen(true);
-            setClickedPosition(0);
-          }}
-        >
-          <PlusLg size={15} color="#fff" />
-        </PlusButton>
-      )}
-      {actions.map((action, index) => (
-        <div key={action.id}>
-          <PlusButton
-            onClick={() => {
-              setEditAction(false);
-              setIsOpen(true);
-              setClickedPosition(index);
-            }}
-          >
-            <PlusLg size={15} color="#fff" />
-          </PlusButton>
-          <ConnectorContainer>
-            <Connector />
-          </ConnectorContainer>
-          <Action
-            action={action}
-            index={index}
-            onClickAction={onClickAction}
-            onDelete={onDelete}
-            onDuplicate={onDuplicate}
-          />
-          <ConnectorContainer>
-            <Connector />
-          </ConnectorContainer>
-          {index === actions.length - 1 && (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        position: "relative",
+      }}
+    >
+      <ViewMode />
+      {mode === "stacked" && (
+        <div style={{ marginTop: 50 }}>
+          {actions.length === 0 && (
             <PlusButton
               onClick={() => {
                 setEditAction(false);
-                setClickedPosition(index + 1);
                 setIsOpen(true);
+                setClickedPosition(0);
               }}
             >
               <PlusLg size={15} color="#fff" />
             </PlusButton>
           )}
+          {actions.map((action, index) => (
+            <div key={action.id}>
+              <PlusButton
+                onClick={() => {
+                  setEditAction(false);
+                  setIsOpen(true);
+                  setClickedPosition(index);
+                }}
+              >
+                <PlusLg size={15} color="#fff" />
+              </PlusButton>
+              <ConnectorContainer>
+                <Connector />
+              </ConnectorContainer>
+              <Action
+                action={action}
+                index={index}
+                onClickAction={onClickAction}
+                onDelete={onDelete}
+                onDuplicate={onDuplicate}
+              />
+              <ConnectorContainer>
+                <Connector />
+              </ConnectorContainer>
+              {index === actions.length - 1 && (
+                <PlusButton
+                  onClick={() => {
+                    setEditAction(false);
+                    setClickedPosition(index + 1);
+                    setIsOpen(true);
+                  }}
+                >
+                  <PlusLg size={15} color="#fff" />
+                </PlusButton>
+              )}
+            </div>
+          ))}
         </div>
-      ))}
+      )}
+      {mode === "code" && <CodePreview />}
       <NewActionModal
         onClose={close}
         isOpen={isOpen}

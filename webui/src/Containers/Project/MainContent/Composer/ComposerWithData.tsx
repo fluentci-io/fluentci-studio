@@ -1,6 +1,6 @@
 import { FC, useEffect } from "react";
 import Composer from "./Composer";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { ComposerState } from "./ComposerState";
 import { Pipeline } from "./NewActionModal/NewActionModalWithData";
 import {
@@ -8,6 +8,7 @@ import {
   useSaveActionsMutation,
 } from "../../../../Hooks/GraphQL";
 import { useParams } from "react-router-dom";
+import { ViewModeState } from "./ViewMode/ViewModeState";
 
 const ComposerWithData: FC = () => {
   const { id } = useParams();
@@ -17,6 +18,7 @@ const ComposerWithData: FC = () => {
     },
   });
   const [saveActions] = useSaveActionsMutation();
+  const mode = useRecoilValue(ViewModeState);
   const [actions, setActions] = useRecoilState(ComposerState);
   const _setActions = async (actions: Pipeline[]) => {
     setActions(actions);
@@ -70,7 +72,7 @@ const ComposerWithData: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <Composer actions={actions} setActions={_setActions} />;
+  return <Composer actions={actions} setActions={_setActions} mode={mode} />;
 };
 
 export default ComposerWithData;

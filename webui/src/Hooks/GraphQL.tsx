@@ -106,6 +106,7 @@ export type Query = {
   actions?: Maybe<Array<Action>>;
   countProjects: Scalars['Int'];
   countRuns: Scalars['Int'];
+  exportActions: Scalars['String'];
   getRun?: Maybe<Run>;
   getRuns?: Maybe<Array<Run>>;
   job?: Maybe<Job>;
@@ -123,6 +124,12 @@ export type QueryActionsArgs = {
 
 
 export type QueryCountRunsArgs = {
+  projectId: Scalars['ID'];
+};
+
+
+export type QueryExportActionsArgs = {
+  plateform: Scalars['String'];
   projectId: Scalars['ID'];
 };
 
@@ -197,6 +204,14 @@ export type GetActionsQueryVariables = Exact<{
 
 
 export type GetActionsQuery = { __typename?: 'Query', actions?: Array<{ __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean, githubUrl?: string | null }> | null };
+
+export type ExportActionsQueryVariables = Exact<{
+  projectId: Scalars['ID'];
+  plateform: Scalars['String'];
+}>;
+
+
+export type ExportActionsQuery = { __typename?: 'Query', exportActions: string };
 
 export type RunFragmentFragment = { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> };
 
@@ -429,6 +444,40 @@ export function useGetActionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetActionsQueryHookResult = ReturnType<typeof useGetActionsQuery>;
 export type GetActionsLazyQueryHookResult = ReturnType<typeof useGetActionsLazyQuery>;
 export type GetActionsQueryResult = Apollo.QueryResult<GetActionsQuery, GetActionsQueryVariables>;
+export const ExportActionsDocument = gql`
+    query ExportActions($projectId: ID!, $plateform: String!) {
+  exportActions(projectId: $projectId, plateform: $plateform)
+}
+    `;
+
+/**
+ * __useExportActionsQuery__
+ *
+ * To run a query within a React component, call `useExportActionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useExportActionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useExportActionsQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      plateform: // value for 'plateform'
+ *   },
+ * });
+ */
+export function useExportActionsQuery(baseOptions: Apollo.QueryHookOptions<ExportActionsQuery, ExportActionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ExportActionsQuery, ExportActionsQueryVariables>(ExportActionsDocument, options);
+      }
+export function useExportActionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ExportActionsQuery, ExportActionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ExportActionsQuery, ExportActionsQueryVariables>(ExportActionsDocument, options);
+        }
+export type ExportActionsQueryHookResult = ReturnType<typeof useExportActionsQuery>;
+export type ExportActionsLazyQueryHookResult = ReturnType<typeof useExportActionsLazyQuery>;
+export type ExportActionsQueryResult = Apollo.QueryResult<ExportActionsQuery, ExportActionsQueryVariables>;
 export const RunJobDocument = gql`
     mutation RunJob($projectId: ID, $jobName: String) {
   runJob(projectId: $projectId, jobName: $jobName) {

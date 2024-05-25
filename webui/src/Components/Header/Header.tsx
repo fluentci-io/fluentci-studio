@@ -24,6 +24,7 @@ const Header: FC<HeaderProps> = (props) => {
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
+              flex: 1,
             },
           },
           ListItem: {

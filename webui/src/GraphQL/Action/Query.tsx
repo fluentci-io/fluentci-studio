@@ -9,3 +9,9 @@ export const GET_ACTIONS = gql`
   }
   ${ActionFragment}
 `;
+
+export const EXPORT_ACTIONS = gql`
+  query ExportActions($projectId: ID!, $plateform: String!) {
+    exportActions(projectId: $projectId, plateform: $plateform)
+  }
+`;

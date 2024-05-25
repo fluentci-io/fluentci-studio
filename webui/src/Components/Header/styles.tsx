@@ -86,6 +86,10 @@ export default {
           ListItem: {
             style: ({ $theme }: { $theme: { primaryFontFamily: string } }) => ({
               fontFamily: $theme.primaryFontFamily,
+              color: "#fff",
+              ":hover": {
+                color: "rgb(36, 255, 181)",
+              },
             }),
           },
         },

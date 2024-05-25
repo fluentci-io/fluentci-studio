@@ -54,3 +54,17 @@ li:last-child {
 code {
   font-family: Inconsolata, monospace;
 }
+
+code[class*="language-"] {
+  background-color: initial !important;
+  background: initial !important;
+  box-shadow: none !important;
+  font-family: Inconsolata, Consolas, monospace;
+}
+
+pre[class*="language-"] {
+  background: #10072c !important;
+  border: 1px solid #ffffff1f;
+  border-radius: 5px;
+  padding: 20px;
+}
