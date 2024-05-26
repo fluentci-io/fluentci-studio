@@ -6,10 +6,7 @@ import {
 } from "../../../Hooks/GraphQL";
 import useWebSocket from "react-use-websocket";
 import { useNavigate } from "react-router-dom";
-
-const WS_URL = `ws://${
-  location.host.endsWith(":5173") ? "localhost:6076" : location.host
-}`;
+import { WS_URL } from "../../../consts";
 
 const MainContentWithData: FC = () => {
   const navigate = useNavigate();

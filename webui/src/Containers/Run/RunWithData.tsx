@@ -6,12 +6,9 @@ import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import useWebSocket from "react-use-websocket";
 import _ from "lodash";
+import { WS_URL } from "../../consts";
 
 dayjs.extend(duration);
-
-const WS_URL = `ws://${
-  location.host.endsWith(":5173") ? "localhost:6076" : location.host
-}`;
 
 const RunWithData: FC = () => {
   const { id } = useParams();

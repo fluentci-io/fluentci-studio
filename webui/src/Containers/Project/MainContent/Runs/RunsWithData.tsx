@@ -6,10 +6,7 @@ import { useParams } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import { useRecoilState } from "recoil";
 import { PaginationState } from "./PaginationState";
-
-const WS_URL = `ws://${
-  location.host.endsWith(":5173") ? "localhost:6076" : location.host
-}`;
+import { WS_URL } from "../../../../consts";
 
 const RunsWithData: FC = () => {
   const { id } = useParams();
