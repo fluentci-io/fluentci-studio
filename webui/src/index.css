@@ -68,3 +68,37 @@ pre[class*="language-"] {
   border-radius: 5px;
   padding: 20px;
 }
+
+Copy code
+/* Custom Scrollbar for WebKit Browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 8px;  /* Width of the entire scrollbar */
+  height: 8px; /* Height of the horizontal scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the track */
+  border-radius: 10px; /* Rounded corners for the track */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #88888864; /* Color of the thumb */
+  border-radius: 10px; /* Rounded corners for the thumb */
+  border: 2px solid #f1f1f1; /* Padding around thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #88888864; /* Color of the thumb on hover */
+}
+
+/* Custom Scrollbar for Firefox */
+body {
+  scrollbar-width: thin;       /* Width of the scrollbar */
+  scrollbar-color: #88888872 #f1f1f1; /* Color of the thumb and track */
+}
+
+/* Apply the styles to all scrollable elements */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #8888885f #f1f1f1;
+}

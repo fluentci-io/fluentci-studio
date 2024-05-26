@@ -9,7 +9,7 @@ import { FC, ReactNode } from "react";
 const uri =
   import.meta.env.VITE_APP_API_URL ||
   (!location.host.endsWith(":5173")
-    ? `http://${location.host}/graphql`
+    ? `http://${location.host || '127.0.0.1:6076'}/graphql`
     : "http://127.0.0.1:6076/graphql");
 
 const link = createHttpLink({

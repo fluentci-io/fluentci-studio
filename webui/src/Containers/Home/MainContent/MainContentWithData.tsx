@@ -8,7 +8,9 @@ import useWebSocket from "react-use-websocket";
 import { useNavigate } from "react-router-dom";
 
 const WS_URL = `ws://${
-  location.host.endsWith(":5173") ? "localhost:6076" : location.host
+  location.host.endsWith(":5173")
+    ? "localhost:6076"
+    : location.host || "127.0.0.1:6076"
 }`;
 
 const MainContentWithData: FC = () => {

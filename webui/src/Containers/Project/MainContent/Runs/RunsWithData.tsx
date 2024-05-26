@@ -8,7 +8,9 @@ import { useRecoilState } from "recoil";
 import { PaginationState } from "./PaginationState";
 
 const WS_URL = `ws://${
-  location.host.endsWith(":5173") ? "localhost:6076" : location.host
+  location.host.endsWith(":5173")
+    ? "localhost:6076"
+    : location.host || "127.0.0.1:6076"
 }`;
 
 const RunsWithData: FC = () => {
