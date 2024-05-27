@@ -8,7 +8,7 @@ FluentCI Studio is a new way for you to explore CI pipelines on FluentCI project
 
 ## Usage
 
-Run the following command to start the FluentCI Studio:
+Run the following command to start FluentCI Studio:
 
 ```bash
 deno run -A https://cli.fluentci.io studio
@@ -16,7 +16,7 @@ deno run -A https://cli.fluentci.io studio
 
 ## Building
 
-Run the following command to build the FluentCI Studio:
+Run the following command to build FluentCI Studio:
 
 ```bash
 cd webui && bun install && bun run build && cd ..
