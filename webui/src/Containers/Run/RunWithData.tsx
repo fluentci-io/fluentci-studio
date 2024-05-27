@@ -10,7 +10,9 @@ import _ from "lodash";
 dayjs.extend(duration);
 
 const WS_URL = `ws://${
-  location.host.endsWith(":5173") ? "localhost:6076" : location.host
+  location.host.endsWith(":5173")
+    ? "localhost:6076"
+    : location.host || "127.0.0.1:6076"
 }`;
 
 const RunWithData: FC = () => {

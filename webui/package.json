@@ -1,12 +1,19 @@
 {
   "name": "fluentci-studio",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
+  "main": "dist-electron/main/index.js",
   "author": "Tsiry Sandratraina <tsiry.sndr@fluentci.io>",
+  "debug": {
+    "env": {
+      "VITE_DEV_SERVER_URL": "http://127.0.0.1:7777/"
+    }
+  },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "start": "electron .",
+    "build": "tsc && vite build && electron-builder",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
@@ -35,12 +42,15 @@
     "@styled-icons/ionicons-outline": "^10.46.0",
     "@styled-icons/ionicons-sharp": "^10.46.0",
     "@styled-icons/ionicons-solid": "^10.46.0",
+    "@styled-icons/material": "^10.47.0",
     "@styled-icons/material-rounded": "^10.47.0",
     "@styled-icons/remix-line": "^10.46.0",
     "ansi-to-react": "^6.1.6",
     "baseui": "14",
     "copy-to-clipboard": "^3.3.3",
     "dayjs": "^1.11.10",
+    "electron-squirrel-startup": "^1.0.1",
+    "electron-updater": "^6.1.8",
     "graphql": "15.7.2",
     "prismjs": "^1.29.0",
     "react": "^18.2.0",
@@ -77,12 +87,16 @@
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "@vitejs/plugin-react": "^4.2.1",
+    "electron": "30.0.8",
+    "electron-builder": "^24.13.3",
     "eslint": "^8.56.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "eslint-plugin-storybook": "^0.6.15",
     "storybook": "^7.6.13",
     "typescript": "^5.2.2",
-    "vite": "^5.1.0"
+    "vite": "^5.1.0",
+    "vite-plugin-electron": "^0.28.7",
+    "vite-plugin-electron-renderer": "^0.14.5"
   }
 }

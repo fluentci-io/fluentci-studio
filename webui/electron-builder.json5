@@ -1,0 +1,31 @@
+/**
+ * @see https://www.electron.build/configuration/configuration
+ */
+{
+  appId: "io.fluentci.app",
+  asar: true,
+  directories: {
+    output: "release/${version}",
+  },
+  files: ["dist-electron", "dist"],
+  mac: {
+    icon: "assets/icon.png",
+    artifactName: "${productName}_${version}_${arch}.${ext}",
+    target: ["dmg", "zip"],
+  },
+  linux: {
+    icon: "assets/icon.png",
+    target: ["AppImage", "tar.gz"],
+  },
+  nsis: {
+    oneClick: false,
+    perMachine: false,
+    allowToChangeInstallationDirectory: true,
+    deleteAppDataOnUninstall: false,
+  },
+  publish: {
+    provider: "generic",
+    channel: "latest",
+    url: "https://github.com/fluentci-io/fluentci-studio/releases/download/v0.1.0/",
+  },
+}
