@@ -26,8 +26,12 @@ jobs:
       - name: Upload assets to Cloudflare R2
         run: |
           mkdir -p r2/fluentci-studio/${{ env.RELEASE_VERSION }}
+          shasum -a 256 fluentci-studio_${{ env.RELEASE_VERSION }}_x64.dmg > fluentci-studio_${{ env.RELEASE_VERSION }}_x64.dmg.sha256
+          shasum -a 256 fluentci-studio_${{ env.RELEASE_VERSION }}_x64.zip > fluentci-studio_${{ env.RELEASE_VERSION }}_x64.zip.sha256
           cp fluentci-studio_${{ env.RELEASE_VERSION }}_x64.dmg r2/fluentci-studio/${{ env.RELEASE_VERSION }}
+          cp fluentci-studio_${{ env.RELEASE_VERSION }}_x64.dmg.sha256 r2/fluentci-studio/${{ env.RELEASE_VERSION }}
           cp fluentci-studio_${{ env.RELEASE_VERSION }}_x64.zip r2/fluentci-studio/${{ env.RELEASE_VERSION }}
+          cp fluentci-studio_${{ env.RELEASE_VERSION }}_x64.zip.sha256 r2/fluentci-studio/${{ env.RELEASE_VERSION }}
           cd r2 && fluentci run --wasm r2-sync upload --endpoint-url https://$ACCOUNT_ID.r2.cloudflarestorage.com s3://assets
         env:
           TAG: ${{ env.RELEASE_VERSION }}
@@ -38,7 +42,7 @@ jobs:
         working-directory: webui/release/${{ env.RELEASE_VERSION }}
       - name: Upload release assets
         run: |
-          for ext in dmg zip; do
+          for ext in dmg zip dmg.sha256 zip.sha256; do
             export FILE=fluentci-studio_${{ env.RELEASE_VERSION }}_x64.$ext
             fluentci run --wasm github release_upload $TAG $FILE
           done
