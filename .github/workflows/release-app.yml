@@ -26,8 +26,8 @@ jobs:
       - name: Upload assets to Cloudflare R2
         run: |
           mkdir -p r2/fluentci-studio/${{ env.RELEASE_VERSION }}
-          shasum -a 256 fluentci-studio_${{ env.RELEASE_VERSION }}.AppImage > fluentci-studio-${{ env.RELEASE_VERSION }}.AppImage.sha256
-          sha256sum fluentci-studio_${{ env.RELEASE_VERSION }}.tar.gz > fluentci-studio-${{ env.RELEASE_VERSION }}.tar.gz.sha256
+          shasum -a 256 fluentci-studio_${{ env.RELEASE_VERSION }}.AppImage > fluentci-studio_${{ env.RELEASE_VERSION }}.AppImage.sha256
+          sha256sum fluentci-studio_${{ env.RELEASE_VERSION }}.tar.gz > fluentci-studio_${{ env.RELEASE_VERSION }}.tar.gz.sha256
           cp fluentci-studio_${{ env.RELEASE_VERSION }}.AppImage r2/fluentci-studio/${{ env.RELEASE_VERSION }}
           cp fluentci-studio_${{ env.RELEASE_VERSION }}.AppImage.sha256 r2/fluentci-studio/${{ env.RELEASE_VERSION }}
           cp fluentci-studio_${{ env.RELEASE_VERSION }}.tar.gz r2/fluentci-studio/${{ env.RELEASE_VERSION }}
