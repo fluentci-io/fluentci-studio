@@ -2,15 +2,19 @@
  * @see https://www.electron.build/configuration/configuration
  */
 {
-  appId: "YourAppID",
+  appId: "io.fluentci.app",
   asar: true,
   directories: {
     output: "release/${version}",
   },
   files: ["dist-electron", "dist"],
   mac: {
+    icon: "assets/icon.png",
     artifactName: "${productName}_${version}.${ext}",
     target: ["dmg", "zip"],
+  },
+  linux: {
+    icon: "assets/icon.png",
   },
   nsis: {
     oneClick: false,
@@ -21,6 +25,6 @@
   publish: {
     provider: "generic",
     channel: "latest",
-    url: "https://github.com/electron-vite/electron-vite-react/releases/download/v0.9.9/",
+    url: "https://github.com/fluentci-io/fluentci-studio/releases/download/v0.1.0/",
   },
 }
