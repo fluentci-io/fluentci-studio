@@ -5,7 +5,7 @@
   appId: "io.fluentci.app",
   asar: true,
   directories: {
-    output: "release/${version}",
+    output: "release/v${version}",
   },
   files: ["dist-electron", "dist"],
   mac: {
