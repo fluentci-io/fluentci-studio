@@ -23,6 +23,7 @@ body {
   min-height: 100vh;
   background-color: #0f0124;
   color: #fff;
+  overflow-y: hidden;
 }
 
 h1 {
@@ -82,7 +83,7 @@ pre[class*="language-"] {
 
 ::-webkit-scrollbar-thumb {
   background-color: #88888864; /* Color of the thumb */
-  border-radius: 10px; /* Rounded corners for the thumb */
+  border-radius: 10px !important; /* Rounded corners for the thumb */
   border: 0px solid #f1f1f15f; /* Padding around thumb */
 }
 

@@ -10,9 +10,10 @@ export const Container = styled.div`
 `;
 
 export const Wrapper = styled.div`
-  height: 100vh;
+  height: calc(100vh - 30px);
   display: flex;
   flex-direction: row;
+  overflow-y: auto;
 `;
 
 export const Action = styled.div<{ disabled?: boolean }>`

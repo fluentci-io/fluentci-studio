@@ -51,7 +51,7 @@ async function createWindow() {
     webPreferences: {
       preload,
       // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
-      // nodeIntegration: true,
+      nodeIntegration: true,
 
       // Consider using contextBridge.exposeInMainWorld
       // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
@@ -125,5 +125,16 @@ ipcMain.handle("open-win", (_, arg) => {
     childWindow.loadURL(`${VITE_DEV_SERVER_URL}#${arg}`);
   } else {
     childWindow.loadFile(indexHtml, { hash: arg });
+  }
+});
+
+ipcMain.on("window-control", (event, action) => {
+  const window = BrowserWindow.fromWebContents(event.sender);
+  if (action === "minimize") {
+    window?.minimize();
+  } else if (action === "maximize") {
+    window?.isMaximized() ? window?.unmaximize() : window?.maximize();
+  } else if (action === "close") {
+    window?.close();
   }
 });

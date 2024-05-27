@@ -1,7 +1,7 @@
 {
   "name": "fluentci-studio",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "main": "dist-electron/main/index.js",
   "author": "Tsiry Sandratraina <tsiry.sndr@fluentci.io>",
@@ -42,6 +42,7 @@
     "@styled-icons/ionicons-outline": "^10.46.0",
     "@styled-icons/ionicons-sharp": "^10.46.0",
     "@styled-icons/ionicons-solid": "^10.46.0",
+    "@styled-icons/material": "^10.47.0",
     "@styled-icons/material-rounded": "^10.47.0",
     "@styled-icons/remix-line": "^10.46.0",
     "ansi-to-react": "^6.1.6",
