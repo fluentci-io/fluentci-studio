@@ -31,6 +31,7 @@ export const RunButton = styled.button`
   font-weight: 600;
   width: 150px;
   cursor: pointer;
+  font-family: Lexend;
   &:hover {
     background-color: #18d193;
   }
