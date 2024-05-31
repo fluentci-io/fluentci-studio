@@ -51,7 +51,7 @@ export const PopoverMenu = styled.div`
   color: #fff;
   position: absolute;
   right: -30px;
-  border: 1px solid #21054aed;
+  border: 1px solid #6b06ff66;
 `;
 
 export const Name = styled.div`
