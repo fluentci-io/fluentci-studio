@@ -36,6 +36,11 @@ async fn run() -> impl Responder {
     handle_embedded_file("index.html")
 }
 
+#[actix_web::get("/auth")]
+async fn auth() -> impl Responder {
+    handle_embedded_file("index.html")
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let host = std::env::var("FLUENTCI_STUDIO_HOST").unwrap_or("127.0.0.1".to_string());
@@ -49,6 +54,7 @@ async fn main() -> std::io::Result<()> {
             .service(index)
             .service(project)
             .service(run)
+            .service(auth)
             .service(dist)
     })
     .bind(addr)?

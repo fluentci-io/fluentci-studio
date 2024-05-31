@@ -21,14 +21,17 @@ export type NavbarProps = {
     displayName?: string | null;
     photoURL?: string | null;
     username?: string | null;
-  };
+    reloadUserInfo?: {
+      screenName?: string | null;
+    };
+  } | null;
+  onSignOut: () => Promise<void>;
 };
 
-const Navbar: FC<NavbarProps> = ({ user }) => {
+const Navbar: FC<NavbarProps> = ({ user, onSignOut }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_activeKey, setActiveKey] = useState({ current: 0 });
   const navigate = useNavigate();
-  const onSignOut = () => {};
 
   return (
     <div style={{ margin: "0 auto" }}>
@@ -67,7 +70,9 @@ const Navbar: FC<NavbarProps> = ({ user }) => {
                     }}
                   >
                     <Github size={15} color="#6b7280" />
-                    <Username>{user?.username}</Username>
+                    <Username>
+                      {user?.username || user?.reloadUserInfo?.screenName}
+                    </Username>
                   </div>
                 </UserDetails>
                 <Ul>
