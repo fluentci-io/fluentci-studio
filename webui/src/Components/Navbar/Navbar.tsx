@@ -16,8 +16,17 @@ import {
   Li,
 } from "./styles";
 
-const Navbar: FC = () => {
-  const [activeKey, setActiveKey] = useState({ current: 0 });
+export type NavbarProps = {
+  user?: {
+    displayName?: string | null;
+    photoURL?: string | null;
+    username?: string | null;
+  };
+};
+
+const Navbar: FC<NavbarProps> = ({ user }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_activeKey, setActiveKey] = useState({ current: 0 });
   const navigate = useNavigate();
   const onSignOut = () => {};
 
@@ -46,12 +55,8 @@ const Navbar: FC = () => {
             content={({ close }) => (
               <PopoverMenu>
                 <UserDetails>
-                  <Avatar
-                    src={"https://avatars.githubusercontent.com/u/15877106?v=4"}
-                    alt="avatar"
-                    size={88}
-                  />
-                  <Name>Tsiry Sandratraina</Name>
+                  <Avatar src={user?.photoURL || ""} alt="avatar" size={88} />
+                  <Name>{user?.displayName}</Name>
 
                   <div
                     style={{
@@ -62,7 +67,7 @@ const Navbar: FC = () => {
                     }}
                   >
                     <Github size={15} color="#6b7280" />
-                    <Username>tsirysndr</Username>
+                    <Username>{user?.username}</Username>
                   </div>
                 </UserDetails>
                 <Ul>
@@ -105,17 +110,12 @@ const Navbar: FC = () => {
             }}
           >
             <button style={{ border: "none", backgroundColor: "initial" }}>
-              {true && (
+              {!user?.photoURL && (
                 <NoAvatar>
                   <User size={21} />
                 </NoAvatar>
               )}
-              {false && (
-                <Avatar
-                  src={"https://avatars.githubusercontent.com/u/15877106?v=4"}
-                  alt="avatar"
-                />
-              )}
+              {user?.photoURL && <Avatar src={user.photoURL} alt="avatar" />}
             </button>
           </StatefulPopover>
         </div>

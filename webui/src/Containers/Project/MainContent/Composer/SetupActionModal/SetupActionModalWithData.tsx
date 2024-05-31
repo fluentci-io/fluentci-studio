@@ -94,6 +94,7 @@ const SetupActionModalWithData: FC<SetupActionModalWithDataProps> = (props) => {
             name:
               props.selectedAction?.actionName ||
               props.selectedAction?.command?.split("\n")?.reverse()[0],
+            useWasmPlugin: props.selectedAction?.useWasmPlugin,
           });
           props.onClose();
         }}
