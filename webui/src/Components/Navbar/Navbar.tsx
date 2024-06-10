@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { User } from "@styled-icons/boxicons-regular";
 import { Github } from "@styled-icons/bootstrap";
 import { StatefulPopover } from "baseui/popover";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Avatar,
   NavbarContainer,
@@ -15,6 +15,7 @@ import {
   Ul,
   Li,
 } from "./styles";
+import Logo from "../../assets/fluentci-logo.png";
 
 export type NavbarProps = {
   user?: {
@@ -36,7 +37,24 @@ const Navbar: FC<NavbarProps> = ({ user, onSignOut }) => {
   return (
     <div style={{ margin: "0 auto" }}>
       <NavbarContainer>
-        <div style={{ flex: 1 }}></div>
+        <div
+          style={{
+            flex: 1,
+          }}
+        >
+          <Link to="/" style={{ color: "#fff", fontWeight: "600" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <img src={Logo} alt="logo" style={{ height: 50 }} />
+              <div style={{ fontSize: 18 }}>Fluent CI</div>
+            </div>
+          </Link>
+        </div>
         <div
           style={{
             flex: 1,

@@ -71,3 +71,12 @@ export const ActionFragment = gql`
     githubUrl
   }
 `;
+
+export const AccessTokenFragment = gql`
+  fragment AccessTokenFragment on AccessToken {
+    id
+    name
+    token
+    created
+  }
+`;
