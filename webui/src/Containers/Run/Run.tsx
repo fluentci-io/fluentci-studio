@@ -20,6 +20,7 @@ import { Modal, ModalHeader, SIZE } from "baseui/modal";
 import { CloseCircle } from "@styled-icons/ionicons-sharp";
 import Duration from "../../Components/Duration";
 import Titlebar from "../../Components/Titlebar";
+import Navbar from "../../Components/Navbar";
 
 export type RunProps = {
   actions: {
@@ -42,6 +43,15 @@ const Run: FC<RunProps> = (props) => {
   return (
     <>
       <Titlebar />
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Navbar />
+      </div>
       <Wrapper>
         <Container>
           <Header />

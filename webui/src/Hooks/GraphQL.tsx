@@ -15,6 +15,22 @@ export type Scalars = {
   Float: number;
 };
 
+export type AccessToken = {
+  __typename?: 'AccessToken';
+  created: Scalars['String'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  token: Scalars['String'];
+};
+
+export type Account = {
+  __typename?: 'Account';
+  createdAt: Scalars['String'];
+  email: Scalars['String'];
+  id: Scalars['ID'];
+  username: Scalars['String'];
+};
+
 /** An action is a command that is run in a job. */
 export type Action = {
   __typename?: 'Action';
@@ -61,10 +77,22 @@ export type Log = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createAccessToken: AccessToken;
   createProject: Project;
+  deleteAccessToken: Scalars['Boolean'];
   runJob: Job;
   runPipeline: Run;
   saveActions?: Maybe<Array<Action>>;
+};
+
+
+export type MutationCreateAccessTokenArgs = {
+  name: Scalars['String'];
+};
+
+
+export type MutationDeleteAccessTokenArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -85,6 +113,29 @@ export type MutationSaveActionsArgs = {
   projectId: Scalars['ID'];
 };
 
+export type Package = {
+  __typename?: 'Package';
+  avatarUrl?: Maybe<Scalars['String']>;
+  createdAt: Scalars['String'];
+  defaultBranch?: Maybe<Scalars['String']>;
+  description: Scalars['String'];
+  downloads: Scalars['Int'];
+  githubUrl?: Maybe<Scalars['String']>;
+  homepage?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  license?: Maybe<Scalars['String']>;
+  licenseSpdx?: Maybe<Scalars['String']>;
+  licenseUrl?: Maybe<Scalars['String']>;
+  logoUrl?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  owner: Scalars['String'];
+  publisher?: Maybe<Scalars['String']>;
+  readme: Scalars['String'];
+  repoName?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['String'];
+  version: Scalars['String'];
+};
+
 /** A project is a collection of actions. */
 export type Project = {
   __typename?: 'Project';
@@ -94,7 +145,7 @@ export type Project = {
   id: Scalars['ID'];
   logs?: Maybe<Log>;
   name: Scalars['String'];
-  path: Scalars['String'];
+  path?: Maybe<Scalars['String']>;
   picture: Scalars['String'];
   recentRuns?: Maybe<Array<Run>>;
   reliability?: Maybe<Scalars['Float']>;
@@ -103,7 +154,9 @@ export type Project = {
 
 export type Query = {
   __typename?: 'Query';
+  accessTokens: Array<AccessToken>;
   actions?: Maybe<Array<Action>>;
+  countPackages: Scalars['Int'];
   countProjects: Scalars['Int'];
   countRuns: Scalars['Int'];
   exportActions: Scalars['String'];
@@ -113,13 +166,24 @@ export type Query = {
   jobs: Array<Job>;
   log?: Maybe<Log>;
   logs: Array<Log>;
+  me?: Maybe<Account>;
+  package?: Maybe<Package>;
+  packages: Array<Package>;
   project?: Maybe<Project>;
   projects: Array<Project>;
+  versions: Array<Version>;
 };
 
 
 export type QueryActionsArgs = {
   projectId: Scalars['ID'];
+};
+
+
+export type QueryCountPackagesArgs = {
+  all?: InputMaybe<Scalars['Boolean']>;
+  category?: InputMaybe<Scalars['String']>;
+  filter?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -159,6 +223,20 @@ export type QueryLogsArgs = {
 };
 
 
+export type QueryPackageArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryPackagesArgs = {
+  all?: InputMaybe<Scalars['Boolean']>;
+  category?: InputMaybe<Scalars['String']>;
+  filter?: InputMaybe<Scalars['String']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+};
+
+
 export type QueryProjectArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
@@ -169,6 +247,11 @@ export type QueryProjectsArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   reverse?: InputMaybe<Scalars['Boolean']>;
   skip?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryVersionsArgs = {
+  id: Scalars['String'];
 };
 
 /** A Pipeline execution */
@@ -189,6 +272,38 @@ export type Run = {
   status?: Maybe<Scalars['String']>;
   title: Scalars['String'];
 };
+
+export type Version = {
+  __typename?: 'Version';
+  createdAt: Scalars['String'];
+  id: Scalars['ID'];
+  packageId: Scalars['Int'];
+  version: Scalars['String'];
+};
+
+export type CreateAccessTokenMutationVariables = Exact<{
+  name: Scalars['String'];
+}>;
+
+
+export type CreateAccessTokenMutation = { __typename?: 'Mutation', createAccessToken: { __typename?: 'AccessToken', id: string, name: string, token: string, created: string } };
+
+export type DeleteAccessTokenMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteAccessTokenMutation = { __typename?: 'Mutation', deleteAccessToken: boolean };
+
+export type GetAccessTokensQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAccessTokensQuery = { __typename?: 'Query', accessTokens: Array<{ __typename?: 'AccessToken', id: string, name: string, token: string, created: string }> };
+
+export type GetMeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMeQuery = { __typename?: 'Query', me?: { __typename?: 'Account', id: string, username: string, email: string, createdAt: string } | null };
 
 export type SaveActionsMutationVariables = Exact<{
   projectId: Scalars['ID'];
@@ -215,13 +330,15 @@ export type ExportActionsQuery = { __typename?: 'Query', exportActions: string }
 
 export type RunFragmentFragment = { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> };
 
-export type ProjectFragmentFragment = { __typename?: 'Project', id: string, name: string, path: string, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null };
+export type ProjectFragmentFragment = { __typename?: 'Project', id: string, name: string, path?: string | null, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null };
 
 export type LogFragmentFragment = { __typename?: 'Log', id: string, message: string, createdAt: string };
 
 export type JobFragmentFragment = { __typename?: 'Job', id: string, name: string, createdAt: string, duration?: number | null, status: string };
 
 export type ActionFragmentFragment = { __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean, githubUrl?: string | null };
+
+export type AccessTokenFragmentFragment = { __typename?: 'AccessToken', id: string, name: string, token: string, created: string };
 
 export type RunJobMutationVariables = Exact<{
   projectId?: InputMaybe<Scalars['ID']>;
@@ -254,7 +371,7 @@ export type GetLogsQuery = { __typename?: 'Query', logs: Array<{ __typename?: 'L
 export type CreateProjectMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'Project', id: string, name: string, path: string, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null } };
+export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'Project', id: string, name: string, path?: string | null, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null } };
 
 export type GetProjectsQueryVariables = Exact<{
   cursor?: InputMaybe<Scalars['String']>;
@@ -264,14 +381,14 @@ export type GetProjectsQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', id: string, name: string, path: string, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null }> };
+export type GetProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', id: string, name: string, path?: string | null, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null }> };
 
 export type GetProjectQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: string, name: string, path: string, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null } | null };
+export type GetProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: string, name: string, path?: string | null, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null } | null };
 
 export type CountProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -375,6 +492,152 @@ export const ActionFragmentFragmentDoc = gql`
   githubUrl
 }
     `;
+export const AccessTokenFragmentFragmentDoc = gql`
+    fragment AccessTokenFragment on AccessToken {
+  id
+  name
+  token
+  created
+}
+    `;
+export const CreateAccessTokenDocument = gql`
+    mutation CreateAccessToken($name: String!) {
+  createAccessToken(name: $name) {
+    ...AccessTokenFragment
+  }
+}
+    ${AccessTokenFragmentFragmentDoc}`;
+export type CreateAccessTokenMutationFn = Apollo.MutationFunction<CreateAccessTokenMutation, CreateAccessTokenMutationVariables>;
+
+/**
+ * __useCreateAccessTokenMutation__
+ *
+ * To run a mutation, you first call `useCreateAccessTokenMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAccessTokenMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAccessTokenMutation, { data, loading, error }] = useCreateAccessTokenMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useCreateAccessTokenMutation(baseOptions?: Apollo.MutationHookOptions<CreateAccessTokenMutation, CreateAccessTokenMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateAccessTokenMutation, CreateAccessTokenMutationVariables>(CreateAccessTokenDocument, options);
+      }
+export type CreateAccessTokenMutationHookResult = ReturnType<typeof useCreateAccessTokenMutation>;
+export type CreateAccessTokenMutationResult = Apollo.MutationResult<CreateAccessTokenMutation>;
+export type CreateAccessTokenMutationOptions = Apollo.BaseMutationOptions<CreateAccessTokenMutation, CreateAccessTokenMutationVariables>;
+export const DeleteAccessTokenDocument = gql`
+    mutation DeleteAccessToken($id: ID!) {
+  deleteAccessToken(id: $id)
+}
+    `;
+export type DeleteAccessTokenMutationFn = Apollo.MutationFunction<DeleteAccessTokenMutation, DeleteAccessTokenMutationVariables>;
+
+/**
+ * __useDeleteAccessTokenMutation__
+ *
+ * To run a mutation, you first call `useDeleteAccessTokenMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteAccessTokenMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteAccessTokenMutation, { data, loading, error }] = useDeleteAccessTokenMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteAccessTokenMutation(baseOptions?: Apollo.MutationHookOptions<DeleteAccessTokenMutation, DeleteAccessTokenMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteAccessTokenMutation, DeleteAccessTokenMutationVariables>(DeleteAccessTokenDocument, options);
+      }
+export type DeleteAccessTokenMutationHookResult = ReturnType<typeof useDeleteAccessTokenMutation>;
+export type DeleteAccessTokenMutationResult = Apollo.MutationResult<DeleteAccessTokenMutation>;
+export type DeleteAccessTokenMutationOptions = Apollo.BaseMutationOptions<DeleteAccessTokenMutation, DeleteAccessTokenMutationVariables>;
+export const GetAccessTokensDocument = gql`
+    query GetAccessTokens {
+  accessTokens {
+    id
+    name
+    token
+    created
+  }
+}
+    `;
+
+/**
+ * __useGetAccessTokensQuery__
+ *
+ * To run a query within a React component, call `useGetAccessTokensQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAccessTokensQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAccessTokensQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAccessTokensQuery(baseOptions?: Apollo.QueryHookOptions<GetAccessTokensQuery, GetAccessTokensQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAccessTokensQuery, GetAccessTokensQueryVariables>(GetAccessTokensDocument, options);
+      }
+export function useGetAccessTokensLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAccessTokensQuery, GetAccessTokensQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAccessTokensQuery, GetAccessTokensQueryVariables>(GetAccessTokensDocument, options);
+        }
+export type GetAccessTokensQueryHookResult = ReturnType<typeof useGetAccessTokensQuery>;
+export type GetAccessTokensLazyQueryHookResult = ReturnType<typeof useGetAccessTokensLazyQuery>;
+export type GetAccessTokensQueryResult = Apollo.QueryResult<GetAccessTokensQuery, GetAccessTokensQueryVariables>;
+export const GetMeDocument = gql`
+    query GetMe {
+  me {
+    id
+    username
+    email
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useGetMeQuery__
+ *
+ * To run a query within a React component, call `useGetMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetMeQuery(baseOptions?: Apollo.QueryHookOptions<GetMeQuery, GetMeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMeQuery, GetMeQueryVariables>(GetMeDocument, options);
+      }
+export function useGetMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMeQuery, GetMeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMeQuery, GetMeQueryVariables>(GetMeDocument, options);
+        }
+export type GetMeQueryHookResult = ReturnType<typeof useGetMeQuery>;
+export type GetMeLazyQueryHookResult = ReturnType<typeof useGetMeLazyQuery>;
+export type GetMeQueryResult = Apollo.QueryResult<GetMeQuery, GetMeQueryVariables>;
 export const SaveActionsDocument = gql`
     mutation SaveActions($projectId: ID!, $actions: [ActionInput!]!) {
   saveActions(projectId: $projectId, actions: $actions) {

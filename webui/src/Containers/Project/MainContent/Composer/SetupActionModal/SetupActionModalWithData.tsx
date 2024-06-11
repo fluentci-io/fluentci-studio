@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "./schema";
 import { useSaveActionsMutation } from "../../../../../Hooks/GraphQL";
 import { useParams } from "react-router-dom";
+import _ from "lodash";
 
 export type SetupActionModalWithDataProps = {
   onClose: () => void;
@@ -59,9 +60,7 @@ const SetupActionModalWithData: FC<SetupActionModalWithDataProps> = (props) => {
     );
     methods.setValue(
       "useWasmPlugin",
-      props.selectedAction?.useWasmPlugin == undefined
-        ? true
-        : props.selectedAction?.useWasmPlugin
+      _.get(props.selectedAction, "useWasmPlugin", true)
     );
   }, [props.selectedAction, methods]);
 
@@ -94,6 +93,7 @@ const SetupActionModalWithData: FC<SetupActionModalWithDataProps> = (props) => {
             name:
               props.selectedAction?.actionName ||
               props.selectedAction?.command?.split("\n")?.reverse()[0],
+            useWasmPlugin: _.get(props.selectedAction, "useWasmPlugin", true),
           });
           props.onClose();
         }}

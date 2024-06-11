@@ -1,0 +1,32 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    name: Publish to Cloudflare Pages
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Fluent CI
+        uses: fluentci-io/setup-fluentci@v5
+        with:
+          wasm: true
+          pipeline: bun
+          args: run build:prod
+          working-directory: webui
+
+      - name: Publish to Cloudflare Pages
+        run: fluentci run --wasm cloudflare pages_deploy $DIRECTORY --project-name $PROJECT_NAME
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: fe5b1e2ce9f94f4c0415ab94ce402012
+          PROJECT_NAME: fluentci-dashboard
+          DIRECTORY: dist
+        working-directory: webui

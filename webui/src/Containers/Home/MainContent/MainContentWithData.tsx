@@ -6,6 +6,8 @@ import {
 } from "../../../Hooks/GraphQL";
 import useWebSocket from "react-use-websocket";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { AuthState } from "../../Auth/AuthState";
 
 const WS_URL = `ws://${
   location.host.endsWith(":5173")
@@ -15,10 +17,11 @@ const WS_URL = `ws://${
 
 const MainContentWithData: FC = () => {
   const navigate = useNavigate();
+  const me = useRecoilValue(AuthState);
   const { lastJsonMessage } = useWebSocket<{
     channel: string;
     data: Record<string, unknown>;
-  }>(WS_URL, {
+  }>(me ? `wss://events.fluentci.io?s=${me.id}` : WS_URL, {
     share: true,
     shouldReconnect: () => true,
     heartbeat: {

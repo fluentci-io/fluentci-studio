@@ -5,12 +5,13 @@ import { useGetProjectQuery } from "../../../../../Hooks/GraphQL";
 
 export const PlaceholderWithData: FC = () => {
   const { id } = useParams();
-  const { data } = useGetProjectQuery({
+  const { data, loading } = useGetProjectQuery({
     variables: {
       id: id!,
     },
+    fetchPolicy: "network-only",
   });
-  return <Placeholder data={data?.project} />;
+  return <>{!loading && <Placeholder data={data?.project} />}</>;
 };
 
 export default PlaceholderWithData;

@@ -5,11 +5,12 @@ import Titlebar from "../../Components/Titlebar";
 import Loading from "./Loading";
 import { useRecoilState } from "recoil";
 import { HomeState } from "./HomeState";
+import Navbar from "../../Components/Navbar";
 
 const Container = styled.div`
   height: calc(100vh - 30px);
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   overflow-y: auto;
 `;
 
@@ -37,6 +38,7 @@ const Home: FC = () => {
     <>
       <Titlebar />
       <Container>
+        <Navbar />
         {!location.host && loading && <Loading />}
         {!location.host && !loading && <MainContent />}
         {location.host && <MainContent />}

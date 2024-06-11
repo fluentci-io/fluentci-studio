@@ -4,8 +4,9 @@ import Runs from "./Runs";
 import { useCountRunsQuery, useGetRunsQuery } from "../../../../Hooks/GraphQL";
 import { useParams } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { PaginationState } from "./PaginationState";
+import { AuthState } from "../../../Auth/AuthState";
 
 const WS_URL = `ws://${
   location.host.endsWith(":5173")
@@ -15,10 +16,11 @@ const WS_URL = `ws://${
 
 const RunsWithData: FC = () => {
   const { id } = useParams();
+  const me = useRecoilValue(AuthState);
   const { lastJsonMessage } = useWebSocket<{
     channel: string;
     data: Record<string, unknown>;
-  }>(WS_URL, {
+  }>(me ? `wss://events.fluentci.io?s=${me.id}` : WS_URL, {
     share: true,
     shouldReconnect: () => true,
     heartbeat: {

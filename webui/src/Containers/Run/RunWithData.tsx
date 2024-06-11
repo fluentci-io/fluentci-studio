@@ -6,6 +6,8 @@ import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import useWebSocket from "react-use-websocket";
 import _ from "lodash";
+import { useRecoilValue } from "recoil";
+import { AuthState } from "../Auth/AuthState";
 
 dayjs.extend(duration);
 
@@ -17,6 +19,7 @@ const WS_URL = `ws://${
 
 const RunWithData: FC = () => {
   const { id } = useParams();
+  const me = useRecoilValue(AuthState);
   const [actions, setActions] = useState<
     {
       id: string;
@@ -31,6 +34,7 @@ const RunWithData: FC = () => {
     variables: {
       id: id!,
     },
+    fetchPolicy: "network-only",
   });
   const { lastJsonMessage } = useWebSocket<{
     channel: string;
@@ -44,7 +48,7 @@ const RunWithData: FC = () => {
       text: string;
       jobId: string;
     };
-  }>(WS_URL, {
+  }>(me ? `wss://events.fluentci.io?s=${me.id}` : WS_URL, {
     share: true,
     shouldReconnect: () => true,
     heartbeat: { interval: 1 },
