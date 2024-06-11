@@ -4,8 +4,11 @@ import { signOut } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { AuthState } from "../../Containers/Auth/AuthState";
 
 const NavbarWithData: FC = () => {
+  const me = useRecoilValue(AuthState);
   const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
 
@@ -26,15 +29,16 @@ const NavbarWithData: FC = () => {
       return;
     }
 
-    if (!user) {
+    if (!user && location.host === "app.fluentci.io") {
       navigate("/auth");
       return;
     }
 
-    user.getIdToken().then((token) => localStorage.setItem("idToken", token));
+    user &&
+      user.getIdToken().then((token) => localStorage.setItem("idToken", token));
   }, [user, loading, navigate]);
 
-  return <Navbar user={user} onSignOut={onSignOut} />;
+  return <Navbar user={user} onSignOut={onSignOut} showAccountMenu={!!me} />;
 };
 
 export default NavbarWithData;

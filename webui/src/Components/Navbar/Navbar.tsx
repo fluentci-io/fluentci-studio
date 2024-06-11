@@ -16,6 +16,7 @@ import {
   Li,
 } from "./styles";
 import Logo from "../../assets/fluentci-logo.png";
+import { Discord } from "@styled-icons/bootstrap";
 
 export type NavbarProps = {
   user?: {
@@ -27,9 +28,10 @@ export type NavbarProps = {
     };
   } | null;
   onSignOut: () => Promise<void>;
+  showAccountMenu?: boolean;
 };
 
-const Navbar: FC<NavbarProps> = ({ user, onSignOut }) => {
+const Navbar: FC<NavbarProps> = ({ user, onSignOut, showAccountMenu }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_activeKey, setActiveKey] = useState({ current: 0 });
   const navigate = useNavigate();
@@ -72,75 +74,80 @@ const Navbar: FC<NavbarProps> = ({ user, onSignOut }) => {
           <Menu href="https://docs.fluentci.io" target="_blank">
             Docs
           </Menu>
-          <StatefulPopover
-            content={({ close }) => (
-              <PopoverMenu>
-                <UserDetails>
-                  <Avatar src={user?.photoURL || ""} alt="avatar" size={88} />
-                  <Name>{user?.displayName}</Name>
+          <Menu href="https://discord.gg/H7M28d9dRk" target="_blank">
+            <Discord size={21} />
+          </Menu>
+          {showAccountMenu && (
+            <StatefulPopover
+              content={({ close }) => (
+                <PopoverMenu>
+                  <UserDetails>
+                    <Avatar src={user?.photoURL || ""} alt="avatar" size={88} />
+                    <Name>{user?.displayName}</Name>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      marginTop: 5,
-                    }}
-                  >
-                    <Github size={15} color="#6b7280" />
-                    <Username>
-                      {user?.username || user?.reloadUserInfo?.screenName}
-                    </Username>
-                  </div>
-                </UserDetails>
-                <Ul>
-                  <Li
-                    onClick={() => {
-                      close();
-                      navigate("/");
-                    }}
-                  >
-                    <div>Projects</div>
-                  </Li>
-                  <Li
-                    onClick={() => {
-                      close();
-                      setActiveKey({ current: 2 });
-                      navigate("/settings/tokens");
-                    }}
-                  >
-                    <div>Access Tokens</div>
-                  </Li>
-                  <Li
-                    onClick={() => {
-                      onSignOut();
-                      close();
-                    }}
-                  >
-                    <div>Sign out</div>
-                  </Li>
-                </Ul>
-              </PopoverMenu>
-            )}
-            placement="bottom"
-            overrides={{
-              Body: {
-                style: {
-                  backgroundColor: "initial",
-                  border: "1px solid #21054aed",
-                },
-              },
-            }}
-          >
-            <button style={{ border: "none", backgroundColor: "initial" }}>
-              {!user?.photoURL && (
-                <NoAvatar>
-                  <User size={21} />
-                </NoAvatar>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        marginTop: 5,
+                      }}
+                    >
+                      <Github size={15} color="#6b7280" />
+                      <Username>
+                        {user?.username || user?.reloadUserInfo?.screenName}
+                      </Username>
+                    </div>
+                  </UserDetails>
+                  <Ul>
+                    <Li
+                      onClick={() => {
+                        close();
+                        navigate("/");
+                      }}
+                    >
+                      <div>Projects</div>
+                    </Li>
+                    <Li
+                      onClick={() => {
+                        close();
+                        setActiveKey({ current: 2 });
+                        navigate("/settings/tokens");
+                      }}
+                    >
+                      <div>Access Tokens</div>
+                    </Li>
+                    <Li
+                      onClick={() => {
+                        onSignOut();
+                        close();
+                      }}
+                    >
+                      <div>Sign out</div>
+                    </Li>
+                  </Ul>
+                </PopoverMenu>
               )}
-              {user?.photoURL && <Avatar src={user.photoURL} alt="avatar" />}
-            </button>
-          </StatefulPopover>
+              placement="bottom"
+              overrides={{
+                Body: {
+                  style: {
+                    backgroundColor: "initial",
+                    border: "1px solid #21054aed",
+                  },
+                },
+              }}
+            >
+              <button style={{ border: "none", backgroundColor: "initial" }}>
+                {!user?.photoURL && (
+                  <NoAvatar>
+                    <User size={21} />
+                  </NoAvatar>
+                )}
+                {user?.photoURL && <Avatar src={user.photoURL} alt="avatar" />}
+              </button>
+            </StatefulPopover>
+          )}
         </div>
       </NavbarContainer>
     </div>
