@@ -10,9 +10,10 @@ export type PlaceholderProps = {
 };
 
 const Placeholder: FC<PlaceholderProps> = (props) => {
-  const command = import.meta.env.VITE_APP_API_URL?.includes("fluentci.io")
-    ? `FLUENTCI_PROJECT_ID=${props.data?.name} fluentci run --remote-exec .`
-    : `FLUENTCI_PROJECT_ID=${props.data?.name} fluentci run .`;
+  const command =
+    location.host === "app.fluentci.io"
+      ? `FLUENTCI_PROJECT_ID=${props.data?.name} fluentci run --remote-exec .`
+      : `FLUENTCI_PROJECT_ID=${props.data?.name} fluentci run .`;
   return (
     <Container>
       {props.data?.path !== "empty" && (
