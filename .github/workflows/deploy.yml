@@ -19,7 +19,7 @@ jobs:
         with:
           wasm: true
           pipeline: bun
-          args: run build
+          args: run build:prod
           working-directory: webui
 
       - name: Publish to Cloudflare Pages
