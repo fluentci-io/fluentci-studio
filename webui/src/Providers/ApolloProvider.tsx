@@ -12,11 +12,12 @@ import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { timer } from "rxjs";
 
-const uri =
+const uri = (
   import.meta.env.VITE_APP_API_URL ||
   (!location.host.endsWith(":5173")
     ? `http://${location.host || "127.0.0.1:6076"}/graphql`
-    : "http://127.0.0.1:6076/graphql");
+    : "http://127.0.0.1:6076/graphql")
+).replace("http://app.fluentci.io", "https://api.fluentci.io");
 
 const link = createHttpLink({
   uri,
