@@ -17,14 +17,14 @@ function App() {
   const Router = location.host ? BrowserRouter : HashRouter;
   const [user, loading] = useAuthState(auth);
   const [getMe] = useGetMeLazyQuery();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [me, setMe] = useRecoilState(AuthState);
+  const setMe = useRecoilState(AuthState)[1];
 
   useEffect(() => {
     if (loading || !user) {
       return;
     }
-    getMe().then((response) => setMe(response?.data?.me));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    getMe().then((response: any) => setMe(response?.data?.me));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, loading]);
 
