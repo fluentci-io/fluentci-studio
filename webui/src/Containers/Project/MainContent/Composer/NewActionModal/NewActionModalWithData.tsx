@@ -94,6 +94,9 @@ const filters = [
   "flakestry_pipeline",
   "scorecard_pipeline",
   "conftest_pipeline",
+  "packer",
+  "playwright",
+  "cypress",
 ];
 
 export type Pipeline = {
