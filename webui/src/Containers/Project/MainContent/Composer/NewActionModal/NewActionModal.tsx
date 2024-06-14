@@ -137,6 +137,10 @@ const NewActionModal: FC<NewActionModalProps> = (props) => {
                         pipeline.name.startsWith("heroku") ||
                         pipeline.name.startsWith("django") ||
                         pipeline.name.startsWith("terraform") ||
+                        pipeline.name.startsWith("maven") ||
+                        pipeline.name.startsWith("cypress") ||
+                        pipeline.name.startsWith("sqlfluff") ||
+                        pipeline.name.startsWith("sbt") ||
                         pipeline.name.startsWith("prisma")
                           ? "#fff"
                           : "initial",
