@@ -97,6 +97,8 @@ const filters = [
   "packer",
   "playwright",
   "cypress",
+  "flipt",
+  "depot",
 ];
 
 export type Pipeline = {
