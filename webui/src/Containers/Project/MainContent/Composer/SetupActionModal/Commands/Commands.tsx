@@ -32,7 +32,7 @@ const Commands: FC = () => {
           />
         )}
       />
-      {!commands.length && (
+      {!commands?.length && (
         <div style={{ color: "#ff0077" }}>
           Please provide at least one command
         </div>
