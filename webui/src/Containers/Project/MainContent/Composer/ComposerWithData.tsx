@@ -16,7 +16,6 @@ const ComposerWithData: FC = () => {
     variables: {
       projectId: id!,
     },
-    fetchPolicy: "network-only",
   });
   const [saveActions] = useSaveActionsMutation();
   const mode = useRecoilValue(ViewModeState);
@@ -44,7 +43,7 @@ const ComposerWithData: FC = () => {
     if (data?.actions) {
       setActions(
         data.actions.map((action) => ({
-          id: "",
+          id: action.id!,
           name: action.plugin,
           actionName: action.name,
           active: action.enabled,
