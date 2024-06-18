@@ -24,6 +24,9 @@ export const Container = styled.div`
 `;
 
 export const RunButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 40px;
   background-color: #24ffb5;
   color: #000;

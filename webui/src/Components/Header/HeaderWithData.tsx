@@ -39,6 +39,7 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
       projectId: project?.id || "",
     },
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (pathname.startsWith("/run")) {
@@ -67,10 +68,12 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
         projectId: project!.id!,
       },
     }).then(({ data }) => {
+      setLoading(false);
       if (data?.runPipeline) {
         navigate(`/run/${data.runPipeline.id}`);
       }
     });
+    setLoading(true);
   };
 
   const breadcrumbs: { title: string; link?: string }[] = [
@@ -104,6 +107,7 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
         !data?.actions?.filter((x) => x.enabled).length ||
         project?.path === "empty"
       }
+      loading={loading}
     />
   );
 };

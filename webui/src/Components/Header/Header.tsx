@@ -4,6 +4,7 @@ import { StatefulPopover } from "baseui/popover";
 import { StatefulMenu } from "baseui/menu";
 import { Breadcrumbs } from "baseui/breadcrumbs";
 import styles, { Link, Container, RunButton, PopoverButton } from "./styles";
+import { Spinner } from "baseui/spinner";
 
 export type HeaderProps = {
   id: string;
@@ -11,6 +12,7 @@ export type HeaderProps = {
   menu?: string[];
   breadcrumbs?: { title: string; link?: string }[];
   hideRunButton?: boolean;
+  loading?: boolean;
 };
 
 const Header: FC<HeaderProps> = (props) => {
@@ -63,7 +65,27 @@ const Header: FC<HeaderProps> = (props) => {
           </PopoverButton>
         </StatefulPopover>
       )}
-      {!hideRunButton && <RunButton onClick={() => onRun(id)}>Run</RunButton>}
+      {!hideRunButton && (
+        <>
+          {!props.loading && (
+            <RunButton onClick={() => onRun(id)}>Run</RunButton>
+          )}
+          {props.loading && (
+            <RunButton disabled>
+              <Spinner
+                $size={"15px"}
+                $borderWidth={"3px"}
+                style={{
+                  borderRightColor: "#ffffff22",
+                  borderLeftColor: "#ffffff22",
+                  borderTopColor: "#ffffff22",
+                  borderBottomColor: "#000",
+                }}
+              />
+            </RunButton>
+          )}
+        </>
+      )}
     </Container>
   );
 };
