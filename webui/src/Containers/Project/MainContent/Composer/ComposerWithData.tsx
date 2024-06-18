@@ -16,6 +16,7 @@ const ComposerWithData: FC = () => {
     variables: {
       projectId: id!,
     },
+    fetchPolicy: "network-only",
   });
   const [saveActions] = useSaveActionsMutation();
   const mode = useRecoilValue(ViewModeState);
