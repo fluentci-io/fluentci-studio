@@ -22,7 +22,8 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "graphql:generate": "graphql-codegen --config codegen.yml"
+    "graphql:generate": "graphql-codegen --config codegen.yml",
+    "test": "vitest --config vite.dev.config.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.9.4",
@@ -88,6 +89,9 @@
     "@storybook/react": "^7.6.13",
     "@storybook/react-vite": "^7.6.13",
     "@storybook/test": "^7.6.13",
+    "@testing-library/dom": "^10.1.0",
+    "@testing-library/jest-dom": "^6.4.6",
+    "@testing-library/react": "^16.0.0",
     "@types/prismjs": "^1.26.4",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
@@ -101,10 +105,14 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "eslint-plugin-storybook": "^0.6.15",
+    "jsdom": "^24.1.0",
+    "msw": "^2.3.1",
+    "react-test-renderer": "^18.3.1",
     "storybook": "^7.6.13",
     "typescript": "^5.2.2",
     "vite": "^5.1.0",
     "vite-plugin-electron": "^0.28.7",
-    "vite-plugin-electron-renderer": "^0.14.5"
+    "vite-plugin-electron-renderer": "^0.14.5",
+    "vitest": "^1.6.0"
   }
 }
