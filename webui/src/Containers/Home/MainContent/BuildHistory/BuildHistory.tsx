@@ -2,6 +2,7 @@ import { FC, useMemo } from "react";
 import { CheckCircle, Clock } from "@styled-icons/bootstrap";
 import { CloseOutline } from "@styled-icons/evaicons-outline";
 import { Bar, Bars, Info, Status, Unit, Value, Container } from "./styles";
+import { nanoid } from "nanoid";
 
 export type BuildHistoryProps = {
   builds: {
@@ -47,7 +48,12 @@ const BuildHistory: FC<BuildHistoryProps> = (props) => {
       <Bars>
         <div style={{ position: "relative", width: 179 }}>
           {_builds.map(({ duration, status }, i) => (
-            <Bar max={duration} n={i + 1} success={status === "SUCCESS"} />
+            <Bar
+              key={nanoid()}
+              max={duration}
+              n={i + 1}
+              success={status === "SUCCESS"}
+            />
           ))}
         </div>
       </Bars>
