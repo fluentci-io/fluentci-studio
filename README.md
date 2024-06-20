@@ -2,6 +2,7 @@
 
 # FluentCI Studio
 
+[![.github/workflows/tests.yml](https://github.com/fluentci-io/fluentci-studio/actions/workflows/tests.yml/badge.svg)](https://github.com/fluentci-io/fluentci-studio/actions/workflows/tests.yml)
 [![build](https://github.com/fluentci-io/fluentci-studio/actions/workflows/release.yml/badge.svg)](https://github.com/fluentci-io/fluentci-studio/actions/workflows/release.yml)
 [![discord](https://img.shields.io/discord/1132020671262773358?label=discord&logo=discord&color=5865F2)](https://discord.gg/V4U6dPskKc)
 
