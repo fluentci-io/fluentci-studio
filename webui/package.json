@@ -23,7 +23,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "graphql:generate": "graphql-codegen --config codegen.yml",
-    "test": "vitest --config vite.dev.config.ts"
+    "test": "vitest --config vite.dev.config.ts",
+    "coverage": "vitest run --config vite.dev.config.ts --coverage"
   },
   "dependencies": {
     "@apollo/client": "^3.9.4",

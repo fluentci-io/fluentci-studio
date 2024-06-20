@@ -7,7 +7,7 @@ describe("Header", () => {
     const { container } = render(
       <Header
         id="1"
-        onRun={() => {}}
+        onRun={vi.fn()}
         breadcrumbs={[
           { title: "Projects", link: "/" },
           {
