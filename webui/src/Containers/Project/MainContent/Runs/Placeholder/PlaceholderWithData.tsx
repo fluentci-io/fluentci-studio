@@ -11,7 +11,14 @@ export const PlaceholderWithData: FC = () => {
     },
     fetchPolicy: "network-only",
   });
-  return <>{!loading && <Placeholder data={data?.project} />}</>;
+  const orgs = [{}];
+  return (
+    <>
+      {!loading && (
+        <Placeholder data={data?.project} projectId={id} orgs={orgs} />
+      )}
+    </>
+  );
 };
 
 export default PlaceholderWithData;

@@ -12,6 +12,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase";
 import { useRecoilState } from "recoil";
 import { AuthState } from "./Containers/Auth/AuthState";
+import LinkProject from "./Containers/LinkProject";
 
 function App() {
   const Router = location.host ? BrowserRouter : HashRouter;
@@ -40,6 +41,7 @@ function App() {
           <Route path="/settings/tokens" element={<AccessTokens />} />
           <Route path="/run/:id" element={<Run />} />
           <Route path="/project/:id" element={<Project />} />
+          <Route path="/link-project/:id" element={<LinkProject />} />
         </Routes>
       </Router>
     </>

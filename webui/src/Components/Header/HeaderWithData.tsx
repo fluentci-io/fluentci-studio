@@ -55,7 +55,10 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
       });
       return;
     }
-    if (pathname.startsWith("/project")) {
+    if (
+      pathname.startsWith("/project") ||
+      pathname.startsWith("/link-project")
+    ) {
       getProject().then(({ data }) => setProject(data?.project));
       return;
     }

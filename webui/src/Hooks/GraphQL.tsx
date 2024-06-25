@@ -78,11 +78,14 @@ export type Log = {
 export type Mutation = {
   __typename?: 'Mutation';
   createAccessToken: AccessToken;
+  createOrganization?: Maybe<Organization>;
   createProject: Project;
   deleteAccessToken: Scalars['Boolean'];
+  linkRepository?: Maybe<Repository>;
   runJob: Job;
-  runPipeline: Run;
+  runPipeline?: Maybe<Run>;
   saveActions?: Maybe<Array<Action>>;
+  unlinkRepository?: Maybe<Repository>;
 };
 
 
@@ -91,8 +94,19 @@ export type MutationCreateAccessTokenArgs = {
 };
 
 
+export type MutationCreateOrganizationArgs = {
+  name: Scalars['String'];
+};
+
+
 export type MutationDeleteAccessTokenArgs = {
   id: Scalars['ID'];
+};
+
+
+export type MutationLinkRepositoryArgs = {
+  projectId: Scalars['ID'];
+  repoName: Scalars['String'];
 };
 
 
@@ -111,6 +125,18 @@ export type MutationRunPipelineArgs = {
 export type MutationSaveActionsArgs = {
   actions: Array<ActionInput>;
   projectId: Scalars['ID'];
+};
+
+
+export type MutationUnlinkRepositoryArgs = {
+  repoName: Scalars['String'];
+};
+
+export type Organization = {
+  __typename?: 'Organization';
+  createdAt: Scalars['String'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
 };
 
 export type Package = {
@@ -167,10 +193,12 @@ export type Query = {
   log?: Maybe<Log>;
   logs: Array<Log>;
   me?: Maybe<Account>;
+  organizations: Array<Organization>;
   package?: Maybe<Package>;
   packages: Array<Package>;
   project?: Maybe<Project>;
   projects: Array<Project>;
+  repositories: Array<Repository>;
   versions: Array<Version>;
 };
 
@@ -223,6 +251,11 @@ export type QueryLogsArgs = {
 };
 
 
+export type QueryOrganizationsArgs = {
+  provider?: InputMaybe<Scalars['String']>;
+};
+
+
 export type QueryPackageArgs = {
   id: Scalars['ID'];
 };
@@ -250,8 +283,23 @@ export type QueryProjectsArgs = {
 };
 
 
+export type QueryRepositoriesArgs = {
+  organization: Scalars['String'];
+  provider: Scalars['String'];
+};
+
+
 export type QueryVersionsArgs = {
   id: Scalars['String'];
+};
+
+export type Repository = {
+  __typename?: 'Repository';
+  id: Scalars['ID'];
+  isPrivate: Scalars['Boolean'];
+  name: Scalars['String'];
+  provider: Scalars['String'];
+  repoUrl: Scalars['String'];
 };
 
 /** A Pipeline execution */
@@ -340,6 +388,10 @@ export type ActionFragmentFragment = { __typename?: 'Action', id?: string | null
 
 export type AccessTokenFragmentFragment = { __typename?: 'AccessToken', id: string, name: string, token: string, created: string };
 
+export type RepositoryFragmentFragment = { __typename?: 'Repository', id: string, name: string, provider: string, repoUrl: string, isPrivate: boolean };
+
+export type OrganizationFragmentFragment = { __typename?: 'Organization', id: string, name: string, createdAt: string };
+
 export type RunJobMutationVariables = Exact<{
   projectId?: InputMaybe<Scalars['ID']>;
   jobName?: InputMaybe<Scalars['String']>;
@@ -368,6 +420,20 @@ export type GetLogsQueryVariables = Exact<{
 
 export type GetLogsQuery = { __typename?: 'Query', logs: Array<{ __typename?: 'Log', id: string, message: string, createdAt: string }> };
 
+export type CreateOrganizationMutationVariables = Exact<{
+  name: Scalars['String'];
+}>;
+
+
+export type CreateOrganizationMutation = { __typename?: 'Mutation', createOrganization?: { __typename?: 'Organization', id: string, name: string, createdAt: string } | null };
+
+export type GetOrganizationsQueryVariables = Exact<{
+  provider: Scalars['String'];
+}>;
+
+
+export type GetOrganizationsQuery = { __typename?: 'Query', organizations: Array<{ __typename?: 'Organization', id: string, name: string, createdAt: string }> };
+
 export type CreateProjectMutationVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -395,12 +461,35 @@ export type CountProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type CountProjectsQuery = { __typename?: 'Query', countProjects: number };
 
+export type LinkRepositoryMutationVariables = Exact<{
+  projectId: Scalars['ID'];
+  repoName: Scalars['String'];
+}>;
+
+
+export type LinkRepositoryMutation = { __typename?: 'Mutation', linkRepository?: { __typename?: 'Repository', id: string, name: string, provider: string, repoUrl: string, isPrivate: boolean } | null };
+
+export type UnlinkRepositoryMutationVariables = Exact<{
+  repoName: Scalars['String'];
+}>;
+
+
+export type UnlinkRepositoryMutation = { __typename?: 'Mutation', unlinkRepository?: { __typename?: 'Repository', id: string, name: string, provider: string, repoUrl: string, isPrivate: boolean } | null };
+
+export type GetRepositoriesQueryVariables = Exact<{
+  provider: Scalars['String'];
+  organization: Scalars['String'];
+}>;
+
+
+export type GetRepositoriesQuery = { __typename?: 'Query', repositories: Array<{ __typename?: 'Repository', id: string, name: string, provider: string, repoUrl: string, isPrivate: boolean }> };
+
 export type RunPipelineMutationVariables = Exact<{
   projectId: Scalars['ID'];
 }>;
 
 
-export type RunPipelineMutation = { __typename?: 'Mutation', runPipeline: { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> } };
+export type RunPipelineMutation = { __typename?: 'Mutation', runPipeline?: { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> } | null };
 
 export type GetRunQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -498,6 +587,22 @@ export const AccessTokenFragmentFragmentDoc = gql`
   name
   token
   created
+}
+    `;
+export const RepositoryFragmentFragmentDoc = gql`
+    fragment RepositoryFragment on Repository {
+  id
+  name
+  provider
+  repoUrl
+  isPrivate
+}
+    `;
+export const OrganizationFragmentFragmentDoc = gql`
+    fragment OrganizationFragment on Organization {
+  id
+  name
+  createdAt
 }
     `;
 export const CreateAccessTokenDocument = gql`
@@ -893,6 +998,74 @@ export function useGetLogsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ge
 export type GetLogsQueryHookResult = ReturnType<typeof useGetLogsQuery>;
 export type GetLogsLazyQueryHookResult = ReturnType<typeof useGetLogsLazyQuery>;
 export type GetLogsQueryResult = Apollo.QueryResult<GetLogsQuery, GetLogsQueryVariables>;
+export const CreateOrganizationDocument = gql`
+    mutation CreateOrganization($name: String!) {
+  createOrganization(name: $name) {
+    ...OrganizationFragment
+  }
+}
+    ${OrganizationFragmentFragmentDoc}`;
+export type CreateOrganizationMutationFn = Apollo.MutationFunction<CreateOrganizationMutation, CreateOrganizationMutationVariables>;
+
+/**
+ * __useCreateOrganizationMutation__
+ *
+ * To run a mutation, you first call `useCreateOrganizationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOrganizationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOrganizationMutation, { data, loading, error }] = useCreateOrganizationMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useCreateOrganizationMutation(baseOptions?: Apollo.MutationHookOptions<CreateOrganizationMutation, CreateOrganizationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateOrganizationMutation, CreateOrganizationMutationVariables>(CreateOrganizationDocument, options);
+      }
+export type CreateOrganizationMutationHookResult = ReturnType<typeof useCreateOrganizationMutation>;
+export type CreateOrganizationMutationResult = Apollo.MutationResult<CreateOrganizationMutation>;
+export type CreateOrganizationMutationOptions = Apollo.BaseMutationOptions<CreateOrganizationMutation, CreateOrganizationMutationVariables>;
+export const GetOrganizationsDocument = gql`
+    query GetOrganizations($provider: String!) {
+  organizations(provider: $provider) {
+    ...OrganizationFragment
+  }
+}
+    ${OrganizationFragmentFragmentDoc}`;
+
+/**
+ * __useGetOrganizationsQuery__
+ *
+ * To run a query within a React component, call `useGetOrganizationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOrganizationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOrganizationsQuery({
+ *   variables: {
+ *      provider: // value for 'provider'
+ *   },
+ * });
+ */
+export function useGetOrganizationsQuery(baseOptions: Apollo.QueryHookOptions<GetOrganizationsQuery, GetOrganizationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetOrganizationsQuery, GetOrganizationsQueryVariables>(GetOrganizationsDocument, options);
+      }
+export function useGetOrganizationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOrganizationsQuery, GetOrganizationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetOrganizationsQuery, GetOrganizationsQueryVariables>(GetOrganizationsDocument, options);
+        }
+export type GetOrganizationsQueryHookResult = ReturnType<typeof useGetOrganizationsQuery>;
+export type GetOrganizationsLazyQueryHookResult = ReturnType<typeof useGetOrganizationsLazyQuery>;
+export type GetOrganizationsQueryResult = Apollo.QueryResult<GetOrganizationsQuery, GetOrganizationsQueryVariables>;
 export const CreateProjectDocument = gql`
     mutation CreateProject {
   createProject {
@@ -1030,6 +1203,109 @@ export function useCountProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type CountProjectsQueryHookResult = ReturnType<typeof useCountProjectsQuery>;
 export type CountProjectsLazyQueryHookResult = ReturnType<typeof useCountProjectsLazyQuery>;
 export type CountProjectsQueryResult = Apollo.QueryResult<CountProjectsQuery, CountProjectsQueryVariables>;
+export const LinkRepositoryDocument = gql`
+    mutation LinkRepository($projectId: ID!, $repoName: String!) {
+  linkRepository(projectId: $projectId, repoName: $repoName) {
+    ...RepositoryFragment
+  }
+}
+    ${RepositoryFragmentFragmentDoc}`;
+export type LinkRepositoryMutationFn = Apollo.MutationFunction<LinkRepositoryMutation, LinkRepositoryMutationVariables>;
+
+/**
+ * __useLinkRepositoryMutation__
+ *
+ * To run a mutation, you first call `useLinkRepositoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLinkRepositoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [linkRepositoryMutation, { data, loading, error }] = useLinkRepositoryMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      repoName: // value for 'repoName'
+ *   },
+ * });
+ */
+export function useLinkRepositoryMutation(baseOptions?: Apollo.MutationHookOptions<LinkRepositoryMutation, LinkRepositoryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LinkRepositoryMutation, LinkRepositoryMutationVariables>(LinkRepositoryDocument, options);
+      }
+export type LinkRepositoryMutationHookResult = ReturnType<typeof useLinkRepositoryMutation>;
+export type LinkRepositoryMutationResult = Apollo.MutationResult<LinkRepositoryMutation>;
+export type LinkRepositoryMutationOptions = Apollo.BaseMutationOptions<LinkRepositoryMutation, LinkRepositoryMutationVariables>;
+export const UnlinkRepositoryDocument = gql`
+    mutation UnlinkRepository($repoName: String!) {
+  unlinkRepository(repoName: $repoName) {
+    ...RepositoryFragment
+  }
+}
+    ${RepositoryFragmentFragmentDoc}`;
+export type UnlinkRepositoryMutationFn = Apollo.MutationFunction<UnlinkRepositoryMutation, UnlinkRepositoryMutationVariables>;
+
+/**
+ * __useUnlinkRepositoryMutation__
+ *
+ * To run a mutation, you first call `useUnlinkRepositoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnlinkRepositoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unlinkRepositoryMutation, { data, loading, error }] = useUnlinkRepositoryMutation({
+ *   variables: {
+ *      repoName: // value for 'repoName'
+ *   },
+ * });
+ */
+export function useUnlinkRepositoryMutation(baseOptions?: Apollo.MutationHookOptions<UnlinkRepositoryMutation, UnlinkRepositoryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnlinkRepositoryMutation, UnlinkRepositoryMutationVariables>(UnlinkRepositoryDocument, options);
+      }
+export type UnlinkRepositoryMutationHookResult = ReturnType<typeof useUnlinkRepositoryMutation>;
+export type UnlinkRepositoryMutationResult = Apollo.MutationResult<UnlinkRepositoryMutation>;
+export type UnlinkRepositoryMutationOptions = Apollo.BaseMutationOptions<UnlinkRepositoryMutation, UnlinkRepositoryMutationVariables>;
+export const GetRepositoriesDocument = gql`
+    query GetRepositories($provider: String!, $organization: String!) {
+  repositories(provider: $provider, organization: $organization) {
+    ...RepositoryFragment
+  }
+}
+    ${RepositoryFragmentFragmentDoc}`;
+
+/**
+ * __useGetRepositoriesQuery__
+ *
+ * To run a query within a React component, call `useGetRepositoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRepositoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRepositoriesQuery({
+ *   variables: {
+ *      provider: // value for 'provider'
+ *      organization: // value for 'organization'
+ *   },
+ * });
+ */
+export function useGetRepositoriesQuery(baseOptions: Apollo.QueryHookOptions<GetRepositoriesQuery, GetRepositoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRepositoriesQuery, GetRepositoriesQueryVariables>(GetRepositoriesDocument, options);
+      }
+export function useGetRepositoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRepositoriesQuery, GetRepositoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRepositoriesQuery, GetRepositoriesQueryVariables>(GetRepositoriesDocument, options);
+        }
+export type GetRepositoriesQueryHookResult = ReturnType<typeof useGetRepositoriesQuery>;
+export type GetRepositoriesLazyQueryHookResult = ReturnType<typeof useGetRepositoriesLazyQuery>;
+export type GetRepositoriesQueryResult = Apollo.QueryResult<GetRepositoriesQuery, GetRepositoriesQueryVariables>;
 export const RunPipelineDocument = gql`
     mutation RunPipeline($projectId: ID!) {
   runPipeline(projectId: $projectId) {
