@@ -1,6 +1,5 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import Repositories from "./Repositories";
-import { repositories } from "./mocks";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { RepositoriesState } from "./RepositoriesState";
 import { useNavigate, useParams } from "react-router-dom";
@@ -19,12 +18,21 @@ const RepositoriesWithData: FC = () => {
   const [repos, setRepos] = useRecoilState(RepositoriesState);
   const { id } = useParams();
   const navigate = useNavigate();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [all, setAll] = useState<any[]>([]);
 
   useEffect(() => {
     if (!data) {
       return;
     }
     setRepos(
+      data.repositories.map((x) => ({
+        id: x.id,
+        full_name: x.name,
+        private: x.isPrivate,
+      }))
+    );
+    setAll(
       data.repositories.map((x) => ({
         id: x.id,
         full_name: x.name,
@@ -47,14 +55,12 @@ const RepositoriesWithData: FC = () => {
   };
 
   const onSearch = (keyword: string) => {
-    const data = [...repositories];
-    data.reverse();
     if (!keyword) {
-      setRepos(data);
+      setRepos(all);
       return;
     }
     setRepos(
-      _.filter(data, _.method("full_name.match", new RegExp(keyword, "i")))
+      _.filter(all, _.method("full_name.match", new RegExp(keyword, "i")))
     );
   };
 
