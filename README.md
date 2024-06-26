@@ -27,8 +27,8 @@ cargo build --release
 
 ## Downloads
 
-- `Mac`: arm64: [fluentci-studio_v0.1.2_arm64.dmg](https://github.com/fluentci-io/fluentci-studio/releases/download/v0.1.2/fluentci-studio_v0.1.2_arm64.dmg) intel: [fluentci-studio_v0.1.2_x64.dmg](https://github.com/fluentci-io/fluentci-studio/releases/download/v0.1.2/fluentci-studio_v0.1.2_x64.dmg)
-- `Linux`: [fluentci-studio_v0.1.2.AppImage](https://github.com/fluentci-io/fluentci-studio/releases/download/v0.1.2/fluentci-studio_v0.1.2.AppImage)
+- `Mac`: arm64: [fluentci-studio_v0.1.3_arm64.dmg](https://github.com/fluentci-io/fluentci-studio/releases/download/v0.1.3/fluentci-studio_v0.1.3_arm64.dmg) intel: [fluentci-studio_v0.1.3_x64.dmg](https://github.com/fluentci-io/fluentci-studio/releases/download/v0.1.3/fluentci-studio_v0.1.3_x64.dmg)
+- `Linux`: [fluentci-studio_v0.1.3.AppImage](https://github.com/fluentci-io/fluentci-studio/releases/download/v0.1.3/fluentci-studio_v0.1.3.AppImage)
 
 ## Feedback
 
