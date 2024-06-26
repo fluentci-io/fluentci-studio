@@ -32,7 +32,6 @@ const OrganizationsWithData: FC = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSelect = (value: any) => {
-    console.log(value);
     setState({
       orgs,
       current: value,
