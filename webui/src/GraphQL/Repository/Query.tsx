@@ -9,3 +9,12 @@ export const GET_REPOSITORIES = gql`
   }
   ${RepositoryFragment}
 `;
+
+export const GET_LINKED_REPOSITORY = gql`
+  query GetLinkedRepository($projectId: ID!) {
+    linkedRepository(projectId: $projectId) {
+      ...RepositoryFragment
+    }
+  }
+  ${RepositoryFragment}
+`;

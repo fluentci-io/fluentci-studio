@@ -3,30 +3,38 @@ import Header from "./Header";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import {
   Project,
+  Repository,
   Run,
+  useGetActionsLazyQuery,
   useGetActionsQuery,
+  useGetLinkedRepositoryLazyQuery,
   useGetProjectLazyQuery,
   useGetRunLazyQuery,
   useRunPipelineMutation,
 } from "../../Hooks/GraphQL";
 import { useRecoilValue } from "recoil";
 import { ComposerState } from "../../Containers/Project/MainContent/Composer/ComposerState";
+import { AuthState } from "../../Containers/Auth/AuthState";
 
 export type HeaderWithDataProps = {
   breadcrumbs?: { title: string; link?: string }[];
 };
 
 const HeaderWithData: FC<HeaderWithDataProps> = () => {
+  const me = useRecoilValue(AuthState);
   const composerState = useRecoilValue(ComposerState);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { id } = useParams();
   const [project, setProject] = useState<Project | null | undefined>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [actions, setActions] = useState<any[]>([]);
   const [run, setRun] = useState<Run | null | undefined>(null);
   const [getProject] = useGetProjectLazyQuery({
     variables: {
       id: id!,
     },
+    fetchPolicy: "network-only",
   });
   const [getRun] = useGetRunLazyQuery({
     variables: {
@@ -34,11 +42,17 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
     },
   });
   const [runPipeline] = useRunPipelineMutation();
-  const { data, refetch } = useGetActionsQuery({
+  const [getActions] = useGetActionsLazyQuery();
+  const { data } = useGetActionsQuery({
     variables: {
       projectId: project?.id || "",
     },
+    fetchPolicy: "network-only",
   });
+  const [linkedRepository, setLinkedRepository] = useState<
+    Repository | null | undefined
+  >(null);
+  const [getLinkedRepository] = useGetLinkedRepositoryLazyQuery();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -64,6 +78,24 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
+
+  useEffect(() => {
+    if (!me || !project) {
+      return;
+    }
+    getLinkedRepository({
+      variables: {
+        projectId: project.id,
+      },
+    }).then((res) => setLinkedRepository(res.data?.linkedRepository));
+  }, [me, getLinkedRepository, project]);
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    setActions(data.actions || []);
+  }, [data]);
 
   const onRun = () => {
     runPipeline({
@@ -97,7 +129,20 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
   }
 
   useEffect(() => {
-    refetch();
+    if (!project) {
+      return;
+    }
+    setTimeout(() => {
+      getActions({
+        variables: {
+          projectId: project.id,
+        },
+        fetchPolicy: "network-only",
+      }).then(({ data }) => {
+        setActions(data?.actions || []);
+      });
+    }, 1000);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [composerState]);
 
@@ -106,9 +151,10 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
       id="1"
       onRun={onRun}
       breadcrumbs={breadcrumbs}
-      hideRunButton={
-        !data?.actions?.filter((x) => x.enabled).length ||
-        project?.path === "empty"
+      showRunButton={
+        !!actions?.filter((x) => x.enabled).length ||
+        (project?.path !== "empty" && !linkedRepository) ||
+        (!!linkedRepository && !!actions?.filter((x) => x.enabled).length)
       }
       loading={loading}
     />

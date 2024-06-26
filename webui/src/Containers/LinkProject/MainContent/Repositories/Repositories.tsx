@@ -10,17 +10,23 @@ import { Repo } from "@styled-icons/octicons";
 export type RepositoriesProps = {
   repos: any[];
   onLink: (repo: any) => void;
+  onUnlink: (repo: any) => void;
   onSearch: (value: string) => void;
 };
 
-const Repositories: FC<RepositoriesProps> = ({ repos, onLink, onSearch }) => {
+const Repositories: FC<RepositoriesProps> = ({
+  repos,
+  onLink,
+  onUnlink,
+  onSearch,
+}) => {
   return (
     <>
       <div style={{ marginBottom: 20, width: 300 }}>
         <Input
           placeholder="Search"
           overrides={styles.Input}
-          onChange={(e) => onSearch(e.target.value)}
+          onChange={(e) => onSearch(e.target.value.trim())}
           clearable
           clearOnEscape
           startEnhancer={<SearchOutline size={24} color="#ffffff5a" />}
@@ -56,7 +62,10 @@ const Repositories: FC<RepositoriesProps> = ({ repos, onLink, onSearch }) => {
             )}
           </div>
 
-          <Button onClick={() => onLink(item)}>Link</Button>
+          {!item.linked && <Button onClick={() => onLink(item)}>Link</Button>}
+          {item.linked && (
+            <Button onClick={() => onUnlink(item)}>Unlink</Button>
+          )}
         </RepoRow>
       ))}
     </>

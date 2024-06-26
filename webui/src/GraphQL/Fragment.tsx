@@ -88,6 +88,7 @@ export const RepositoryFragment = gql`
     provider
     repoUrl
     isPrivate
+    linked
   }
 `;
 

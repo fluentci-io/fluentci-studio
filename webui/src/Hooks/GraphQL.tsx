@@ -190,6 +190,7 @@ export type Query = {
   getRuns?: Maybe<Array<Run>>;
   job?: Maybe<Job>;
   jobs: Array<Job>;
+  linkedRepository?: Maybe<Repository>;
   log?: Maybe<Log>;
   logs: Array<Log>;
   me?: Maybe<Account>;
@@ -245,6 +246,11 @@ export type QueryJobArgs = {
 };
 
 
+export type QueryLinkedRepositoryArgs = {
+  projectId: Scalars['ID'];
+};
+
+
 export type QueryLogsArgs = {
   jobId?: InputMaybe<Scalars['ID']>;
   projectId?: InputMaybe<Scalars['ID']>;
@@ -297,6 +303,7 @@ export type Repository = {
   __typename?: 'Repository';
   id: Scalars['ID'];
   isPrivate: Scalars['Boolean'];
+  linked: Scalars['Boolean'];
   name: Scalars['String'];
   provider: Scalars['String'];
   repoUrl: Scalars['String'];
@@ -388,7 +395,7 @@ export type ActionFragmentFragment = { __typename?: 'Action', id?: string | null
 
 export type AccessTokenFragmentFragment = { __typename?: 'AccessToken', id: string, name: string, token: string, created: string };
 
-export type RepositoryFragmentFragment = { __typename?: 'Repository', id: string, name: string, provider: string, repoUrl: string, isPrivate: boolean };
+export type RepositoryFragmentFragment = { __typename?: 'Repository', id: string, name: string, provider: string, repoUrl: string, isPrivate: boolean, linked: boolean };
 
 export type OrganizationFragmentFragment = { __typename?: 'Organization', id: string, name: string, createdAt: string };
 
@@ -467,14 +474,14 @@ export type LinkRepositoryMutationVariables = Exact<{
 }>;
 
 
-export type LinkRepositoryMutation = { __typename?: 'Mutation', linkRepository?: { __typename?: 'Repository', id: string, name: string, provider: string, repoUrl: string, isPrivate: boolean } | null };
+export type LinkRepositoryMutation = { __typename?: 'Mutation', linkRepository?: { __typename?: 'Repository', id: string, name: string, provider: string, repoUrl: string, isPrivate: boolean, linked: boolean } | null };
 
 export type UnlinkRepositoryMutationVariables = Exact<{
   repoName: Scalars['String'];
 }>;
 
 
-export type UnlinkRepositoryMutation = { __typename?: 'Mutation', unlinkRepository?: { __typename?: 'Repository', id: string, name: string, provider: string, repoUrl: string, isPrivate: boolean } | null };
+export type UnlinkRepositoryMutation = { __typename?: 'Mutation', unlinkRepository?: { __typename?: 'Repository', id: string, name: string, provider: string, repoUrl: string, isPrivate: boolean, linked: boolean } | null };
 
 export type GetRepositoriesQueryVariables = Exact<{
   provider: Scalars['String'];
@@ -482,7 +489,14 @@ export type GetRepositoriesQueryVariables = Exact<{
 }>;
 
 
-export type GetRepositoriesQuery = { __typename?: 'Query', repositories: Array<{ __typename?: 'Repository', id: string, name: string, provider: string, repoUrl: string, isPrivate: boolean }> };
+export type GetRepositoriesQuery = { __typename?: 'Query', repositories: Array<{ __typename?: 'Repository', id: string, name: string, provider: string, repoUrl: string, isPrivate: boolean, linked: boolean }> };
+
+export type GetLinkedRepositoryQueryVariables = Exact<{
+  projectId: Scalars['ID'];
+}>;
+
+
+export type GetLinkedRepositoryQuery = { __typename?: 'Query', linkedRepository?: { __typename?: 'Repository', id: string, name: string, provider: string, repoUrl: string, isPrivate: boolean, linked: boolean } | null };
 
 export type RunPipelineMutationVariables = Exact<{
   projectId: Scalars['ID'];
@@ -596,6 +610,7 @@ export const RepositoryFragmentFragmentDoc = gql`
   provider
   repoUrl
   isPrivate
+  linked
 }
     `;
 export const OrganizationFragmentFragmentDoc = gql`
@@ -1306,6 +1321,41 @@ export function useGetRepositoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetRepositoriesQueryHookResult = ReturnType<typeof useGetRepositoriesQuery>;
 export type GetRepositoriesLazyQueryHookResult = ReturnType<typeof useGetRepositoriesLazyQuery>;
 export type GetRepositoriesQueryResult = Apollo.QueryResult<GetRepositoriesQuery, GetRepositoriesQueryVariables>;
+export const GetLinkedRepositoryDocument = gql`
+    query GetLinkedRepository($projectId: ID!) {
+  linkedRepository(projectId: $projectId) {
+    ...RepositoryFragment
+  }
+}
+    ${RepositoryFragmentFragmentDoc}`;
+
+/**
+ * __useGetLinkedRepositoryQuery__
+ *
+ * To run a query within a React component, call `useGetLinkedRepositoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLinkedRepositoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLinkedRepositoryQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useGetLinkedRepositoryQuery(baseOptions: Apollo.QueryHookOptions<GetLinkedRepositoryQuery, GetLinkedRepositoryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetLinkedRepositoryQuery, GetLinkedRepositoryQueryVariables>(GetLinkedRepositoryDocument, options);
+      }
+export function useGetLinkedRepositoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLinkedRepositoryQuery, GetLinkedRepositoryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetLinkedRepositoryQuery, GetLinkedRepositoryQueryVariables>(GetLinkedRepositoryDocument, options);
+        }
+export type GetLinkedRepositoryQueryHookResult = ReturnType<typeof useGetLinkedRepositoryQuery>;
+export type GetLinkedRepositoryLazyQueryHookResult = ReturnType<typeof useGetLinkedRepositoryLazyQuery>;
+export type GetLinkedRepositoryQueryResult = Apollo.QueryResult<GetLinkedRepositoryQuery, GetLinkedRepositoryQueryVariables>;
 export const RunPipelineDocument = gql`
     mutation RunPipeline($projectId: ID!) {
   runPipeline(projectId: $projectId) {

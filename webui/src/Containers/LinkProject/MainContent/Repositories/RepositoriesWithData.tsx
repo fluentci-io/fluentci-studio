@@ -4,11 +4,17 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { RepositoriesState } from "./RepositoriesState";
 import { useNavigate, useParams } from "react-router-dom";
 import _ from "lodash";
-import { useGetRepositoriesQuery } from "../../../../Hooks/GraphQL";
+import {
+  useGetRepositoriesQuery,
+  useLinkRepositoryMutation,
+  useUnlinkRepositoryMutation,
+} from "../../../../Hooks/GraphQL";
 import { OrganizationsState } from "../Organizations/OrganizationsState";
 
 const RepositoriesWithData: FC = () => {
   const { current } = useRecoilValue(OrganizationsState);
+  const [linkRepository] = useLinkRepositoryMutation();
+  const [unlinkRepository] = useUnlinkRepositoryMutation();
   const { data, refetch } = useGetRepositoriesQuery({
     variables: {
       provider: "GitHub",
@@ -30,6 +36,7 @@ const RepositoriesWithData: FC = () => {
         id: x.id,
         full_name: x.name,
         private: x.isPrivate,
+        linked: x.linked,
       }))
     );
     setAll(
@@ -37,6 +44,7 @@ const RepositoriesWithData: FC = () => {
         id: x.id,
         full_name: x.name,
         private: x.isPrivate,
+        linked: x.linked,
       }))
     );
   }, [setRepos, data]);
@@ -50,8 +58,28 @@ const RepositoriesWithData: FC = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onLink = (value: any) => {
-    console.log(value);
-    navigate(`/project/${id}`);
+    linkRepository({
+      variables: {
+        projectId: id!,
+        repoName: value.full_name,
+      },
+    }).then(() => {
+      navigate(`/project/${id}`);
+    });
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onUnlink = (value: any) => {
+    unlinkRepository({
+      variables: {
+        repoName: value.full_name,
+      },
+    }).then(() => {
+      refetch({
+        provider: "GitHub",
+        organization: _.get(current, "0.label", ""),
+      });
+    });
   };
 
   const onSearch = (keyword: string) => {
@@ -64,7 +92,14 @@ const RepositoriesWithData: FC = () => {
     );
   };
 
-  return <Repositories repos={repos} onLink={onLink} onSearch={onSearch} />;
+  return (
+    <Repositories
+      repos={repos}
+      onLink={onLink}
+      onUnlink={onUnlink}
+      onSearch={onSearch}
+    />
+  );
 };
 
 export default RepositoriesWithData;
