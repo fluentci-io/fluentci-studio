@@ -80,3 +80,22 @@ export const AccessTokenFragment = gql`
     created
   }
 `;
+
+export const RepositoryFragment = gql`
+  fragment RepositoryFragment on Repository {
+    id
+    name
+    provider
+    repoUrl
+    isPrivate
+    linked
+  }
+`;
+
+export const OrganizationFragment = gql`
+  fragment OrganizationFragment on Organization {
+    id
+    name
+    createdAt
+  }
+`;

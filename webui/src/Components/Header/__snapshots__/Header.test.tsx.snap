@@ -57,11 +57,6 @@ exports[`Header > should render the component 1`] = `
         </li>
       </ol>
     </nav>
-    <button
-      class="css-vl70gq"
-    >
-      Run
-    </button>
   </div>
 </div>
 `;

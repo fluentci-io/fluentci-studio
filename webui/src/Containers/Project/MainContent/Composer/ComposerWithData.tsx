@@ -16,6 +16,7 @@ const ComposerWithData: FC = () => {
     variables: {
       projectId: id!,
     },
+    fetchPolicy: "cache-and-network",
   });
   const [saveActions] = useSaveActionsMutation();
   const mode = useRecoilValue(ViewModeState);

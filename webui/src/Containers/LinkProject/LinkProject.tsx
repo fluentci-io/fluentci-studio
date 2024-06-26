@@ -1,8 +1,8 @@
 import { FC } from "react";
 import styled from "@emotion/styled";
-import MainContent from "./MainContent";
 import Titlebar from "../../Components/Titlebar";
 import Navbar from "../../Components/Navbar";
+import MainContent from "./MainContent";
 
 const Container = styled.div`
   height: calc(100vh - 30px);
@@ -11,7 +11,7 @@ const Container = styled.div`
   overflow-y: auto;
 `;
 
-const Project: FC = () => {
+const LinkProject: FC = () => {
   return (
     <>
       <Titlebar />
@@ -23,4 +23,4 @@ const Project: FC = () => {
   );
 };
 
-export default Project;
+export default LinkProject;

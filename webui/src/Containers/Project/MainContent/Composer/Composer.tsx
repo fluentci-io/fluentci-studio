@@ -49,7 +49,8 @@ const Composer: FC<ComposerProps> = (props) => {
 
   function onDuplicate(position: number) {
     const updated = [...actions];
-    updated.splice(position, 0, actions[position]);
+    const newAction = actions[position];
+    updated.splice(position, 0, newAction);
     setActions(updated);
   }
 
@@ -76,7 +77,7 @@ const Composer: FC<ComposerProps> = (props) => {
             </PlusButton>
           )}
           {actions.map((action, index) => (
-            <div key={action.id}>
+            <div key={index.toString()}>
               <PlusButton
                 onClick={() => {
                   setEditAction(false);

@@ -34,7 +34,7 @@ const RunWithData: FC = () => {
     variables: {
       id: id!,
     },
-    fetchPolicy: "network-only",
+    fetchPolicy: "cache-and-network",
   });
   const { lastJsonMessage } = useWebSocket<{
     channel: string;

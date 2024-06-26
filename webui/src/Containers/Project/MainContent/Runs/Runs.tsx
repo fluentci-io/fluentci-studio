@@ -11,6 +11,7 @@ import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import Duration from "../../../../Components/Duration";
 import { Pagination } from "baseui/pagination";
+import ContentLoader from "react-content-loader";
 
 dayjs.extend(duration);
 
@@ -42,8 +43,28 @@ const Runs: FC<RunsProps> = (props) => {
 
   return (
     <>
+      {loading && (
+        <ContentLoader
+          speed={2}
+          width={1200}
+          height={500}
+          viewBox="0 0 1200 500"
+          backgroundColor="#170234"
+          foregroundColor="#2f0272"
+          {...props}
+        >
+          <circle cx="10" cy="40" r="8" />
+          <rect x="35" y="35" rx="5" ry="5" width="1000" height="10" />
+          <circle cx="10" cy="90" r="8" />
+          <rect x="35" y="85" rx="5" ry="5" width="1000" height="10" />
+          <circle cx="10" cy="140" r="8" />
+          <rect x="35" y="135" rx="5" ry="5" width="1000" height="10" />
+          <circle cx="10" cy="190" r="8" />
+          <rect x="35" y="185" rx="5" ry="5" width="1000" height="10" />
+        </ContentLoader>
+      )}
       {data.length === 0 && !loading && <Placeholder />}
-      {data.length > 0 && (
+      {data.length > 0 && !loading && (
         <div>
           {data.map((item, index) => (
             <Link to={`/run/${item.id}`} key={item.id}>
