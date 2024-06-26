@@ -34,7 +34,7 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
     variables: {
       id: id!,
     },
-    fetchPolicy: "network-only",
+    fetchPolicy: "cache-and-network",
   });
   const [getRun] = useGetRunLazyQuery({
     variables: {
@@ -47,7 +47,7 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
     variables: {
       projectId: project?.id || "",
     },
-    fetchPolicy: "network-only",
+    fetchPolicy: "cache-and-network",
   });
   const [linkedRepository, setLinkedRepository] = useState<
     Repository | null | undefined
@@ -64,6 +64,7 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
             variables: {
               id: data.getRun.projectId,
             },
+            fetchPolicy: "cache-and-network",
           }).then(({ data }) => setProject(data?.project));
         }
       });
@@ -73,7 +74,12 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
       pathname.startsWith("/project") ||
       pathname.startsWith("/link-project")
     ) {
-      getProject().then(({ data }) => setProject(data?.project));
+      getProject({
+        variables: {
+          id: id!,
+        },
+        fetchPolicy: "cache-and-network",
+      }).then(({ data }) => setProject(data?.project));
       return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -87,6 +93,7 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
       variables: {
         projectId: project.id,
       },
+      fetchPolicy: "cache-and-network",
     }).then((res) => setLinkedRepository(res.data?.linkedRepository));
   }, [me, getLinkedRepository, project]);
 
@@ -137,11 +144,11 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
         variables: {
           projectId: project.id,
         },
-        fetchPolicy: "network-only",
+        fetchPolicy: "cache-and-network",
       }).then(({ data }) => {
         setActions(data?.actions || []);
       });
-    }, 1000);
+    }, 1500);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [composerState]);
@@ -152,9 +159,11 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
       onRun={onRun}
       breadcrumbs={breadcrumbs}
       showRunButton={
-        !!actions?.filter((x) => x.enabled).length ||
-        (project?.path !== "empty" && !linkedRepository) ||
-        (!!linkedRepository && !!actions?.filter((x) => x.enabled).length)
+        !!project &&
+        !pathname.startsWith("/link-project") &&
+        (!!actions?.filter((x) => x.enabled).length ||
+          (project?.path !== "empty" && !linkedRepository) ||
+          (!!linkedRepository && !!actions?.filter((x) => x.enabled).length))
       }
       loading={loading}
     />

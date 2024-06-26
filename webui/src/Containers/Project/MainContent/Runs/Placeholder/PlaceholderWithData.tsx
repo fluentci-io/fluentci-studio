@@ -19,9 +19,11 @@ export const PlaceholderWithData: FC = () => {
     variables: {
       id: id!,
     },
-    fetchPolicy: "network-only",
+    fetchPolicy: "cache-and-network",
   });
-  const [getLinkedRepository] = useGetLinkedRepositoryLazyQuery();
+  const [getLinkedRepository] = useGetLinkedRepositoryLazyQuery({
+    fetchPolicy: "cache-and-network",
+  });
 
   useEffect(() => {
     if (!me || !id) {
@@ -31,6 +33,7 @@ export const PlaceholderWithData: FC = () => {
       variables: {
         projectId: id!,
       },
+      fetchPolicy: "cache-and-network",
     }).then((res) => setLinkedRepository(res.data?.linkedRepository));
   }, [me, getLinkedRepository, id]);
 

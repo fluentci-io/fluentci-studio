@@ -17,7 +17,7 @@ const CodePreviewWithData: FC = () => {
       projectId: id!,
       plateform: plateform[0].id,
     },
-    fetchPolicy: "network-only",
+    fetchPolicy: "cache-and-network",
   });
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const CodePreviewWithData: FC = () => {
         projectId: id!,
         plateform: plateform[0].id,
       },
-      fetchPolicy: "network-only",
+      fetchPolicy: "cache-and-network",
     }).then(({ data }) => {
       setCode(data?.exportActions || "");
     });

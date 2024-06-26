@@ -64,7 +64,9 @@ const RepositoriesWithData: FC = () => {
         repoName: value.full_name,
       },
     }).then(() => {
-      navigate(`/project/${id}`);
+      setTimeout(() => {
+        navigate(`/project/${id}`);
+      }, 1000);
     });
   };
 

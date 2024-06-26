@@ -9,6 +9,7 @@ const OrganizationsWithData: FC = () => {
     variables: {
       provider: "GitHub",
     },
+    fetchPolicy: "cache-and-network",
   });
   const [{ orgs, current }, setState] = useRecoilState(OrganizationsState);
 
@@ -23,7 +24,9 @@ const OrganizationsWithData: FC = () => {
     }));
     setState({
       orgs: organizations,
-      current: organizations.length ? [organizations[0]] : [],
+      current: organizations.length
+        ? [organizations[organizations.length - 1]]
+        : [],
     });
   }, [setState, data]);
 
