@@ -69,10 +69,10 @@ const Run: FC<RunProps> = (props) => {
                 title={
                   <Action disabled={item.status === "PENDING"}>
                     <Status>
-                      {key.toString() != expandedIndex! && key !== 2 && (
+                      {key.toString() != expandedIndex! && (
                         <ChevronRight size={24} />
                       )}
-                      {key.toString() == expandedIndex! && key !== 2 && (
+                      {key.toString() == expandedIndex! && (
                         <ChevronDown size={24} />
                       )}
                     </Status>
