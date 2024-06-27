@@ -14,12 +14,7 @@ export type RepositoriesProps = {
   onSearch: (value: string) => void;
 };
 
-const Repositories: FC<RepositoriesProps> = ({
-  repos,
-  onLink,
-  onUnlink,
-  onSearch,
-}) => {
+const Repositories: FC<RepositoriesProps> = ({ repos, onLink, onSearch }) => {
   return (
     <>
       <div style={{ marginBottom: 20, width: 300 }}>
@@ -62,10 +57,7 @@ const Repositories: FC<RepositoriesProps> = ({
             )}
           </div>
 
-          {!item.linked && <Button onClick={() => onLink(item)}>Link</Button>}
-          {item.linked && (
-            <Button onClick={() => onUnlink(item)}>Unlink</Button>
-          )}
+          <Button onClick={() => onLink(item)}>Link</Button>
         </RepoRow>
       ))}
     </>
