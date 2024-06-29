@@ -91,6 +91,7 @@ export const Path = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;
   width: 100%;
+  margin-bottom: 10px;
 `;
 
 export default {

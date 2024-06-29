@@ -32,15 +32,35 @@ const MainContent: FC<MainContentProps> = (props) => {
           <Link
             to={`/project/${item.id}`}
             key={index}
-            style={{ marginBottom: 25 }}
+            style={{ marginBottom: 25, position: "relative" }}
           >
             <ProjectWrapper>
               <PictureWrapper>
                 <Picture src={item.picture} />
               </PictureWrapper>
               <div style={{ width: "calc(50% - 40px)" }}>
-                <div>{item.name}</div>
-                <Path>{item.path !== "empty" ? item.path : ""}</Path>
+                <div>{item.displayName || item.name}</div>
+                {item.path !== "empty" && !!item.path && (
+                  <Path>{item.path}</Path>
+                )}
+                <div>
+                  {item.tags?.map((tag) => (
+                    <span
+                      style={{
+                        fontSize: 11,
+                        color: "#00f9ed",
+                        backgroundColor: "#00f9ec1c",
+                        padding: 4,
+                        paddingLeft: 6,
+                        paddingRight: 6,
+                        borderRadius: 14,
+                        marginRight: 5,
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
               {_.get(item, "recentRuns.0.status") && (
                 <BuildHistory

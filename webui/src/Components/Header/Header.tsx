@@ -1,10 +1,18 @@
 import { FC } from "react";
+import { Github } from "@styled-icons/bootstrap";
 import { EllipsisVertical } from "@styled-icons/fa-solid";
 import { StatefulPopover } from "baseui/popover";
 import { StatefulMenu } from "baseui/menu";
 import { Breadcrumbs } from "baseui/breadcrumbs";
-import styles, { Link, Container, RunButton, PopoverButton } from "./styles";
+import styles, {
+  Link,
+  Container,
+  RunButton,
+  PopoverButton,
+  GithubLink,
+} from "./styles";
 import { Spinner } from "baseui/spinner";
+import { Project, Repository } from "../../Hooks/GraphQL";
 
 export type HeaderProps = {
   id: string;
@@ -13,40 +21,82 @@ export type HeaderProps = {
   breadcrumbs?: { title: string; link?: string }[];
   showRunButton?: boolean;
   loading?: boolean;
+  linkedRepository?: Repository | null;
+  project?: Project | null;
 };
 
 const Header: FC<HeaderProps> = (props) => {
-  const { id, breadcrumbs, onRun, menu, showRunButton } = props;
+  const { id, breadcrumbs, onRun, menu, showRunButton, linkedRepository } =
+    props;
   return (
     <Container>
-      <Breadcrumbs
-        overrides={{
-          Root: {
-            style: {
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              flex: 1,
-            },
-          },
-          ListItem: {
-            style: ({ $theme }) => ({
-              fontFamily: $theme.primaryFontFamily,
-            }),
-          },
+      <div
+        style={{
+          marginRight: 15,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        {breadcrumbs?.map(({ title, link }, index) => {
-          if (link) {
-            return (
-              <Link key={index} to={link} style={{ color: "#ffffffb0" }}>
-                {title}
-              </Link>
-            );
-          }
-          return <span key={index}>{title}</span>;
-        })}
-      </Breadcrumbs>
+        <img
+          src={props.project?.picture}
+          style={{ maxHeight: 34, maxWidth: 34 }}
+        />
+      </div>
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
+        <Breadcrumbs
+          overrides={{
+            Root: {
+              style: {
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                flex: 1,
+              },
+            },
+            ListItem: {
+              style: ({ $theme }) => ({
+                fontFamily: $theme.primaryFontFamily,
+              }),
+            },
+          }}
+        >
+          {breadcrumbs?.map(({ title, link }, index) => {
+            if (link) {
+              return (
+                <Link key={index} to={link} style={{ color: "#ffffffb0" }}>
+                  {title}
+                </Link>
+              );
+            }
+            return <span key={index}>{title}</span>;
+          })}
+        </Breadcrumbs>
+        <p
+          style={{
+            fontSize: 14,
+            margin: 0,
+            marginTop: 3,
+            color: "rgba(255, 255, 255, 0.75)",
+          }}
+        >
+          {props.project?.description}
+        </p>
+      </div>
+      {linkedRepository && (
+        <div style={{ display: "flex", alignItems: "center", marginRight: 20 }}>
+          <GithubLink href={linkedRepository.repoUrl} target="_blank">
+            <Github size={20} />
+          </GithubLink>
+        </div>
+      )}
       {!!menu?.length && (
         <StatefulPopover
           placement="bottomRight"

@@ -12,9 +12,10 @@ import {
   useGetRunLazyQuery,
   useRunPipelineMutation,
 } from "../../Hooks/GraphQL";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { ComposerState } from "../../Containers/Project/MainContent/Composer/ComposerState";
 import { AuthState } from "../../Containers/Auth/AuthState";
+import { ProjectState } from "../../Containers/Project/ProjectState";
 
 export type HeaderWithDataProps = {
   breadcrumbs?: { title: string; link?: string }[];
@@ -26,7 +27,7 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { id } = useParams();
-  const [project, setProject] = useState<Project | null | undefined>(null);
+  const [{ project }, setProjectState] = useRecoilState(ProjectState);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [actions, setActions] = useState<any[]>([]);
   const [run, setRun] = useState<Run | null | undefined>(null);
@@ -45,7 +46,7 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
   const [getActions] = useGetActionsLazyQuery();
   const { data } = useGetActionsQuery({
     variables: {
-      projectId: project?.id || "",
+      projectId: id!,
     },
     fetchPolicy: "cache-and-network",
   });
@@ -54,6 +55,9 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
   >(null);
   const [getLinkedRepository] = useGetLinkedRepositoryLazyQuery();
   const [loading, setLoading] = useState(false);
+
+  const setProject = (value?: Project | null) =>
+    setProjectState({ project: value });
 
   useEffect(() => {
     if (pathname.startsWith("/run")) {
@@ -86,16 +90,16 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
   }, [pathname]);
 
   useEffect(() => {
-    if (!me || !project) {
+    if (!me || !id) {
       return;
     }
     getLinkedRepository({
       variables: {
-        projectId: project.id,
+        projectId: pathname.startsWith("/run") ? project!.id : id,
       },
-      fetchPolicy: "cache-and-network",
+      fetchPolicy: "network-only",
     }).then((res) => setLinkedRepository(res.data?.linkedRepository));
-  }, [me, getLinkedRepository, project]);
+  }, [me, getLinkedRepository, id, project, pathname]);
 
   useEffect(() => {
     if (!data) {
@@ -124,7 +128,7 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
       link: "/",
     },
     {
-      title: project?.name || "",
+      title: project?.displayName || project?.name || "",
       link: run && project?.id ? `/project/${project.id}` : undefined,
     },
   ];
@@ -142,7 +146,7 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
     setTimeout(() => {
       getActions({
         variables: {
-          projectId: project.id,
+          projectId: pathname.startsWith("/run") ? project!.id : id!,
         },
         fetchPolicy: "cache-and-network",
       }).then(({ data }) => {
@@ -161,11 +165,14 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
       showRunButton={
         !!project &&
         !pathname.startsWith("/link-project") &&
-        (!!actions?.filter((x) => x.enabled).length ||
+        ((project?.path !== "empty" &&
+          !!actions?.filter((x) => x.enabled).length) ||
           (project?.path !== "empty" && !linkedRepository) ||
           (!!linkedRepository && !!actions?.filter((x) => x.enabled).length))
       }
       loading={loading}
+      linkedRepository={linkedRepository}
+      project={project}
     />
   );
 };

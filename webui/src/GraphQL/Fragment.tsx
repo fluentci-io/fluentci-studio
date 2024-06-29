@@ -28,6 +28,9 @@ export const ProjectFragment = gql`
   fragment ProjectFragment on Project {
     id
     name
+    displayName
+    description
+    tags
     path
     createdAt
     picture
