@@ -50,6 +50,13 @@ export const PopoverButton = styled.button`
   margin-right: 10px;
 `;
 
+export const GithubLink = styled.a`
+  color: #fff;
+  &:hover {
+    color: #24ffb5;
+  }
+`;
+
 export default {
   Tab: {
     Tab: {

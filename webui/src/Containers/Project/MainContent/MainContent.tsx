@@ -2,10 +2,12 @@ import { FC, useState } from "react";
 import { Tabs, Tab } from "baseui/tabs-motion";
 import { CollectionPlay } from "@styled-icons/bootstrap";
 import { SettingsOutline } from "@styled-icons/evaicons-outline";
+import { Options } from "@styled-icons/fluentui-system-regular";
 import Runs from "./Runs";
 import Composer from "./Composer";
 import styles, { Container } from "./styles";
 import Header from "../../../Components/Header";
+import Settings from "./Settings";
 
 export type MainContentProps = {
   onTabChange: (activeKey: string) => void;
@@ -47,6 +49,17 @@ const MainContent: FC<MainContentProps> = ({ onTabChange }) => {
           overrides={styles.Tab}
         >
           <Composer />
+        </Tab>
+        <Tab
+          title={
+            <>
+              <Options size={24} />
+              <span style={{ marginLeft: 15 }}>Settings</span>
+            </>
+          }
+          overrides={styles.Tab}
+        >
+          <Settings />
         </Tab>
       </Tabs>
     </Container>

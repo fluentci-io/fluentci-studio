@@ -1,10 +1,18 @@
 import { FC } from "react";
+import { Github } from "@styled-icons/bootstrap";
 import { EllipsisVertical } from "@styled-icons/fa-solid";
 import { StatefulPopover } from "baseui/popover";
 import { StatefulMenu } from "baseui/menu";
 import { Breadcrumbs } from "baseui/breadcrumbs";
-import styles, { Link, Container, RunButton, PopoverButton } from "./styles";
+import styles, {
+  Link,
+  Container,
+  RunButton,
+  PopoverButton,
+  GithubLink,
+} from "./styles";
 import { Spinner } from "baseui/spinner";
+import { Repository } from "../../Hooks/GraphQL";
 
 export type HeaderProps = {
   id: string;
@@ -13,10 +21,12 @@ export type HeaderProps = {
   breadcrumbs?: { title: string; link?: string }[];
   showRunButton?: boolean;
   loading?: boolean;
+  linkedRepository?: Repository | null;
 };
 
 const Header: FC<HeaderProps> = (props) => {
-  const { id, breadcrumbs, onRun, menu, showRunButton } = props;
+  const { id, breadcrumbs, onRun, menu, showRunButton, linkedRepository } =
+    props;
   return (
     <Container>
       <Breadcrumbs
@@ -47,6 +57,13 @@ const Header: FC<HeaderProps> = (props) => {
           return <span key={index}>{title}</span>;
         })}
       </Breadcrumbs>
+      {linkedRepository && (
+        <div style={{ display: "flex", alignItems: "center", marginRight: 20 }}>
+          <GithubLink href={linkedRepository.repoUrl} target="_blank">
+            <Github size={20} />
+          </GithubLink>
+        </div>
+      )}
       {!!menu?.length && (
         <StatefulPopover
           placement="bottomRight"
