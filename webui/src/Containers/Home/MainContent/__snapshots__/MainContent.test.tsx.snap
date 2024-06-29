@@ -22,7 +22,7 @@ exports[`MainContent > should render the component 1`] = `
       </div>
       <a
         href="/project/hlv89kwqiwkkcizuhhz2vjwf"
-        style="margin-bottom: 25px;"
+        style="margin-bottom: 25px; position: relative;"
       >
         <div
           class="css-tg1f9m"
@@ -42,10 +42,11 @@ exports[`MainContent > should render the component 1`] = `
               stoic-leavitt
             </div>
             <div
-              class="css-1i2dl4g"
+              class="css-dz1vxl"
             >
               /home/tsirysndr/Documents/github/base-pipeline/example
             </div>
+            <div />
           </div>
           <div
             class="css-mxqn1d"
@@ -208,7 +209,7 @@ exports[`MainContent > should render the component 1`] = `
       </a>
       <a
         href="/project/w92rv9wl2lmir1106ds8sz8m"
-        style="margin-bottom: 25px;"
+        style="margin-bottom: 25px; position: relative;"
       >
         <div
           class="css-tg1f9m"
@@ -228,10 +229,11 @@ exports[`MainContent > should render the component 1`] = `
               agitated-williams
             </div>
             <div
-              class="css-1i2dl4g"
+              class="css-dz1vxl"
             >
               /home/tsirysndr/Documents/github/bun-pipeline/example
             </div>
+            <div />
           </div>
           <div
             class="css-mxqn1d"
@@ -394,7 +396,7 @@ exports[`MainContent > should render the component 1`] = `
       </a>
       <a
         href="/project/q1j0ho1na7uo00u4iceqp7ot"
-        style="margin-bottom: 25px;"
+        style="margin-bottom: 25px; position: relative;"
       >
         <div
           class="css-tg1f9m"
@@ -414,10 +416,11 @@ exports[`MainContent > should render the component 1`] = `
               flamboyant-visvesvaraya
             </div>
             <div
-              class="css-1i2dl4g"
+              class="css-dz1vxl"
             >
               /home/tsirysndr/Documents/github/go-pipeline/example
             </div>
+            <div />
           </div>
           <div
             class="css-mxqn1d"
@@ -580,7 +583,7 @@ exports[`MainContent > should render the component 1`] = `
       </a>
       <a
         href="/project/ccogwb1oau3y9oav8zwbg9zk"
-        style="margin-bottom: 25px;"
+        style="margin-bottom: 25px; position: relative;"
       >
         <div
           class="css-tg1f9m"
@@ -600,10 +603,11 @@ exports[`MainContent > should render the component 1`] = `
               admiring-meninsky
             </div>
             <div
-              class="css-1i2dl4g"
+              class="css-dz1vxl"
             >
               /home/tsirysndr/Documents/github/gleam-pipeline/example
             </div>
+            <div />
           </div>
           <div
             class="css-mxqn1d"
