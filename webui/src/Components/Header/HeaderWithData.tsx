@@ -165,7 +165,8 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
       showRunButton={
         !!project &&
         !pathname.startsWith("/link-project") &&
-        (!!actions?.filter((x) => x.enabled).length ||
+        ((project?.path !== "empty" &&
+          !!actions?.filter((x) => x.enabled).length) ||
           (project?.path !== "empty" && !linkedRepository) ||
           (!!linkedRepository && !!actions?.filter((x) => x.enabled).length))
       }
