@@ -39,7 +39,7 @@ const MainContent: FC<MainContentProps> = (props) => {
                 <Picture src={item.picture} />
               </PictureWrapper>
               <div style={{ width: "calc(50% - 40px)" }}>
-                <div>{item.name}</div>
+                <div>{item.displayName || item.name}</div>
                 <Path>{item.path !== "empty" ? item.path : ""}</Path>
               </div>
               {_.get(item, "recentRuns.0.status") && (

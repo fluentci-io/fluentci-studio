@@ -128,7 +128,7 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
       link: "/",
     },
     {
-      title: project?.name || "",
+      title: project?.displayName || project?.name || "",
       link: run && project?.id ? `/project/${project.id}` : undefined,
     },
   ];

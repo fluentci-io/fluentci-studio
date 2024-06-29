@@ -3,7 +3,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import Settings from "./Settings";
 import { schema } from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { ProjectState } from "../../ProjectState";
 import { AuthState } from "../../../Auth/AuthState";
 import { useUpdateProjectMutation } from "../../../../Hooks/GraphQL";
@@ -13,12 +13,12 @@ const SettingsWithData: FC = () => {
   const [updateProject] = useUpdateProjectMutation();
   const [loading, setLoading] = useState<boolean>(false);
   const me = useRecoilValue(AuthState);
-  const { project } = useRecoilValue(ProjectState);
+  const [{ project }, setProject] = useRecoilState(ProjectState);
   const methods = useForm({
     mode: "onChange",
     resolver: zodResolver(schema),
     defaultValues: {
-      name: project?.name,
+      name: project?.displayName || project?.name,
       description: project?.description,
       tags: _.get(project, "tags", [])?.join(", "),
     },
@@ -35,7 +35,10 @@ const SettingsWithData: FC = () => {
         tags: data.tags,
       },
     })
-      .then(() => setLoading(false))
+      .then(({ data }) => {
+        setProject({ project: data?.updateProject });
+        setLoading(false);
+      })
       .catch(() => setLoading(false));
   };
 
