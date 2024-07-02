@@ -38,8 +38,17 @@ exports[`MainContent > should render the component 1`] = `
           <div
             style="width: calc(50% - 40px);"
           >
-            <div>
-              stoic-leavitt
+            <div
+              class="css-14zx4vh"
+            >
+              <div>
+                stoic-leavitt
+              </div>
+              <div
+                class="css-1eim8mn"
+              >
+                Public
+              </div>
             </div>
             <div
               class="css-dz1vxl"
@@ -225,8 +234,17 @@ exports[`MainContent > should render the component 1`] = `
           <div
             style="width: calc(50% - 40px);"
           >
-            <div>
-              agitated-williams
+            <div
+              class="css-14zx4vh"
+            >
+              <div>
+                agitated-williams
+              </div>
+              <div
+                class="css-1eim8mn"
+              >
+                Public
+              </div>
             </div>
             <div
               class="css-dz1vxl"
@@ -412,8 +430,17 @@ exports[`MainContent > should render the component 1`] = `
           <div
             style="width: calc(50% - 40px);"
           >
-            <div>
-              flamboyant-visvesvaraya
+            <div
+              class="css-14zx4vh"
+            >
+              <div>
+                flamboyant-visvesvaraya
+              </div>
+              <div
+                class="css-1eim8mn"
+              >
+                Public
+              </div>
             </div>
             <div
               class="css-dz1vxl"
@@ -599,8 +626,17 @@ exports[`MainContent > should render the component 1`] = `
           <div
             style="width: calc(50% - 40px);"
           >
-            <div>
-              admiring-meninsky
+            <div
+              class="css-14zx4vh"
+            >
+              <div>
+                admiring-meninsky
+              </div>
+              <div
+                class="css-1eim8mn"
+              >
+                Public
+              </div>
             </div>
             <div
               class="css-dz1vxl"
