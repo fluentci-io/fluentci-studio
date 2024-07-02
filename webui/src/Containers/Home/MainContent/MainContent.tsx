@@ -8,6 +8,8 @@ import {
   Picture,
   PictureWrapper,
   Path,
+  Row,
+  Visibility,
 } from "./styles";
 import { Project } from "../../../Hooks/GraphQL";
 import { Link } from "react-router-dom";
@@ -39,7 +41,10 @@ const MainContent: FC<MainContentProps> = (props) => {
                 <Picture src={item.picture} />
               </PictureWrapper>
               <div style={{ width: "calc(50% - 40px)" }}>
-                <div>{item.displayName || item.name}</div>
+                <Row>
+                  <div>{item.displayName || item.name}</div>
+                  {!item.isPrivate && <Visibility>Public</Visibility>}
+                </Row>
                 {item.path !== "empty" && !!item.path && (
                   <Path>{item.path}</Path>
                 )}

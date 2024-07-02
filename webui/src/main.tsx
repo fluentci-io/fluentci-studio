@@ -9,7 +9,6 @@ import { BaseProvider } from "baseui";
 import App from "./App.tsx";
 import "./index.css";
 import ApolloProvider from "./Providers/ApolloProvider.tsx";
-import { DebugObserver } from "./recoil.tsx";
 
 const engine = new Styletron();
 
@@ -18,7 +17,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <StyletronProvider value={engine}>
       <BaseProvider theme={theme}>
         <RecoilRoot>
-          <DebugObserver />
           <RecoilDevTools forceSerialize={true} />
           <ApolloProvider>
             <App />

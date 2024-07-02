@@ -40,6 +40,7 @@ export const ProjectFragment = gql`
     recentRuns {
       ...RunFragment
     }
+    isPrivate
   }
   ${RunFragment}
 `;

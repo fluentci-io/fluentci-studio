@@ -7,8 +7,15 @@ export const GET_PROJECTS = gql`
     $limit: Int
     $skip: Int
     $reverse: Boolean
+    $filters: ProjectFilters
   ) {
-    projects(cursor: $cursor, limit: $limit, skip: $skip, reverse: $reverse) {
+    projects(
+      cursor: $cursor
+      limit: $limit
+      skip: $skip
+      reverse: $reverse
+      filters: $filters
+    ) {
       ...ProjectFragment
     }
   }

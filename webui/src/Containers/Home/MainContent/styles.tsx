@@ -94,6 +94,24 @@ export const Path = styled.div`
   margin-bottom: 10px;
 `;
 
+export const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const Visibility = styled.div`
+  color: #7392b1;
+  font-size: 12px;
+  margin-left: 10px;
+  margin-top: 2px;
+  border: 1px solid #7392b161;
+  padding: 3px;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 14px;
+`;
+
 export default {
   Tab: {
     Tab: {

@@ -1367,7 +1367,7 @@
       {
         "kind": "OBJECT",
         "name": "Project",
-        "description": "A project is a collection of actions.",
+        "description": "A project is a collection of projects.",
         "fields": [
           {
             "name": "buildsPerWeek",
@@ -1445,6 +1445,18 @@
                 "name": "ID",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "isPrivate",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -1572,6 +1584,73 @@
         ],
         "inputFields": null,
         "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ProjectFilters",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "archived",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "org",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "tags",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "user",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
       },
@@ -2243,6 +2322,18 @@
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "filters",
+                "description": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ProjectFilters",
                   "ofType": null
                 },
                 "defaultValue": null,

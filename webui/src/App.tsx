@@ -42,6 +42,7 @@ function App() {
           <Route path="/run/:id" element={<Run />} />
           <Route path="/project/:id" element={<Project />} />
           <Route path="/link-project/:id" element={<LinkProject />} />
+          <Route path="/:id" element={<Home />} />
         </Routes>
       </Router>
     </>
