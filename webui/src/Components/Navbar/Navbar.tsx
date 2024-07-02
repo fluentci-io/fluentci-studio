@@ -14,6 +14,8 @@ import {
   UserDetails,
   Ul,
   Li,
+  SignIn,
+  SignInLink,
 } from "./styles";
 import Logo from "../../assets/fluentci-logo.png";
 import { Discord } from "@styled-icons/bootstrap";
@@ -155,31 +157,9 @@ const Navbar: FC<NavbarProps> = ({
             </StatefulPopover>
           )}
           {!showAccountMenu && showSignInButton && (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                border: "1px solid #7392b161",
-                paddingLeft: 18,
-                paddingRight: 18,
-                borderRadius: 17,
-                backgroundColor: "#06e0b021",
-                height: 34,
-              }}
-            >
-              <a
-                href="/auth"
-                style={{
-                  color: "#06e0b0",
-                  fontWeight: 500,
-                  fontSize: 15,
-                  height: "initial",
-                }}
-              >
-                Sign In with GitHub
-              </a>
-            </div>
+            <SignIn>
+              <SignInLink href="/auth">Sign In with GitHub</SignInLink>
+            </SignIn>
           )}
         </div>
       </NavbarContainer>

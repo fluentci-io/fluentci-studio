@@ -103,3 +103,23 @@ export const Li = styled.li`
     color: #24ffb5;
   }
 `;
+
+export const SignIn = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid #7392b161;
+  padding-left: 18px;
+  padding-right: 18px;
+  border-radius: 26px;
+  background-color: #06e0b021;
+  height: 42px;
+  width: 146.95px;
+`;
+
+export const SignInLink = styled.a`
+  color: #06e0b0;
+  font-weight: 500;
+  font-size: 15px;
+  height: initial;
+`;
