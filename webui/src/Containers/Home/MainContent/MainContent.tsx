@@ -11,70 +11,110 @@ import {
   Row,
   Visibility,
   Tag,
+  Avatar,
+  Separator,
+  GithubUserName,
 } from "./styles";
-import { Project } from "../../../Hooks/GraphQL";
+import { Account, Project } from "../../../Hooks/GraphQL";
 import { Link } from "react-router-dom";
 import BuildHistory from "./BuildHistory";
 import _ from "lodash";
+import { Github } from "@styled-icons/bootstrap";
 
 export type MainContentProps = {
   projects?: Project[];
   onNewProject: () => void;
   displayNewProjectButton: boolean;
+  profile?: Account | null;
 };
 
 const MainContent: FC<MainContentProps> = (props) => {
-  const { projects, onNewProject } = props;
+  const { projects, onNewProject, profile } = props;
   return (
     <div>
       <Container>
+        {profile && (
+          <>
+            <Row>
+              <Avatar src={profile.picture!} />
+              <div style={{ marginLeft: 16 }}>
+                <div style={{ fontSize: 20, fontWeight: 600, marginBottom: 3 }}>
+                  {profile.name}
+                </div>
+                <a
+                  href={`https://github.com/${profile.github}`}
+                  target="_blank"
+                >
+                  <Row>
+                    <Github size={18} color="rgba(115, 146, 177, 0.7)" />
+                    <GithubUserName>{profile.github}</GithubUserName>
+                  </Row>
+                </a>
+              </div>
+            </Row>
+            <Separator />
+          </>
+        )}
         <Header>
           <Title>Projects</Title>
           {props.displayNewProjectButton && (
             <RunButton onClick={onNewProject}>New Project</RunButton>
           )}
         </Header>
-        {projects!.map((item, index) => (
-          <div key={index} style={{ marginBottom: 25, position: "relative" }}>
-            <ProjectWrapper>
-              <PictureWrapper>
-                <Picture src={item.picture} />
-              </PictureWrapper>
-              <div style={{ width: "calc(50% - 40px)" }}>
-                <Link to={`/project/${item.id}`} style={{ color: "#fff" }}>
-                  <Row>
-                    <div>{item.displayName || item.name}</div>
-                    {item.isPrivate === false && (
-                      <Visibility>Public</Visibility>
-                    )}
-                  </Row>
-                  {item.path !== "empty" && !!item.path && (
-                    <Path>{item.path}</Path>
+
+        <Row style={{ alignItems: "flex-start" }}>
+          {profile && (
+            <div style={{ flex: 0.3, color: "rgba(115, 146, 177, 0.7)" }}>
+              <div style={{ fontSize: 16, fontWeight: 600 }}>Profile</div>
+            </div>
+          )}
+          <div style={{ flex: 1 }}>
+            {projects!.map((item, index) => (
+              <div
+                key={index}
+                style={{ marginBottom: 25, position: "relative" }}
+              >
+                <ProjectWrapper>
+                  <PictureWrapper>
+                    <Picture src={item.picture} />
+                  </PictureWrapper>
+                  <div style={{ width: "calc(50% - 40px)" }}>
+                    <Link to={`/project/${item.id}`} style={{ color: "#fff" }}>
+                      <Row>
+                        <div>{item.displayName || item.name}</div>
+                        {item.isPrivate === false && (
+                          <Visibility>Public</Visibility>
+                        )}
+                      </Row>
+                      {item.path !== "empty" && !!item.path && (
+                        <Path>{item.path}</Path>
+                      )}
+                    </Link>
+                    <div>
+                      {item.tags?.map((tag, index) => (
+                        <Tag key={index}>{tag}</Tag>
+                      ))}
+                    </div>
+                  </div>
+                  {_.get(item, "recentRuns.0.status") && (
+                    <BuildHistory
+                      status={_.last(item.recentRuns)?.status || "PENDING"}
+                      reliability={item.reliability || 0}
+                      speed={item.speed || 0}
+                      buildsPerWeek={item.buildsPerWeek || 0}
+                      builds={
+                        Array.from(Array(18).keys()).map((i) => ({
+                          status: _.get(item, `recentRuns.${i}.status`, ""),
+                          duration: _.get(item, `recentRuns.${i}.duration`, 0),
+                        })) || []
+                      }
+                    />
                   )}
-                </Link>
-                <div>
-                  {item.tags?.map((tag) => (
-                    <Tag>{tag}</Tag>
-                  ))}
-                </div>
+                </ProjectWrapper>
               </div>
-              {_.get(item, "recentRuns.0.status") && (
-                <BuildHistory
-                  status={_.last(item.recentRuns)?.status || "PENDING"}
-                  reliability={item.reliability || 0}
-                  speed={item.speed || 0}
-                  buildsPerWeek={item.buildsPerWeek || 0}
-                  builds={
-                    Array.from(Array(18).keys()).map((i) => ({
-                      status: _.get(item, `recentRuns.${i}.status`, ""),
-                      duration: _.get(item, `recentRuns.${i}.duration`, 0),
-                    })) || []
-                  }
-                />
-              )}
-            </ProjectWrapper>
+            ))}
           </div>
-        ))}
+        </Row>
       </Container>
       <div style={{ height: 100 }} />
     </div>

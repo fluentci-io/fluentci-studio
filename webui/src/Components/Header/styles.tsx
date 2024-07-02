@@ -82,6 +82,7 @@ export const Visibility = styled.div`
   padding-right: 6px;
   border-radius: 14px;
 `;
+
 export default {
   Tab: {
     Tab: {

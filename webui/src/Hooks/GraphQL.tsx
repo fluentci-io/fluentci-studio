@@ -205,6 +205,7 @@ export type ProjectFilters = {
 export type Query = {
   __typename?: 'Query';
   accessTokens: Array<AccessToken>;
+  account?: Maybe<Account>;
   actions?: Maybe<Array<Action>>;
   countPackages: Scalars['Int'];
   countProjects: Scalars['Int'];
@@ -225,6 +226,11 @@ export type Query = {
   projects: Array<Project>;
   repositories: Array<Repository>;
   versions: Array<Version>;
+};
+
+
+export type QueryAccountArgs = {
+  github: Scalars['String'];
 };
 
 
@@ -384,6 +390,13 @@ export type GetMeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetMeQuery = { __typename?: 'Query', me?: { __typename?: 'Account', id: string, username: string, email: string, createdAt: string, github?: string | null, name?: string | null, picture?: string | null } | null };
+
+export type GetAccountQueryVariables = Exact<{
+  github: Scalars['String'];
+}>;
+
+
+export type GetAccountQuery = { __typename?: 'Query', account?: { __typename?: 'Account', id: string, username: string, email: string, createdAt: string, github?: string | null, name?: string | null, picture?: string | null } | null };
 
 export type SaveActionsMutationVariables = Exact<{
   projectId: Scalars['ID'];
@@ -802,6 +815,47 @@ export function useGetMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetM
 export type GetMeQueryHookResult = ReturnType<typeof useGetMeQuery>;
 export type GetMeLazyQueryHookResult = ReturnType<typeof useGetMeLazyQuery>;
 export type GetMeQueryResult = Apollo.QueryResult<GetMeQuery, GetMeQueryVariables>;
+export const GetAccountDocument = gql`
+    query GetAccount($github: String!) {
+  account(github: $github) {
+    id
+    username
+    email
+    createdAt
+    github
+    name
+    picture
+  }
+}
+    `;
+
+/**
+ * __useGetAccountQuery__
+ *
+ * To run a query within a React component, call `useGetAccountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAccountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAccountQuery({
+ *   variables: {
+ *      github: // value for 'github'
+ *   },
+ * });
+ */
+export function useGetAccountQuery(baseOptions: Apollo.QueryHookOptions<GetAccountQuery, GetAccountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAccountQuery, GetAccountQueryVariables>(GetAccountDocument, options);
+      }
+export function useGetAccountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAccountQuery, GetAccountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAccountQuery, GetAccountQueryVariables>(GetAccountDocument, options);
+        }
+export type GetAccountQueryHookResult = ReturnType<typeof useGetAccountQuery>;
+export type GetAccountLazyQueryHookResult = ReturnType<typeof useGetAccountLazyQuery>;
+export type GetAccountQueryResult = Apollo.QueryResult<GetAccountQuery, GetAccountQueryVariables>;
 export const SaveActionsDocument = gql`
     mutation SaveActions($projectId: ID!, $actions: [ActionInput!]!) {
   saveActions(projectId: $projectId, actions: $actions) {

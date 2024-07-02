@@ -13,3 +13,17 @@ export const GET_ME = gql`
     }
   }
 `;
+
+export const GET_ACCOUNT = gql`
+  query GetAccount($github: String!) {
+    account(github: $github) {
+      id
+      username
+      email
+      createdAt
+      github
+      name
+      picture
+    }
+  }
+`;

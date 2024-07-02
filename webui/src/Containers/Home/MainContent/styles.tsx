@@ -126,6 +126,24 @@ export const Tag = styled.button`
   font-family: "Lexend";
 `;
 
+export const Avatar = styled.img`
+  height: 60px;
+  width: 60px;
+  border-radius: 30px;
+`;
+
+export const Separator = styled.div`
+  margin-top: 64px;
+  margin-bottom: 48px;
+  border-bottom: 1px solid #1c134f95;
+`;
+
+export const GithubUserName = styled.div`
+  font-size: 16px;
+  color: rgba(115, 146, 177, 0.7);
+  margin-left: 5px;
+`;
+
 export default {
   Tab: {
     Tab: {

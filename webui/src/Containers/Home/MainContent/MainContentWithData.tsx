@@ -1,7 +1,9 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import MainContent from "./MainContent";
 import {
+  Account,
   useCreateProjectMutation,
+  useGetAccountLazyQuery,
   useGetProjectsQuery,
 } from "../../../Hooks/GraphQL";
 import useWebSocket from "react-use-websocket";
@@ -19,6 +21,8 @@ const MainContentWithData: FC = () => {
   const navigate = useNavigate();
   const { id: usernameOrOrg } = useParams();
   const me = useRecoilValue(AuthState);
+  const [account, setAccount] = useState<Account | undefined | null>(null);
+  const [getAccount] = useGetAccountLazyQuery();
   const { lastJsonMessage } = useWebSocket<{
     channel: string;
     data: Record<string, unknown>;
@@ -48,6 +52,16 @@ const MainContentWithData: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastJsonMessage]);
 
+  useEffect(() => {
+    if (usernameOrOrg) {
+      getAccount({
+        variables: {
+          github: usernameOrOrg,
+        },
+      }).then((res) => setAccount(res.data?.account));
+    }
+  }, [getAccount, usernameOrOrg]);
+
   return (
     <MainContent
       projects={data?.projects}
@@ -57,6 +71,7 @@ const MainContentWithData: FC = () => {
         (me?.github === usernameOrOrg && !!usernameOrOrg) ||
         (!!me && !usernameOrOrg)
       }
+      profile={account}
     />
   );
 };
