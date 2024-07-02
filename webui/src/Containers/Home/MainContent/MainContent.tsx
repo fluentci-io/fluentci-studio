@@ -20,6 +20,7 @@ import _ from "lodash";
 export type MainContentProps = {
   projects?: Project[];
   onNewProject: () => void;
+  displayNewProjectButton: boolean;
 };
 
 const MainContent: FC<MainContentProps> = (props) => {
@@ -29,7 +30,9 @@ const MainContent: FC<MainContentProps> = (props) => {
       <Container>
         <Header>
           <Title>Projects</Title>
-          <RunButton onClick={onNewProject}>New Project</RunButton>
+          {props.displayNewProjectButton && (
+            <RunButton onClick={onNewProject}>New Project</RunButton>
+          )}
         </Header>
         {projects!.map((item, index) => (
           <div key={index} style={{ marginBottom: 25, position: "relative" }}>
@@ -41,7 +44,9 @@ const MainContent: FC<MainContentProps> = (props) => {
                 <Link to={`/project/${item.id}`} style={{ color: "#fff" }}>
                   <Row>
                     <div>{item.displayName || item.name}</div>
-                    {!item.isPrivate && <Visibility>Public</Visibility>}
+                    {item.isPrivate === false && (
+                      <Visibility>Public</Visibility>
+                    )}
                   </Row>
                   {item.path !== "empty" && !!item.path && (
                     <Path>{item.path}</Path>

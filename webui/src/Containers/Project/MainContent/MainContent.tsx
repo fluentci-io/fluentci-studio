@@ -11,9 +11,13 @@ import Settings from "./Settings";
 
 export type MainContentProps = {
   onTabChange: (activeKey: string) => void;
+  displaySettings: boolean;
 };
 
-const MainContent: FC<MainContentProps> = ({ onTabChange }) => {
+const MainContent: FC<MainContentProps> = ({
+  onTabChange,
+  displaySettings,
+}) => {
   const [activeKey, setActiveKey] = useState("0");
 
   return (
@@ -50,17 +54,19 @@ const MainContent: FC<MainContentProps> = ({ onTabChange }) => {
         >
           <Composer />
         </Tab>
-        <Tab
-          title={
-            <>
-              <Options size={24} />
-              <span style={{ marginLeft: 15 }}>Settings</span>
-            </>
-          }
-          overrides={styles.Tab}
-        >
-          <Settings />
-        </Tab>
+        {displaySettings && (
+          <Tab
+            title={
+              <>
+                <Options size={24} />
+                <span style={{ marginLeft: 15 }}>Settings</span>
+              </>
+            }
+            overrides={styles.Tab}
+          >
+            <Settings />
+          </Tab>
+        )}
       </Tabs>
     </Container>
   );

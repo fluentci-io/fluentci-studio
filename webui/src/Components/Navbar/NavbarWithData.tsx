@@ -38,7 +38,16 @@ const NavbarWithData: FC = () => {
       user.getIdToken().then((token) => localStorage.setItem("idToken", token));
   }, [user, loading, navigate]);
 
-  return <Navbar user={user} onSignOut={onSignOut} showAccountMenu={!!me} />;
+  return (
+    <Navbar
+      user={user}
+      onSignOut={onSignOut}
+      showAccountMenu={!!me}
+      showSignInButton={import.meta.env.VITE_APP_API_URL?.includes(
+        "api.fluentci.io"
+      )}
+    />
+  );
 };
 
 export default NavbarWithData;

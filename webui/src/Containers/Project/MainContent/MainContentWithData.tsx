@@ -1,11 +1,23 @@
 import { FC } from "react";
 import MainContent from "./MainContent";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { TabsState } from "./TabsState";
+import { AuthState } from "../../Auth/AuthState";
+import { ProjectState } from "../ProjectState";
 
 const MainContentWithData: FC = () => {
   const state = useRecoilState(TabsState);
-  return <MainContent onTabChange={(value) => state[1](value)} />;
+  const me = useRecoilValue(AuthState);
+  const { project } = useRecoilValue(ProjectState);
+  return (
+    <MainContent
+      onTabChange={(value) => state[1](value)}
+      displaySettings={
+        (me?.github === project?.owner && !!me?.github) ||
+        !import.meta.env.VITE_APP_API_URL?.includes("api.fluentci.io")
+      }
+    />
+  );
 };
 
 export default MainContentWithData;

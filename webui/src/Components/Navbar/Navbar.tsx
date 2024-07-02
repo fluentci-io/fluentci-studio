@@ -29,9 +29,15 @@ export type NavbarProps = {
   } | null;
   onSignOut: () => Promise<void>;
   showAccountMenu?: boolean;
+  showSignInButton?: boolean;
 };
 
-const Navbar: FC<NavbarProps> = ({ user, onSignOut, showAccountMenu }) => {
+const Navbar: FC<NavbarProps> = ({
+  user,
+  onSignOut,
+  showAccountMenu,
+  showSignInButton,
+}) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_activeKey, setActiveKey] = useState({ current: 0 });
   const navigate = useNavigate();
@@ -147,6 +153,33 @@ const Navbar: FC<NavbarProps> = ({ user, onSignOut, showAccountMenu }) => {
                 {user?.photoURL && <Avatar src={user.photoURL} alt="avatar" />}
               </button>
             </StatefulPopover>
+          )}
+          {!showAccountMenu && showSignInButton && (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                border: "1px solid #7392b161",
+                paddingLeft: 18,
+                paddingRight: 18,
+                borderRadius: 17,
+                backgroundColor: "#06e0b021",
+                height: 34,
+              }}
+            >
+              <a
+                href="/auth"
+                style={{
+                  color: "#06e0b0",
+                  fontWeight: 500,
+                  fontSize: 15,
+                  height: "initial",
+                }}
+              >
+                Sign In with GitHub
+              </a>
+            </div>
           )}
         </div>
       </NavbarContainer>

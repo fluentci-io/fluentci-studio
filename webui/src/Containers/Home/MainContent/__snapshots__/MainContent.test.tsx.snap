@@ -14,11 +14,6 @@ exports[`MainContent > should render the component 1`] = `
         >
           Projects
         </div>
-        <button
-          class="css-whgtjz"
-        >
-          New Project
-        </button>
       </div>
       <div
         style="margin-bottom: 25px; position: relative;"
@@ -46,11 +41,6 @@ exports[`MainContent > should render the component 1`] = `
               >
                 <div>
                   stoic-leavitt
-                </div>
-                <div
-                  class="css-1eim8mn"
-                >
-                  Public
                 </div>
               </div>
               <div
@@ -247,11 +237,6 @@ exports[`MainContent > should render the component 1`] = `
                 <div>
                   agitated-williams
                 </div>
-                <div
-                  class="css-1eim8mn"
-                >
-                  Public
-                </div>
               </div>
               <div
                 class="css-dz1vxl"
@@ -447,11 +432,6 @@ exports[`MainContent > should render the component 1`] = `
                 <div>
                   flamboyant-visvesvaraya
                 </div>
-                <div
-                  class="css-1eim8mn"
-                >
-                  Public
-                </div>
               </div>
               <div
                 class="css-dz1vxl"
@@ -646,11 +626,6 @@ exports[`MainContent > should render the component 1`] = `
               >
                 <div>
                   admiring-meninsky
-                </div>
-                <div
-                  class="css-1eim8mn"
-                >
-                  Public
                 </div>
               </div>
               <div

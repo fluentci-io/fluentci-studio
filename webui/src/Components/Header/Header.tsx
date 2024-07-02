@@ -10,6 +10,7 @@ import styles, {
   RunButton,
   PopoverButton,
   GithubLink,
+  Visibility,
 } from "./styles";
 import { Spinner } from "baseui/spinner";
 import { Project, Repository } from "../../Hooks/GraphQL";
@@ -23,6 +24,7 @@ export type HeaderProps = {
   loading?: boolean;
   linkedRepository?: Repository | null;
   project?: Project | null;
+  isPublic?: boolean;
 };
 
 const Header: FC<HeaderProps> = (props) => {
@@ -51,34 +53,36 @@ const Header: FC<HeaderProps> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Breadcrumbs
-          overrides={{
-            Root: {
-              style: {
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                flex: 1,
+        <div style={{ display: "flex", flexDirection: "row", flex: 1 }}>
+          <Breadcrumbs
+            overrides={{
+              Root: {
+                style: {
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                },
               },
-            },
-            ListItem: {
-              style: ({ $theme }) => ({
-                fontFamily: $theme.primaryFontFamily,
-              }),
-            },
-          }}
-        >
-          {breadcrumbs?.map(({ title, link }, index) => {
-            if (link) {
-              return (
-                <Link key={index} to={link} style={{ color: "#ffffffb0" }}>
-                  {title}
-                </Link>
-              );
-            }
-            return <span key={index}>{title}</span>;
-          })}
-        </Breadcrumbs>
+              ListItem: {
+                style: ({ $theme }) => ({
+                  fontFamily: $theme.primaryFontFamily,
+                }),
+              },
+            }}
+          >
+            {breadcrumbs?.map(({ title, link }, index) => {
+              if (link) {
+                return (
+                  <Link key={index} to={link} style={{ color: "#ffffffb0" }}>
+                    {title}
+                  </Link>
+                );
+              }
+              return <span key={index}>{title}</span>;
+            })}
+          </Breadcrumbs>
+          {props.isPublic && <Visibility>Public</Visibility>}
+        </div>
         <p
           style={{
             fontSize: 14,

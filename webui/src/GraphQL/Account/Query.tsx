@@ -7,6 +7,9 @@ export const GET_ME = gql`
       username
       email
       createdAt
+      github
+      name
+      picture
     }
   }
 `;

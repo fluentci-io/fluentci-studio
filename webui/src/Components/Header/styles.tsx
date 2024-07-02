@@ -57,6 +57,31 @@ export const GithubLink = styled.a`
   }
 `;
 
+export const Tag = styled.button`
+  font-size: 11px;
+  color: #00f9ed;
+  background-color: #00f9ec1c;
+  padding: 4px;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 14px;
+  margin-right: 5px;
+  border: none;
+  cursor: pointer;
+  font-family: "Lexend";
+`;
+
+export const Visibility = styled.div`
+  color: #7392b1;
+  font-size: 12px;
+  margin-left: 10px;
+  margin-top: 2px;
+  border: 1px solid #7392b161;
+  padding: 3px;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 14px;
+`;
 export default {
   Tab: {
     Tab: {

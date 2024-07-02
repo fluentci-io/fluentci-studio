@@ -90,7 +90,7 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
   }, [pathname]);
 
   useEffect(() => {
-    if (!me || !id) {
+    if (!id) {
       return;
     }
     getLinkedRepository({
@@ -99,7 +99,7 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
       },
       fetchPolicy: "network-only",
     }).then((res) => setLinkedRepository(res.data?.linkedRepository));
-  }, [me, getLinkedRepository, id, project, pathname]);
+  }, [getLinkedRepository, id, project, pathname]);
 
   useEffect(() => {
     if (!data) {
@@ -122,10 +122,14 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
     setLoading(true);
   };
 
+  const isOwner =
+    (project?.owner === me?.github && project?.owner) ||
+    !import.meta.env.VITE_APP_API_URL?.includes("api.fluentci.io");
+
   const breadcrumbs: { title: string; link?: string }[] = [
     {
-      title: "Projects",
-      link: "/",
+      title: isOwner ? "Projects" : project?.owner || "",
+      link: isOwner ? "/" : `/${project?.owner}`,
     },
     {
       title: project?.displayName || project?.name || "",
@@ -156,23 +160,28 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [composerState]);
-
   return (
     <Header
       id="1"
       onRun={onRun}
       breadcrumbs={breadcrumbs}
       showRunButton={
-        !!project &&
-        !pathname.startsWith("/link-project") &&
-        ((project?.path !== "empty" &&
+        (!import.meta.env.VITE_APP_API_URL?.includes("api.fluentci.io") &&
+          project?.path !== "empty" &&
           !!actions?.filter((x) => x.enabled).length) ||
-          (project?.path !== "empty" && !linkedRepository) ||
-          (!!linkedRepository && !!actions?.filter((x) => x.enabled).length))
+        (me?.github === project?.owner &&
+          !!me?.github &&
+          !!project &&
+          !pathname.startsWith("/link-project") &&
+          ((project?.path !== "empty" &&
+            !!actions?.filter((x) => x.enabled).length) ||
+            (project?.path !== "empty" && !linkedRepository) ||
+            (!!linkedRepository && !!actions?.filter((x) => x.enabled).length)))
       }
       loading={loading}
       linkedRepository={linkedRepository}
       project={project}
+      isPublic={project?.isPrivate === false}
     />
   );
 };

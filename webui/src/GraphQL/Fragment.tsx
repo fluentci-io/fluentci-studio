@@ -41,6 +41,7 @@ export const ProjectFragment = gql`
       ...RunFragment
     }
     isPrivate
+    owner
   }
   ${RunFragment}
 `;

@@ -5,7 +5,7 @@ import {
   useGetProjectsQuery,
 } from "../../../Hooks/GraphQL";
 import useWebSocket from "react-use-websocket";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { AuthState } from "../../Auth/AuthState";
 
@@ -17,6 +17,7 @@ const WS_URL = `ws://${
 
 const MainContentWithData: FC = () => {
   const navigate = useNavigate();
+  const { id: usernameOrOrg } = useParams();
   const me = useRecoilValue(AuthState);
   const { lastJsonMessage } = useWebSocket<{
     channel: string;
@@ -47,7 +48,17 @@ const MainContentWithData: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastJsonMessage]);
 
-  return <MainContent projects={data?.projects} onNewProject={onNewProject} />;
+  return (
+    <MainContent
+      projects={data?.projects}
+      onNewProject={onNewProject}
+      displayNewProjectButton={
+        !import.meta.env.VITE_APP_API_URL?.includes("api.fluentci.io") ||
+        (me?.github === usernameOrOrg && !!usernameOrOrg) ||
+        (!!me && !usernameOrOrg)
+      }
+    />
+  );
 };
 
 export default MainContentWithData;
