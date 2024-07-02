@@ -20,8 +20,7 @@ exports[`MainContent > should render the component 1`] = `
           New Project
         </button>
       </div>
-      <a
-        href="/project/hlv89kwqiwkkcizuhhz2vjwf"
+      <div
         style="margin-bottom: 25px; position: relative;"
       >
         <div
@@ -38,23 +37,28 @@ exports[`MainContent > should render the component 1`] = `
           <div
             style="width: calc(50% - 40px);"
           >
-            <div
-              class="css-14zx4vh"
+            <a
+              href="/project/hlv89kwqiwkkcizuhhz2vjwf"
+              style="color: rgb(255, 255, 255);"
             >
-              <div>
-                stoic-leavitt
+              <div
+                class="css-14zx4vh"
+              >
+                <div>
+                  stoic-leavitt
+                </div>
+                <div
+                  class="css-1eim8mn"
+                >
+                  Public
+                </div>
               </div>
               <div
-                class="css-1eim8mn"
+                class="css-dz1vxl"
               >
-                Public
+                /home/tsirysndr/Documents/github/base-pipeline/example
               </div>
-            </div>
-            <div
-              class="css-dz1vxl"
-            >
-              /home/tsirysndr/Documents/github/base-pipeline/example
-            </div>
+            </a>
             <div />
           </div>
           <div
@@ -215,9 +219,8 @@ exports[`MainContent > should render the component 1`] = `
             </div>
           </div>
         </div>
-      </a>
-      <a
-        href="/project/w92rv9wl2lmir1106ds8sz8m"
+      </div>
+      <div
         style="margin-bottom: 25px; position: relative;"
       >
         <div
@@ -234,23 +237,28 @@ exports[`MainContent > should render the component 1`] = `
           <div
             style="width: calc(50% - 40px);"
           >
-            <div
-              class="css-14zx4vh"
+            <a
+              href="/project/w92rv9wl2lmir1106ds8sz8m"
+              style="color: rgb(255, 255, 255);"
             >
-              <div>
-                agitated-williams
+              <div
+                class="css-14zx4vh"
+              >
+                <div>
+                  agitated-williams
+                </div>
+                <div
+                  class="css-1eim8mn"
+                >
+                  Public
+                </div>
               </div>
               <div
-                class="css-1eim8mn"
+                class="css-dz1vxl"
               >
-                Public
+                /home/tsirysndr/Documents/github/bun-pipeline/example
               </div>
-            </div>
-            <div
-              class="css-dz1vxl"
-            >
-              /home/tsirysndr/Documents/github/bun-pipeline/example
-            </div>
+            </a>
             <div />
           </div>
           <div
@@ -411,9 +419,8 @@ exports[`MainContent > should render the component 1`] = `
             </div>
           </div>
         </div>
-      </a>
-      <a
-        href="/project/q1j0ho1na7uo00u4iceqp7ot"
+      </div>
+      <div
         style="margin-bottom: 25px; position: relative;"
       >
         <div
@@ -430,23 +437,28 @@ exports[`MainContent > should render the component 1`] = `
           <div
             style="width: calc(50% - 40px);"
           >
-            <div
-              class="css-14zx4vh"
+            <a
+              href="/project/q1j0ho1na7uo00u4iceqp7ot"
+              style="color: rgb(255, 255, 255);"
             >
-              <div>
-                flamboyant-visvesvaraya
+              <div
+                class="css-14zx4vh"
+              >
+                <div>
+                  flamboyant-visvesvaraya
+                </div>
+                <div
+                  class="css-1eim8mn"
+                >
+                  Public
+                </div>
               </div>
               <div
-                class="css-1eim8mn"
+                class="css-dz1vxl"
               >
-                Public
+                /home/tsirysndr/Documents/github/go-pipeline/example
               </div>
-            </div>
-            <div
-              class="css-dz1vxl"
-            >
-              /home/tsirysndr/Documents/github/go-pipeline/example
-            </div>
+            </a>
             <div />
           </div>
           <div
@@ -607,9 +619,8 @@ exports[`MainContent > should render the component 1`] = `
             </div>
           </div>
         </div>
-      </a>
-      <a
-        href="/project/ccogwb1oau3y9oav8zwbg9zk"
+      </div>
+      <div
         style="margin-bottom: 25px; position: relative;"
       >
         <div
@@ -626,23 +637,28 @@ exports[`MainContent > should render the component 1`] = `
           <div
             style="width: calc(50% - 40px);"
           >
-            <div
-              class="css-14zx4vh"
+            <a
+              href="/project/ccogwb1oau3y9oav8zwbg9zk"
+              style="color: rgb(255, 255, 255);"
             >
-              <div>
-                admiring-meninsky
+              <div
+                class="css-14zx4vh"
+              >
+                <div>
+                  admiring-meninsky
+                </div>
+                <div
+                  class="css-1eim8mn"
+                >
+                  Public
+                </div>
               </div>
               <div
-                class="css-1eim8mn"
+                class="css-dz1vxl"
               >
-                Public
+                /home/tsirysndr/Documents/github/gleam-pipeline/example
               </div>
-            </div>
-            <div
-              class="css-dz1vxl"
-            >
-              /home/tsirysndr/Documents/github/gleam-pipeline/example
-            </div>
+            </a>
             <div />
           </div>
           <div
@@ -803,7 +819,7 @@ exports[`MainContent > should render the component 1`] = `
             </div>
           </div>
         </div>
-      </a>
+      </div>
     </div>
     <div
       style="height: 100px;"

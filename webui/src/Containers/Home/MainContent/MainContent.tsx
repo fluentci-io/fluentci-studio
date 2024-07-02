@@ -10,6 +10,7 @@ import {
   Path,
   Row,
   Visibility,
+  Tag,
 } from "./styles";
 import { Project } from "../../../Hooks/GraphQL";
 import { Link } from "react-router-dom";
@@ -31,39 +32,24 @@ const MainContent: FC<MainContentProps> = (props) => {
           <RunButton onClick={onNewProject}>New Project</RunButton>
         </Header>
         {projects!.map((item, index) => (
-          <Link
-            to={`/project/${item.id}`}
-            key={index}
-            style={{ marginBottom: 25, position: "relative" }}
-          >
+          <div key={index} style={{ marginBottom: 25, position: "relative" }}>
             <ProjectWrapper>
               <PictureWrapper>
                 <Picture src={item.picture} />
               </PictureWrapper>
               <div style={{ width: "calc(50% - 40px)" }}>
-                <Row>
-                  <div>{item.displayName || item.name}</div>
-                  {!item.isPrivate && <Visibility>Public</Visibility>}
-                </Row>
-                {item.path !== "empty" && !!item.path && (
-                  <Path>{item.path}</Path>
-                )}
+                <Link to={`/project/${item.id}`} style={{ color: "#fff" }}>
+                  <Row>
+                    <div>{item.displayName || item.name}</div>
+                    {!item.isPrivate && <Visibility>Public</Visibility>}
+                  </Row>
+                  {item.path !== "empty" && !!item.path && (
+                    <Path>{item.path}</Path>
+                  )}
+                </Link>
                 <div>
                   {item.tags?.map((tag) => (
-                    <span
-                      style={{
-                        fontSize: 11,
-                        color: "#00f9ed",
-                        backgroundColor: "#00f9ec1c",
-                        padding: 4,
-                        paddingLeft: 6,
-                        paddingRight: 6,
-                        borderRadius: 14,
-                        marginRight: 5,
-                      }}
-                    >
-                      {tag}
-                    </span>
+                    <Tag>{tag}</Tag>
                   ))}
                 </div>
               </div>
@@ -82,7 +68,7 @@ const MainContent: FC<MainContentProps> = (props) => {
                 />
               )}
             </ProjectWrapper>
-          </Link>
+          </div>
         ))}
       </Container>
       <div style={{ height: 100 }} />

@@ -112,6 +112,20 @@ export const Visibility = styled.div`
   border-radius: 14px;
 `;
 
+export const Tag = styled.button`
+  font-size: 11px;
+  color: #00f9ed;
+  background-color: #00f9ec1c;
+  padding: 4px;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 14px;
+  margin-right: 5px;
+  border: none;
+  cursor: pointer;
+  font-family: "Lexend";
+`;
+
 export default {
   Tab: {
     Tab: {
