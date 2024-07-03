@@ -78,6 +78,12 @@ export const UnlinkButton = styled.button`
   }
 `;
 
+export const DeleteButton = styled(UnlinkButton)`
+  color: #ee0063;
+  background-color: #ee006317;
+  width: 200px;
+`;
+
 export const LinkGithubRepo = styled.div`
   display: flex;
   flex-direction: row;

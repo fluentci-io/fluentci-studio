@@ -43,7 +43,7 @@ const MainContent: FC<MainContentProps> = (props) => {
               <Avatar src={profile.picture!} />
               <div style={{ marginLeft: 16 }}>
                 <div style={{ fontSize: 20, fontWeight: 600, marginBottom: 3 }}>
-                  {profile.name}
+                  {profile.name || profile.github}
                 </div>
                 <a
                   href={`https://github.com/${profile.github}`}

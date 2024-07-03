@@ -1,3 +1,3 @@
-import Settings from "./SettingsWithData";
+import Settings from "./Settings";
 
 export default Settings;
