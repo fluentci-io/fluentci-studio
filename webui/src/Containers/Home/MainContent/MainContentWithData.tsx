@@ -36,6 +36,11 @@ const MainContentWithData: FC = () => {
 
   const { data, refetch } = useGetProjectsQuery({
     variables: {
+      filters: usernameOrOrg
+        ? {
+            user: usernameOrOrg,
+          }
+        : undefined,
       reverse: true,
     },
   });
@@ -58,7 +63,13 @@ const MainContentWithData: FC = () => {
         variables: {
           github: usernameOrOrg,
         },
-      }).then((res) => setAccount(res.data?.account));
+      }).then((res) => {
+        if (!res.data?.account) {
+          navigate("/");
+          return;
+        }
+        setAccount(res.data?.account);
+      });
     }
   }, [getAccount, usernameOrOrg]);
 

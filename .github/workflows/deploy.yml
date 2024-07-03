@@ -21,6 +21,8 @@ jobs:
           pipeline: bun
           args: run build:prod
           working-directory: webui
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
 
       - name: Publish to Cloudflare Pages
         run: fluentci run --wasm cloudflare pages_deploy $DIRECTORY --project-name $PROJECT_NAME
@@ -29,4 +31,5 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: fe5b1e2ce9f94f4c0415ab94ce402012
           PROJECT_NAME: fluentci-dashboard
           DIRECTORY: dist
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         working-directory: webui

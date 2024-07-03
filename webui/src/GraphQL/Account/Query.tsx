@@ -24,6 +24,7 @@ export const GET_ACCOUNT = gql`
       github
       name
       picture
+      company
     }
   }
 `;

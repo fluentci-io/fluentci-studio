@@ -19,7 +19,9 @@ import { Account, Project } from "../../../Hooks/GraphQL";
 import { Link } from "react-router-dom";
 import BuildHistory from "./BuildHistory";
 import _ from "lodash";
-import { Github } from "@styled-icons/bootstrap";
+import { Github, Calendar } from "@styled-icons/bootstrap";
+import { Buildings } from "@styled-icons/boxicons-regular";
+import dayjs from "dayjs";
 
 export type MainContentProps = {
   projects?: Project[];
@@ -55,20 +57,33 @@ const MainContent: FC<MainContentProps> = (props) => {
             <Separator />
           </>
         )}
-        <Header>
-          <Title>Projects</Title>
-          {props.displayNewProjectButton && (
-            <RunButton onClick={onNewProject}>New Project</RunButton>
-          )}
-        </Header>
-
         <Row style={{ alignItems: "flex-start" }}>
           {profile && (
             <div style={{ flex: 0.3, color: "rgba(115, 146, 177, 0.7)" }}>
               <div style={{ fontSize: 16, fontWeight: 600 }}>Profile</div>
+              <Row style={{ marginTop: 24 }}>
+                <Calendar size={16} />
+                <div style={{ fontSize: 14, marginLeft: 16 }}>
+                  Joined on {dayjs(profile?.createdAt).format("MMM DD, YYYY")}
+                </div>
+              </Row>
+              {profile?.company && (
+                <Row style={{ marginTop: 24 }}>
+                  <Buildings size={20} />
+                  <div style={{ fontSize: 14, marginLeft: 14 }}>
+                    {profile?.company}
+                  </div>
+                </Row>
+              )}
             </div>
           )}
           <div style={{ flex: 1 }}>
+            <Header>
+              <Title>Projects</Title>
+              {props.displayNewProjectButton && (
+                <RunButton onClick={onNewProject}>New Project</RunButton>
+              )}
+            </Header>
             {projects!.map((item, index) => (
               <div
                 key={index}

@@ -25,6 +25,7 @@ export type AccessToken = {
 
 export type Account = {
   __typename?: 'Account';
+  company?: Maybe<Scalars['String']>;
   createdAt: Scalars['String'];
   email: Scalars['String'];
   github?: Maybe<Scalars['String']>;
@@ -396,7 +397,7 @@ export type GetAccountQueryVariables = Exact<{
 }>;
 
 
-export type GetAccountQuery = { __typename?: 'Query', account?: { __typename?: 'Account', id: string, username: string, email: string, createdAt: string, github?: string | null, name?: string | null, picture?: string | null } | null };
+export type GetAccountQuery = { __typename?: 'Query', account?: { __typename?: 'Account', id: string, username: string, email: string, createdAt: string, github?: string | null, name?: string | null, picture?: string | null, company?: string | null } | null };
 
 export type SaveActionsMutationVariables = Exact<{
   projectId: Scalars['ID'];
@@ -825,6 +826,7 @@ export const GetAccountDocument = gql`
     github
     name
     picture
+    company
   }
 }
     `;
