@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import { Github } from "@styled-icons/bootstrap";
+import { LinkGithubRepo } from "./styles";
 
 export type LinkRepoProps = {
   projectId: string;
@@ -26,18 +27,7 @@ const LinkRepo: FC<LinkRepoProps> = (props) => {
                   color: "#fff",
                 }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignContent: "center",
-                    justifyContent: "center",
-                    backgroundColor: "#5a00e1",
-                    maxWidth: 411,
-                    borderRadius: 6,
-                    height: 48,
-                  }}
-                >
+                <LinkGithubRepo>
                   <div style={{ marginTop: 10 }}>
                     <Github size={22} color={"#fff"} />
                   </div>
@@ -50,7 +40,7 @@ const LinkRepo: FC<LinkRepoProps> = (props) => {
                   >
                     Link your GitHub Repository
                   </div>
-                </div>
+                </LinkGithubRepo>
               </Link>
             )}
             {props.orgs!.length === 0 && (
@@ -60,18 +50,7 @@ const LinkRepo: FC<LinkRepoProps> = (props) => {
                   color: "#fff",
                 }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignContent: "center",
-                    justifyContent: "center",
-                    backgroundColor: "#5a00e1",
-                    maxWidth: 411,
-                    borderRadius: 6,
-                    height: 48,
-                  }}
-                >
+                <LinkGithubRepo>
                   <div style={{ marginTop: 10 }}>
                     <Github size={22} color={"#fff"} />
                   </div>
@@ -84,7 +63,7 @@ const LinkRepo: FC<LinkRepoProps> = (props) => {
                   >
                     Link your GitHub Repository
                   </div>
-                </div>
+                </LinkGithubRepo>
               </a>
             )}
           </>

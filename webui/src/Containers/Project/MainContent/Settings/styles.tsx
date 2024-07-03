@@ -54,6 +54,42 @@ export const SaveButton = styled.button`
   }
 `;
 
+export const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const UnlinkButton = styled.button`
+  cursor: pointer;
+  font-family: Lexend;
+  height: 40px;
+  width: 150px;
+  color: #fff;
+  background-color: #ee0063;
+  border: none;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+export const LinkGithubRepo = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  background-color: #5a00e1;
+  max-width: 411px;
+  border-radius: 6px;
+  height: 48px;
+  margin-top: 10px;
+`;
+
 export default {
   Input: {
     Root: {
@@ -64,5 +100,11 @@ export default {
         fontFamily: "Lexend",
       },
     },
+  },
+  Spinner: {
+    borderRightColor: "#ffffff22",
+    borderLeftColor: "#ffffff22",
+    borderTopColor: "#ffffff22",
+    borderBottomColor: "#000",
   },
 };

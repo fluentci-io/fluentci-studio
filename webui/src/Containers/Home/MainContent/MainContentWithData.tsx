@@ -34,7 +34,7 @@ const MainContentWithData: FC = () => {
     },
   });
 
-  const { data, refetch } = useGetProjectsQuery({
+  const { data, refetch, loading } = useGetProjectsQuery({
     variables: {
       filters: usernameOrOrg
         ? {
@@ -70,7 +70,10 @@ const MainContentWithData: FC = () => {
         }
         setAccount(res.data?.account);
       });
+      return;
     }
+    setAccount(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getAccount, usernameOrOrg]);
 
   return (
@@ -83,6 +86,7 @@ const MainContentWithData: FC = () => {
         (!!me && !usernameOrOrg)
       }
       profile={account}
+      loading={loading}
     />
   );
 };

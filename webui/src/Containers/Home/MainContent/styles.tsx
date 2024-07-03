@@ -135,7 +135,7 @@ export const Avatar = styled.img`
 export const Separator = styled.div`
   margin-top: 64px;
   margin-bottom: 48px;
-  border-bottom: 1px solid #1c134f95;
+  border-bottom: 1px solid #1c134fc3;
 `;
 
 export const GithubUserName = styled.div`

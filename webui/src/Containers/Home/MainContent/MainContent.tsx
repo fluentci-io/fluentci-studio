@@ -21,6 +21,7 @@ import BuildHistory from "./BuildHistory";
 import _ from "lodash";
 import { Github, Calendar } from "@styled-icons/bootstrap";
 import { Buildings } from "@styled-icons/boxicons-regular";
+import { LockClosed } from "@styled-icons/ionicons-outline";
 import dayjs from "dayjs";
 
 export type MainContentProps = {
@@ -28,10 +29,11 @@ export type MainContentProps = {
   onNewProject: () => void;
   displayNewProjectButton: boolean;
   profile?: Account | null;
+  loading: boolean;
 };
 
 const MainContent: FC<MainContentProps> = (props) => {
-  const { projects, onNewProject, profile } = props;
+  const { projects, onNewProject, profile, loading } = props;
   return (
     <div>
       <Container>
@@ -128,6 +130,31 @@ const MainContent: FC<MainContentProps> = (props) => {
                 </ProjectWrapper>
               </div>
             ))}
+            {!projects?.length && (
+              <>
+                {!profile && !loading && (
+                  <div style={{ color: "rgba(115, 146, 177, 0.7)" }}>
+                    No projects found. Create a new project to get started.
+                  </div>
+                )}
+                {profile && !loading && (
+                  <div
+                    style={{
+                      color: "#7392b1b2",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <LockClosed size={60} color="#7392b17d" />
+                    <div style={{ marginTop: 10 }}>
+                      This user has no public projects.
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </Row>
       </Container>
