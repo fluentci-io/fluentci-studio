@@ -82,7 +82,11 @@ const ModuleSettings: FC<ModuleSettingsProps> = (props) => {
       >
         <label style={{ opacity: 0.6 }}>Github</label>
         <div>
-          <a href={plugin.githubUrl} style={{ fontSize: 16 }} target="_blank">
+          <a
+            href={plugin.githubUrl}
+            style={{ fontSize: 16, color: "#fff" }}
+            target="_blank"
+          >
             {plugin.githubUrl}
           </a>
         </div>

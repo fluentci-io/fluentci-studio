@@ -28,3 +28,36 @@ export const UPDATE_PROJECT = gql`
   }
   ${ProjectFragment}
 `;
+
+export const DELETE_PROJECT = gql`
+  mutation DeleteProject($id: ID!) {
+    deleteProject(id: $id)
+  }
+`;
+
+export const ARCHIVE_PROJECT = gql`
+  mutation ArchiveProject($id: ID!) {
+    archiveProject(id: $id) {
+      ...ProjectFragment
+    }
+  }
+  ${ProjectFragment}
+`;
+
+export const UNARCHIVE_PROJECT = gql`
+  mutation UnarchiveProject($id: ID!) {
+    unarchiveProject(id: $id) {
+      ...ProjectFragment
+    }
+  }
+  ${ProjectFragment}
+`;
+
+export const CHANGE_PROJECT_VISIBILITY = gql`
+  mutation ChangeProjectVisibility($id: ID!, $isPublic: Boolean!) {
+    changeProjectVisibility(id: $id, isPublic: $isPublic) {
+      ...ProjectFragment
+    }
+  }
+  ${ProjectFragment}
+`;

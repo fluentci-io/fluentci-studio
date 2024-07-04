@@ -81,16 +81,31 @@ export type Log = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  archiveProject?: Maybe<Project>;
+  changeProjectVisibility?: Maybe<Project>;
   createAccessToken: AccessToken;
   createOrganization?: Maybe<Organization>;
   createProject: Project;
   deleteAccessToken: Scalars['Boolean'];
+  deleteProject: Scalars['Boolean'];
   linkRepository?: Maybe<Repository>;
   runJob: Job;
   runPipeline?: Maybe<Run>;
   saveActions?: Maybe<Array<Action>>;
+  unarchiveProject?: Maybe<Project>;
   unlinkRepository?: Maybe<Repository>;
   updateProject?: Maybe<Project>;
+};
+
+
+export type MutationArchiveProjectArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationChangeProjectVisibilityArgs = {
+  id: Scalars['ID'];
+  isPublic: Scalars['Boolean'];
 };
 
 
@@ -105,6 +120,11 @@ export type MutationCreateOrganizationArgs = {
 
 
 export type MutationDeleteAccessTokenArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteProjectArgs = {
   id: Scalars['ID'];
 };
 
@@ -130,6 +150,11 @@ export type MutationRunPipelineArgs = {
 export type MutationSaveActionsArgs = {
   actions: Array<ActionInput>;
   projectId: Scalars['ID'];
+};
+
+
+export type MutationUnarchiveProjectArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -178,6 +203,7 @@ export type Package = {
 /** A project is a collection of projects. */
 export type Project = {
   __typename?: 'Project';
+  archived?: Maybe<Scalars['Boolean']>;
   buildsPerWeek?: Maybe<Scalars['Int']>;
   createdAt: Scalars['String'];
   cursor?: Maybe<Scalars['String']>;
@@ -424,7 +450,7 @@ export type ExportActionsQuery = { __typename?: 'Query', exportActions: string }
 
 export type RunFragmentFragment = { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> };
 
-export type ProjectFragmentFragment = { __typename?: 'Project', id: string, name: string, displayName?: string | null, description?: string | null, tags?: Array<string> | null, path?: string | null, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, isPrivate?: boolean | null, owner?: string | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null };
+export type ProjectFragmentFragment = { __typename?: 'Project', id: string, name: string, displayName?: string | null, description?: string | null, tags?: Array<string> | null, path?: string | null, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, isPrivate?: boolean | null, owner?: string | null, archived?: boolean | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null };
 
 export type LogFragmentFragment = { __typename?: 'Log', id: string, message: string, createdAt: string };
 
@@ -483,7 +509,7 @@ export type GetOrganizationsQuery = { __typename?: 'Query', organizations: Array
 export type CreateProjectMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'Project', id: string, name: string, displayName?: string | null, description?: string | null, tags?: Array<string> | null, path?: string | null, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, isPrivate?: boolean | null, owner?: string | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null } };
+export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'Project', id: string, name: string, displayName?: string | null, description?: string | null, tags?: Array<string> | null, path?: string | null, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, isPrivate?: boolean | null, owner?: string | null, archived?: boolean | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null } };
 
 export type UpdateProjectMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -493,7 +519,36 @@ export type UpdateProjectMutationVariables = Exact<{
 }>;
 
 
-export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject?: { __typename?: 'Project', id: string, name: string, displayName?: string | null, description?: string | null, tags?: Array<string> | null, path?: string | null, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, isPrivate?: boolean | null, owner?: string | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null } | null };
+export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject?: { __typename?: 'Project', id: string, name: string, displayName?: string | null, description?: string | null, tags?: Array<string> | null, path?: string | null, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, isPrivate?: boolean | null, owner?: string | null, archived?: boolean | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null } | null };
+
+export type DeleteProjectMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteProjectMutation = { __typename?: 'Mutation', deleteProject: boolean };
+
+export type ArchiveProjectMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type ArchiveProjectMutation = { __typename?: 'Mutation', archiveProject?: { __typename?: 'Project', id: string, name: string, displayName?: string | null, description?: string | null, tags?: Array<string> | null, path?: string | null, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, isPrivate?: boolean | null, owner?: string | null, archived?: boolean | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null } | null };
+
+export type UnarchiveProjectMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type UnarchiveProjectMutation = { __typename?: 'Mutation', unarchiveProject?: { __typename?: 'Project', id: string, name: string, displayName?: string | null, description?: string | null, tags?: Array<string> | null, path?: string | null, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, isPrivate?: boolean | null, owner?: string | null, archived?: boolean | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null } | null };
+
+export type ChangeProjectVisibilityMutationVariables = Exact<{
+  id: Scalars['ID'];
+  isPublic: Scalars['Boolean'];
+}>;
+
+
+export type ChangeProjectVisibilityMutation = { __typename?: 'Mutation', changeProjectVisibility?: { __typename?: 'Project', id: string, name: string, displayName?: string | null, description?: string | null, tags?: Array<string> | null, path?: string | null, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, isPrivate?: boolean | null, owner?: string | null, archived?: boolean | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null } | null };
 
 export type GetProjectsQueryVariables = Exact<{
   cursor?: InputMaybe<Scalars['String']>;
@@ -504,14 +559,14 @@ export type GetProjectsQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', id: string, name: string, displayName?: string | null, description?: string | null, tags?: Array<string> | null, path?: string | null, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, isPrivate?: boolean | null, owner?: string | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null }> };
+export type GetProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', id: string, name: string, displayName?: string | null, description?: string | null, tags?: Array<string> | null, path?: string | null, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, isPrivate?: boolean | null, owner?: string | null, archived?: boolean | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null }> };
 
 export type GetProjectQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: string, name: string, displayName?: string | null, description?: string | null, tags?: Array<string> | null, path?: string | null, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, isPrivate?: boolean | null, owner?: string | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null } | null };
+export type GetProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: string, name: string, displayName?: string | null, description?: string | null, tags?: Array<string> | null, path?: string | null, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, isPrivate?: boolean | null, owner?: string | null, archived?: boolean | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null } | null };
 
 export type CountProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -620,6 +675,7 @@ export const ProjectFragmentFragmentDoc = gql`
   }
   isPrivate
   owner
+  archived
 }
     ${RunFragmentFragmentDoc}`;
 export const LogFragmentFragmentDoc = gql`
@@ -1249,6 +1305,137 @@ export function useUpdateProjectMutation(baseOptions?: Apollo.MutationHookOption
 export type UpdateProjectMutationHookResult = ReturnType<typeof useUpdateProjectMutation>;
 export type UpdateProjectMutationResult = Apollo.MutationResult<UpdateProjectMutation>;
 export type UpdateProjectMutationOptions = Apollo.BaseMutationOptions<UpdateProjectMutation, UpdateProjectMutationVariables>;
+export const DeleteProjectDocument = gql`
+    mutation DeleteProject($id: ID!) {
+  deleteProject(id: $id)
+}
+    `;
+export type DeleteProjectMutationFn = Apollo.MutationFunction<DeleteProjectMutation, DeleteProjectMutationVariables>;
+
+/**
+ * __useDeleteProjectMutation__
+ *
+ * To run a mutation, you first call `useDeleteProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteProjectMutation, { data, loading, error }] = useDeleteProjectMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteProjectMutation(baseOptions?: Apollo.MutationHookOptions<DeleteProjectMutation, DeleteProjectMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteProjectMutation, DeleteProjectMutationVariables>(DeleteProjectDocument, options);
+      }
+export type DeleteProjectMutationHookResult = ReturnType<typeof useDeleteProjectMutation>;
+export type DeleteProjectMutationResult = Apollo.MutationResult<DeleteProjectMutation>;
+export type DeleteProjectMutationOptions = Apollo.BaseMutationOptions<DeleteProjectMutation, DeleteProjectMutationVariables>;
+export const ArchiveProjectDocument = gql`
+    mutation ArchiveProject($id: ID!) {
+  archiveProject(id: $id) {
+    ...ProjectFragment
+  }
+}
+    ${ProjectFragmentFragmentDoc}`;
+export type ArchiveProjectMutationFn = Apollo.MutationFunction<ArchiveProjectMutation, ArchiveProjectMutationVariables>;
+
+/**
+ * __useArchiveProjectMutation__
+ *
+ * To run a mutation, you first call `useArchiveProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useArchiveProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [archiveProjectMutation, { data, loading, error }] = useArchiveProjectMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useArchiveProjectMutation(baseOptions?: Apollo.MutationHookOptions<ArchiveProjectMutation, ArchiveProjectMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ArchiveProjectMutation, ArchiveProjectMutationVariables>(ArchiveProjectDocument, options);
+      }
+export type ArchiveProjectMutationHookResult = ReturnType<typeof useArchiveProjectMutation>;
+export type ArchiveProjectMutationResult = Apollo.MutationResult<ArchiveProjectMutation>;
+export type ArchiveProjectMutationOptions = Apollo.BaseMutationOptions<ArchiveProjectMutation, ArchiveProjectMutationVariables>;
+export const UnarchiveProjectDocument = gql`
+    mutation UnarchiveProject($id: ID!) {
+  unarchiveProject(id: $id) {
+    ...ProjectFragment
+  }
+}
+    ${ProjectFragmentFragmentDoc}`;
+export type UnarchiveProjectMutationFn = Apollo.MutationFunction<UnarchiveProjectMutation, UnarchiveProjectMutationVariables>;
+
+/**
+ * __useUnarchiveProjectMutation__
+ *
+ * To run a mutation, you first call `useUnarchiveProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnarchiveProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unarchiveProjectMutation, { data, loading, error }] = useUnarchiveProjectMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUnarchiveProjectMutation(baseOptions?: Apollo.MutationHookOptions<UnarchiveProjectMutation, UnarchiveProjectMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnarchiveProjectMutation, UnarchiveProjectMutationVariables>(UnarchiveProjectDocument, options);
+      }
+export type UnarchiveProjectMutationHookResult = ReturnType<typeof useUnarchiveProjectMutation>;
+export type UnarchiveProjectMutationResult = Apollo.MutationResult<UnarchiveProjectMutation>;
+export type UnarchiveProjectMutationOptions = Apollo.BaseMutationOptions<UnarchiveProjectMutation, UnarchiveProjectMutationVariables>;
+export const ChangeProjectVisibilityDocument = gql`
+    mutation ChangeProjectVisibility($id: ID!, $isPublic: Boolean!) {
+  changeProjectVisibility(id: $id, isPublic: $isPublic) {
+    ...ProjectFragment
+  }
+}
+    ${ProjectFragmentFragmentDoc}`;
+export type ChangeProjectVisibilityMutationFn = Apollo.MutationFunction<ChangeProjectVisibilityMutation, ChangeProjectVisibilityMutationVariables>;
+
+/**
+ * __useChangeProjectVisibilityMutation__
+ *
+ * To run a mutation, you first call `useChangeProjectVisibilityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeProjectVisibilityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeProjectVisibilityMutation, { data, loading, error }] = useChangeProjectVisibilityMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      isPublic: // value for 'isPublic'
+ *   },
+ * });
+ */
+export function useChangeProjectVisibilityMutation(baseOptions?: Apollo.MutationHookOptions<ChangeProjectVisibilityMutation, ChangeProjectVisibilityMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ChangeProjectVisibilityMutation, ChangeProjectVisibilityMutationVariables>(ChangeProjectVisibilityDocument, options);
+      }
+export type ChangeProjectVisibilityMutationHookResult = ReturnType<typeof useChangeProjectVisibilityMutation>;
+export type ChangeProjectVisibilityMutationResult = Apollo.MutationResult<ChangeProjectVisibilityMutation>;
+export type ChangeProjectVisibilityMutationOptions = Apollo.BaseMutationOptions<ChangeProjectVisibilityMutation, ChangeProjectVisibilityMutationVariables>;
 export const GetProjectsDocument = gql`
     query GetProjects($cursor: String, $limit: Int, $skip: Int, $reverse: Boolean, $filters: ProjectFilters) {
   projects(
