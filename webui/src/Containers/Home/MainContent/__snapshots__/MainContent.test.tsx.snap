@@ -21,6 +21,11 @@ exports[`MainContent > should render the component 1`] = `
             >
               Projects
             </div>
+            <button
+              class="css-whgtjz"
+            >
+              New Project
+            </button>
           </div>
           <div
             style="margin-bottom: 25px; position: relative;"
