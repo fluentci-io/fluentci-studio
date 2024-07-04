@@ -112,6 +112,13 @@ export const Visibility = styled.div`
   border-radius: 14px;
 `;
 
+export const Archive = styled(Visibility)`
+  color: #ff6600;
+  border: 1px solid #ff6600;
+  font-weight: 500;
+  height: 18px;
+`;
+
 export const Tag = styled.button`
   font-size: 11px;
   color: #00f9ed;

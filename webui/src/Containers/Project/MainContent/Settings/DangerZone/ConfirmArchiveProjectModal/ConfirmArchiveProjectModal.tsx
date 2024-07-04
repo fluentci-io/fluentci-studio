@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import {
   Modal,
   ModalHeader,
@@ -21,6 +21,7 @@ export type ConfirmArchiveProjectModalProps = {
 const ConfirmArchiveProjectModal: FC<ConfirmArchiveProjectModalProps> = (
   props
 ) => {
+  const [value, setValue] = useState<string>("");
   const { isOpen, close, onArchive, projectSlug, isArchived } = props;
 
   return (
@@ -33,7 +34,18 @@ const ConfirmArchiveProjectModal: FC<ConfirmArchiveProjectModalProps> = (
           If you want to proceed, please type in the slug of this pipeline:{" "}
           <span style={{ fontWeight: 600, color: "#fff" }}>{projectSlug}</span>
         </div>
-        <Input size="mini" overrides={styles.Input} />
+        <Input
+          size="mini"
+          overrides={styles.Input}
+          onChange={(e) => setValue(e.currentTarget.value)}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              if (value === projectSlug) {
+                onArchive();
+              }
+            }
+          }}
+        />
       </ModalBody>
       <ModalFooter>
         <ModalButton
@@ -49,15 +61,16 @@ const ConfirmArchiveProjectModal: FC<ConfirmArchiveProjectModalProps> = (
           size={SIZE.compact}
           overrides={{
             BaseButton: {
-              style: {
+              style: ({ $disabled }: { $disabled: boolean }) => ({
                 fontFamily: "Lexend",
-                backgroundColor: "#FF0000",
+                backgroundColor: $disabled ? "initial !important" : "#FF0000",
                 ":hover": {
-                  backgroundColor: "#FF0000",
+                  backgroundColor: $disabled ? "initial" : "#FF0000",
                 },
-              },
+              }),
             },
           }}
+          disabled={value !== projectSlug}
         >
           {isArchived ? "Unarchive" : "Archive"}
         </ModalButton>

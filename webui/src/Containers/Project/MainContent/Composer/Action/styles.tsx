@@ -27,13 +27,14 @@ export const ActionName = styled.div`
   white-space: nowrap;
 `;
 
-export const PopoverButton = styled.button`
+export const PopoverButton = styled.button<{ disabled?: boolean }>`
   width: 40px;
   height: 40px;
   cursor: pointer;
   background-color: initial;
   border: none;
   color: #fff;
+  ${(props) => props.disabled && `opacity: 0.5; cursor: not-allowed;`}
 `;
 
 export const Popover = styled.div`

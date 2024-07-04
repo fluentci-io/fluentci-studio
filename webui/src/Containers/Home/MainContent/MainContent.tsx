@@ -14,6 +14,7 @@ import {
   Avatar,
   Separator,
   GithubUserName,
+  Archive,
 } from "./styles";
 import { Account, Project } from "../../../Hooks/GraphQL";
 import { Link } from "react-router-dom";
@@ -102,15 +103,18 @@ const MainContent: FC<MainContentProps> = (props) => {
                         {item.isPrivate === false && (
                           <Visibility>Public</Visibility>
                         )}
+                        {item.archived === true && <Archive>Archive</Archive>}
                       </Row>
                       {item.path !== "empty" && !!item.path && (
                         <Path>{item.path}</Path>
                       )}
                     </Link>
                     <div>
-                      {item.tags?.map((tag, index) => (
-                        <Tag key={index}>{tag}</Tag>
-                      ))}
+                      {item.tags
+                        ?.filter((x) => x)
+                        .map((tag, index) => (
+                          <Tag key={index}>{tag}</Tag>
+                        ))}
                     </div>
                   </div>
                   {_.get(item, "recentRuns.0.status") && (

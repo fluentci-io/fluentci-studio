@@ -14,6 +14,7 @@ export type ActionProps = {
   onDelete: (position: number) => void;
   onDuplicate: (position: number) => void;
   activate: (checked: boolean) => void;
+  disabled: boolean;
 };
 
 const Action: FC<ActionProps> = (props) => {
@@ -84,6 +85,7 @@ const Action: FC<ActionProps> = (props) => {
         </ActionName>
       </div>
       <Checkbox
+        disabled={props.disabled}
         checked={action?.active}
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
           activate(e.currentTarget.checked);
@@ -93,6 +95,7 @@ const Action: FC<ActionProps> = (props) => {
           Toggle: {
             style: {
               backgroundColor: "#fff",
+              opacity: props.disabled ? 0.5 : 1,
             },
           },
           ToggleTrack: {
@@ -166,7 +169,10 @@ const Action: FC<ActionProps> = (props) => {
         )}
         accessibilityType={"tooltip"}
       >
-        <PopoverButton onClick={(e) => e.stopPropagation()}>
+        <PopoverButton
+          onClick={(e) => e.stopPropagation()}
+          disabled={props.disabled}
+        >
           <EllipsisVertical size={20} />
         </PopoverButton>
       </StatefulPopover>

@@ -22,6 +22,7 @@ export type SetupActionModalProps = {
   editAction: boolean;
   handleSubmit: (e: BaseSyntheticEvent) => void;
   actionPosition?: number | null;
+  disabled?: boolean;
 };
 
 const SetupActionModal: FC<SetupActionModalProps> = (props) => {
@@ -149,6 +150,7 @@ const SetupActionModal: FC<SetupActionModalProps> = (props) => {
                   });
                   handleSubmit(e);
                 }}
+                disabled={props.disabled}
               >
                 Add this action
               </Button>
@@ -162,6 +164,7 @@ const SetupActionModal: FC<SetupActionModalProps> = (props) => {
                   setActiveKey("0");
                   handleSubmit(e);
                 }}
+                disabled={props.disabled}
               >
                 Save changes
               </Button>

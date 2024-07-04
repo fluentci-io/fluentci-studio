@@ -182,6 +182,7 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
       linkedRepository={linkedRepository}
       project={project}
       isPublic={project?.isPrivate === false}
+      isArchived={project?.archived === true}
     />
   );
 };

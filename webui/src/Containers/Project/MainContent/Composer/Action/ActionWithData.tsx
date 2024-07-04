@@ -1,10 +1,12 @@
 import { FC } from "react";
 import Action from "./Action";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { ComposerState } from "../ComposerState";
 import { Pipeline } from "../NewActionModal/NewActionModalWithData";
 import { useSaveActionsMutation } from "../../../../../Hooks/GraphQL";
 import { useParams } from "react-router-dom";
+import { ProjectState } from "../../../ProjectState";
+import { AuthState } from "../../../../Auth/AuthState";
 
 export type ActionWithDataProps = {
   action: Pipeline;
@@ -16,6 +18,8 @@ export type ActionWithDataProps = {
 
 const ActionWithData: FC<ActionWithDataProps> = (props) => {
   const { id } = useParams();
+  const me = useRecoilValue(AuthState);
+  const { project } = useRecoilValue(ProjectState);
   const [saveActions] = useSaveActionsMutation();
   const [actions, setActions] = useRecoilState(ComposerState);
   const activate = (checked: boolean) => {
@@ -45,7 +49,17 @@ const ActionWithData: FC<ActionWithDataProps> = (props) => {
     });
   };
 
-  return <Action {...props} activate={activate} />;
+  return (
+    <Action
+      {...props}
+      activate={activate}
+      disabled={
+        project?.archived === true ||
+        (me?.github !== project?.owner &&
+          import.meta.env.VITE_APP_API_URL?.includes("api.fluentci.io"))
+      }
+    />
+  );
 };
 
 export default ActionWithData;

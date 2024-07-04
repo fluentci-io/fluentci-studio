@@ -2,13 +2,15 @@ import { FormProvider, useForm } from "react-hook-form";
 import SetupActionModal from "./SetupActionModal";
 import { FC, useEffect } from "react";
 import { Pipeline } from "../NewActionModal/NewActionModalWithData";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { ComposerState } from "../ComposerState";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "./schema";
 import { useSaveActionsMutation } from "../../../../../Hooks/GraphQL";
 import { useParams } from "react-router-dom";
 import _ from "lodash";
+import { ProjectState } from "../../../ProjectState";
+import { AuthState } from "../../../../Auth/AuthState";
 
 export type SetupActionModalWithDataProps = {
   onClose: () => void;
@@ -22,6 +24,8 @@ export type SetupActionModalWithDataProps = {
 
 const SetupActionModalWithData: FC<SetupActionModalWithDataProps> = (props) => {
   const { id } = useParams();
+  const me = useRecoilValue(AuthState);
+  const { project } = useRecoilValue(ProjectState);
   const [saveActions] = useSaveActionsMutation();
   const [actions, setActions] = useRecoilState(ComposerState);
   const _setActions = (actions: Pipeline[]) => {
@@ -98,6 +102,11 @@ const SetupActionModalWithData: FC<SetupActionModalWithDataProps> = (props) => {
           props.onClose();
         }}
         handleSubmit={methods.handleSubmit(onSubmit)}
+        disabled={
+          project?.archived === true ||
+          (me?.github !== project?.owner &&
+            import.meta.env.VITE_APP_API_URL?.includes("api.fluentci.io"))
+        }
       />
     </FormProvider>
   );

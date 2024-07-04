@@ -12,7 +12,7 @@ export default {
     Dialog: {
       style: {
         backgroundColor: "#0f0124",
-        fontFamily: "Lexend",
+        fontFamily: "Lexend !important",
       },
     },
   },

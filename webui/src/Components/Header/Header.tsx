@@ -11,6 +11,7 @@ import styles, {
   PopoverButton,
   GithubLink,
   Visibility,
+  Archive,
 } from "./styles";
 import { Spinner } from "baseui/spinner";
 import { Project, Repository } from "../../Hooks/GraphQL";
@@ -25,6 +26,7 @@ export type HeaderProps = {
   linkedRepository?: Repository | null;
   project?: Project | null;
   isPublic?: boolean;
+  isArchived?: boolean;
 };
 
 const Header: FC<HeaderProps> = (props) => {
@@ -53,7 +55,14 @@ const Header: FC<HeaderProps> = (props) => {
           justifyContent: "center",
         }}
       >
-        <div style={{ display: "flex", flexDirection: "row", flex: 1 }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            flex: 1,
+            alignItems: "center",
+          }}
+        >
           <Breadcrumbs
             overrides={{
               Root: {
@@ -82,6 +91,7 @@ const Header: FC<HeaderProps> = (props) => {
             })}
           </Breadcrumbs>
           {props.isPublic && <Visibility>Public</Visibility>}
+          {props.isArchived && <Archive>Archive</Archive>}
         </div>
         <p
           style={{
@@ -122,7 +132,9 @@ const Header: FC<HeaderProps> = (props) => {
       {showRunButton && (
         <>
           {!props.loading && (
-            <RunButton onClick={() => onRun(id)}>Run</RunButton>
+            <RunButton onClick={() => onRun(id)} disabled={props.isArchived}>
+              Run
+            </RunButton>
           )}
           {props.loading && (
             <RunButton disabled>

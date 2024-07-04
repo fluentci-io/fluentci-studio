@@ -1,6 +1,10 @@
 import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 
-type Theme = { $theme: { primaryFontFamily: string }; $isActive: boolean };
+type Theme = {
+  $theme: { primaryFontFamily: string; disabled?: boolean };
+  $isActive: boolean;
+};
 export const Button = styled.button`
   height: 40px;
   background-color: #24ffb5;
@@ -13,6 +17,12 @@ export const Button = styled.button`
   &:hover {
     background-color: #18d193;
   }
+  ${(props) =>
+    props.disabled &&
+    css`
+      opacity: 0.5;
+      cursor: not-allowed;
+    `}
 `;
 
 export default {

@@ -23,7 +23,7 @@ export const Container = styled.div`
   margin-bottom: 20px;
 `;
 
-export const RunButton = styled.button`
+export const RunButton = styled.button<{ disabled?: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,6 +38,13 @@ export const RunButton = styled.button`
   &:hover {
     background-color: #18d193;
   }
+
+  ${(props) =>
+    props.disabled &&
+    `
+    opacity: 0.5;
+    cursor: not-allowed;
+  `}
 `;
 
 export const PopoverButton = styled.button`
@@ -81,6 +88,13 @@ export const Visibility = styled.div`
   padding-left: 6px;
   padding-right: 6px;
   border-radius: 14px;
+`;
+
+export const Archive = styled(Visibility)`
+  color: #ff6600;
+  border: 1px solid #ff6600;
+  font-weight: 500;
+  height: 18px;
 `;
 
 export default {

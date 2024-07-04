@@ -25,7 +25,7 @@ export default {
     },
     Input: {
       style: {
-        fontFamily: "Lexend",
+        fontFamily: "Lexend !important",
       },
     },
   },
