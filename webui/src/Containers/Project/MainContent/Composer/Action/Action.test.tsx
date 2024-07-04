@@ -28,6 +28,7 @@ describe("Action", () => {
         onDelete={vi.fn()}
         onDuplicate={vi.fn()}
         activate={vi.fn()}
+        disabled={false}
       />
     );
     expect(container).toMatchSnapshot();

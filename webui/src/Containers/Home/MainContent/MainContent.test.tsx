@@ -6,8 +6,13 @@ import { BrowserRouter } from "react-router-dom";
 describe("MainContent", () => {
   it("should render the component", () => {
     const { container } = render(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      <MainContent projects={projects as any[]} onNewProject={vi.fn()} />,
+      <MainContent
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        projects={projects as any[]}
+        onNewProject={vi.fn()}
+        displayNewProjectButton={true}
+        loading={false}
+      />,
       {
         wrapper: BrowserRouter,
       }
