@@ -4,9 +4,9 @@ import Repository from "./Repository";
 import DangerZone from "./DangerZone";
 
 const Settings: FC = () => {
-  const displayRepositorySection = import.meta.env.VITE_APP_API_URL?.includes(
-    "api.fluentci.io"
-  );
+  const displayRepositorySection =
+    import.meta.env.VITE_APP_API_URL?.includes("api.fluentci.io") ||
+    location.hostname === "app.fluentci.io";
   return (
     <>
       <General />

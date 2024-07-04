@@ -124,7 +124,8 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
 
   const isOwner =
     (project?.owner === me?.github && project?.owner) ||
-    !import.meta.env.VITE_APP_API_URL?.includes("api.fluentci.io");
+    (!import.meta.env.VITE_APP_API_URL?.includes("api.fluentci.io") &&
+      location.hostname !== "app.fluentci.io");
 
   const breadcrumbs: { title: string; link?: string }[] = [
     {
@@ -167,6 +168,7 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
       breadcrumbs={breadcrumbs}
       showRunButton={
         (!import.meta.env.VITE_APP_API_URL?.includes("api.fluentci.io") &&
+          location.hostname !== "app.fluentci.io" &&
           project?.path !== "empty" &&
           !!actions?.filter((x) => x.enabled).length) ||
         (me?.github === project?.owner &&

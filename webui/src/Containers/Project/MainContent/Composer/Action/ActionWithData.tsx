@@ -56,7 +56,8 @@ const ActionWithData: FC<ActionWithDataProps> = (props) => {
       disabled={
         project?.archived === true ||
         (me?.github !== project?.owner &&
-          import.meta.env.VITE_APP_API_URL?.includes("api.fluentci.io"))
+          (import.meta.env.VITE_APP_API_URL?.includes("api.fluentci.io") ||
+            location.hostname === "app.fluentci.io"))
       }
     />
   );

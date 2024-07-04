@@ -81,7 +81,8 @@ const MainContentWithData: FC = () => {
       projects={data?.projects}
       onNewProject={onNewProject}
       displayNewProjectButton={
-        !import.meta.env.VITE_APP_API_URL?.includes("api.fluentci.io") ||
+        (!import.meta.env.VITE_APP_API_URL?.includes("api.fluentci.io") &&
+          location.hostname !== "app.fluentci.io") ||
         (me?.github === usernameOrOrg && !!usernameOrOrg) ||
         (!!me && !usernameOrOrg)
       }

@@ -30,8 +30,13 @@ const NavbarWithData: FC = () => {
     }
 
     if (!user && location.host === "app.fluentci.io") {
-      navigate("/auth");
-      return;
+      if (
+        location.pathname.startsWith("/settings") ||
+        location.pathname.startsWith("/link-project")
+      ) {
+        navigate("/auth");
+        return;
+      }
     }
 
     user &&
@@ -43,9 +48,10 @@ const NavbarWithData: FC = () => {
       user={user}
       onSignOut={onSignOut}
       showAccountMenu={!!me}
-      showSignInButton={import.meta.env.VITE_APP_API_URL?.includes(
-        "api.fluentci.io"
-      )}
+      showSignInButton={
+        import.meta.env.VITE_APP_API_URL?.includes("api.fluentci.io") ||
+        location.hostname === "app.fluentci.io"
+      }
     />
   );
 };

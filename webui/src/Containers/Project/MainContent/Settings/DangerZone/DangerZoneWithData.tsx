@@ -113,9 +113,10 @@ const DangerZoneWithData: FC = () => {
 
   return (
     <DangerZone
-      displayRepositorySection={import.meta.env.VITE_APP_API_URL?.includes(
-        "api.fluentci.io"
-      )}
+      displayRepositorySection={
+        import.meta.env.VITE_APP_API_URL?.includes("api.fluentci.io") ||
+        location.hostname === "app.fluentci.io"
+      }
       isPublic={project?.isPrivate !== true}
       isArchived={project?.archived === true}
       onChangeVisibility={onChangeVisibility}

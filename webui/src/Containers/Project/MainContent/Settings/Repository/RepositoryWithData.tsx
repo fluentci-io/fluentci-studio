@@ -45,9 +45,10 @@ const RepositoryWithData: FC = () => {
       loadingLinkedRepository={loadingLinkedRepository}
       projectId={project?.id}
       orgs={organizationsData?.organizations || []}
-      displayRepositorySection={import.meta.env.VITE_APP_API_URL?.includes(
-        "api.fluentci.io"
-      )}
+      displayRepositorySection={
+        import.meta.env.VITE_APP_API_URL?.includes("api.fluentci.io") ||
+        location.hostname === "app.fluentci.io"
+      }
       loadingUnlink={loadingUnlink}
     />
   );
