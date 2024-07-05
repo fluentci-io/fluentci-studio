@@ -6,8 +6,31 @@ import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { AuthState } from "../../Containers/Auth/AuthState";
+import { useAuth, useUser } from "@clerk/clerk-react";
 
 const NavbarWithData: FC = () => {
+  const { getToken, isSignedIn, signOut } = useAuth();
+  const { user } = useUser();
+  const me = useRecoilValue(AuthState);
+
+  console.log(">>", user, isSignedIn);
+  const onSignOut = async () => {
+    await signOut();
+    localStorage.setItem("logout", "true");
+    localStorage.removeItem("token");
+  };
+
+  useEffect(() => {
+    if (isSignedIn) {
+      getToken().then((token) => {
+        console.log(">> token", token);
+        localStorage.setItem("token", token!);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSignedIn]);
+
+  /*
   const me = useRecoilValue(AuthState);
   const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
@@ -42,6 +65,7 @@ const NavbarWithData: FC = () => {
     user &&
       user.getIdToken().then((token) => localStorage.setItem("idToken", token));
   }, [user, loading, navigate]);
+  */
 
   return (
     <Navbar

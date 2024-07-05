@@ -108,13 +108,14 @@ export const SignIn = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   border: 1px solid #7392b161;
   padding-left: 18px;
   padding-right: 18px;
   border-radius: 26px;
   background-color: #06e0b021;
   height: 42px;
-  width: 146.95px;
+  width: 80px;
 `;
 
 export const SignInLink = styled.a`

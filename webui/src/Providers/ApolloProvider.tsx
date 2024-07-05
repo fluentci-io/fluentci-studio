@@ -8,9 +8,8 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { FC, ReactNode, useEffect } from "react";
-import { auth } from "../firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { timer } from "rxjs";
+import { useAuth } from "@clerk/clerk-react";
 
 const uri = (
   import.meta.env.VITE_APP_API_URL ||
@@ -60,24 +59,24 @@ interface ApolloProviderProps {
 }
 
 const ApolloProvider: FC<ApolloProviderProps> = ({ children }) => {
-  const [user, loading] = useAuthState(auth);
+  const { getToken, isSignedIn } = useAuth();
 
   useEffect(() => {
-    if (loading || !user) {
+    if (!isSignedIn || !getToken) {
       return;
     }
 
     const source = timer(0, 1500);
     const subscription = source.subscribe(() => {
-      user.getIdToken().then((token) => {
-        localStorage.setItem("token", token);
+      getToken().then((token) => {
+        localStorage.setItem("token", token!);
       });
     });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [user, loading]);
+  }, [isSignedIn, getToken]);
 
   return (
     <DefaultApolloProvider client={client}>{children}</DefaultApolloProvider>

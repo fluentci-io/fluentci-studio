@@ -30,6 +30,7 @@
     "@apollo/client": "^3.9.4",
     "@apollo/react-components": "^4.0.0",
     "@chakra-ui/react": "^2.8.2",
+    "@clerk/clerk-react": "^5.2.7",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@fontsource/inconsolata": "^5.0.16",
@@ -120,5 +121,9 @@
     "vite-plugin-electron": "^0.28.7",
     "vite-plugin-electron-renderer": "^0.14.5",
     "vitest": "^1.6.0"
-  }
+  },
+  "trustedDependencies": [
+    "@clerk/shared",
+    "protobufjs"
+  ]
 }
