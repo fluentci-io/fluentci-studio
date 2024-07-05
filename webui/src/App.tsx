@@ -7,8 +7,6 @@ import Billing from "./Containers/Settings/Billing";
 import Settings from "./Containers/Settings";
 import { useEffect } from "react";
 import { useGetMeLazyQuery } from "./Hooks/GraphQL";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "./firebase";
 import { useRecoilState } from "recoil";
 import { AuthState } from "./Containers/Auth/AuthState";
 import LinkProject from "./Containers/LinkProject";

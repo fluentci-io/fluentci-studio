@@ -1,8 +1,5 @@
 import { FC, useEffect } from "react";
 import Navbar from "./Navbar";
-import { signOut } from "firebase/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { AuthState } from "../../Containers/Auth/AuthState";
