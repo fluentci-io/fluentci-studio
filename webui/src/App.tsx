@@ -5,10 +5,6 @@ import Auth from "./Containers/Auth";
 import AccessTokens from "./Containers/Settings/AccessTokens";
 import Billing from "./Containers/Settings/Billing";
 import Settings from "./Containers/Settings";
-import { useEffect } from "react";
-import { useGetMeLazyQuery } from "./Hooks/GraphQL";
-import { useRecoilState } from "recoil";
-import { AuthState } from "./Containers/Auth/AuthState";
 import LinkProject from "./Containers/LinkProject";
 import {
   RouterProvider,
@@ -70,21 +66,6 @@ const router = createRouter([
 ]);
 
 function App() {
-  /*
-  const [user, loading] = useAuthState(auth);
-  const [getMe] = useGetMeLazyQuery();
-  const setMe = useRecoilState(AuthState)[1];
-
-  useEffect(() => {
-    if (loading || !user) {
-      return;
-    }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    getMe().then((response: any) => setMe(response?.data?.me));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, loading]);
-  */
-
   return <RouterProvider router={router} />;
 }
 

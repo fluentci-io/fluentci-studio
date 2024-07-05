@@ -9,8 +9,8 @@ const NavbarWithData: FC = () => {
   const { getToken, isSignedIn, signOut } = useAuth();
   const { user } = useUser();
   const me = useRecoilValue(AuthState);
+  const navigate = useNavigate();
 
-  console.log(">>", user, isSignedIn);
   const onSignOut = async () => {
     await signOut();
     localStorage.setItem("logout", "true");
@@ -18,51 +18,26 @@ const NavbarWithData: FC = () => {
   };
 
   useEffect(() => {
-    if (isSignedIn) {
-      getToken().then((token) => {
-        console.log(">> token", token);
-        localStorage.setItem("token", token!);
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSignedIn]);
-
-  /*
-  const me = useRecoilValue(AuthState);
-  const [user, loading] = useAuthState(auth);
-  const navigate = useNavigate();
-
-  const onSignOut = async () => {
-    localStorage.setItem("logout", "true");
-    localStorage.removeItem("idToken");
-    await signOut(auth);
-    window.location.href = "https://fluentci.io";
-  };
-
-  useEffect(() => {
-    if (loading) {
-      return;
-    }
-
     if (localStorage.getItem("logout") === "true") {
       localStorage.removeItem("logout");
       return;
     }
 
-    if (!user && location.host === "app.fluentci.io") {
+    if (isSignedIn === false /*&& location.host === "app.fluentci.io"*/) {
       if (
         location.pathname.startsWith("/settings") ||
         location.pathname.startsWith("/link-project")
       ) {
         navigate("/auth");
-        return;
       }
+      return;
     }
+    getToken().then((token) => {
+      localStorage.setItem("token", token!);
+    });
 
-    user &&
-      user.getIdToken().then((token) => localStorage.setItem("idToken", token));
-  }, [user, loading, navigate]);
-  */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSignedIn]);
 
   return (
     <Navbar
