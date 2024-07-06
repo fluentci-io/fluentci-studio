@@ -13,11 +13,11 @@
   "scripts": {
     "dev": "vite --config vite.dev.config.ts",
     "local": "VITE_APP_API_URL=http://localhost:8787/graphql vite --config vite.dev.config.ts",
-    "prod": "VITE_APP_API_URL=https://api.fluentci.io/graphql VITE_CLERK_PUBLISHABLE_KEY=pk_live_Y2xlcmsuZmx1ZW50Y2kuaW8k vite --config vite.dev.config.ts",
+    "prod": "VITE_APP_API_URL=https://api.fluentci.io/graphql VITE_APP_CLERK_PUBLISHABLE_KEY=pk_live_Y2xlcmsuZmx1ZW50Y2kuaW8k vite --config vite.dev.config.ts",
     "start": "electron .",
     "build:web": "vite build --config vite.dev.config.ts",
     "build": "tsc && vite build && electron-builder",
-    "build:prod": "VITE_APP_API_URL=https://api.fluentci.io/graphql VITE_CLERK_PUBLISHABLE_KEY=pk_live_Y2xlcmsuZmx1ZW50Y2kuaW8k tsc && vite build --config vite.dev.config.ts",
+    "build:prod": "VITE_APP_API_URL=https://api.fluentci.io/graphql VITE_APP_CLERK_PUBLISHABLE_KEY=pk_live_Y2xlcmsuZmx1ZW50Y2kuaW8k tsc && vite build --config vite.dev.config.ts",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",

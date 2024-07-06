@@ -3,11 +3,9 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import ApolloProvider from "../Providers/ApolloProvider";
 import CurrentUserLayout from "./CurrentUser";
 
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
-
-if (!PUBLISHABLE_KEY) {
-  throw new Error("Missing Publishable Key");
-}
+const PUBLISHABLE_KEY =
+  import.meta.env.VITE_APP_CLERK_PUBLISHABLE_KEY ||
+  "pk_live_Y2xlcmsuZmx1ZW50Y2kuaW8k";
 
 export default function RootLayout() {
   const navigate = useNavigate();
