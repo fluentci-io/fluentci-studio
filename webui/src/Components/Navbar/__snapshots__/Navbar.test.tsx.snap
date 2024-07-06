@@ -32,7 +32,7 @@ exports[`Navbar > should render the component 1`] = `
         </a>
       </div>
       <div
-        style="flex: 1; display: flex; flex-direction: row; justify-content: flex-end;"
+        style="flex: 1; display: flex; flex-direction: row; justify-content: flex-end; align-items: center;"
       >
         <a
           class="css-1tuzldf"
