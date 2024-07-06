@@ -67,6 +67,7 @@ const Navbar: FC<NavbarProps> = ({ user, onSignOut, showSignInButton }) => {
             display: "flex",
             flexDirection: "row",
             justifyContent: "flex-end",
+            alignItems: "center",
           }}
         >
           <Menu
