@@ -25,6 +25,7 @@ const router = createRouter([
         path: "/auth",
         element: <Auth />,
       },
+
       {
         path: "/auth/sso-callback",
         element: <AuthenticateWithRedirectCallback />,

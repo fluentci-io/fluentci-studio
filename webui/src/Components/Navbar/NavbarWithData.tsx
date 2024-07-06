@@ -1,12 +1,13 @@
 import { FC, useEffect } from "react";
 import Navbar from "./Navbar";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { AuthState } from "../../Containers/Auth/AuthState";
 import { useAuth, useUser } from "@clerk/clerk-react";
 
 const NavbarWithData: FC = () => {
   const { getToken, isSignedIn, signOut } = useAuth();
+  const setMe = useRecoilState(AuthState)[1];
   const { user } = useUser();
   const me = useRecoilValue(AuthState);
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const NavbarWithData: FC = () => {
     await signOut();
     localStorage.setItem("logout", "true");
     localStorage.removeItem("token");
+    setMe(null);
   };
 
   useEffect(() => {
