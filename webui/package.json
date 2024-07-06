@@ -13,11 +13,11 @@
   "scripts": {
     "dev": "vite --config vite.dev.config.ts",
     "local": "VITE_APP_API_URL=http://localhost:8787/graphql vite --config vite.dev.config.ts",
-    "prod": "VITE_APP_API_URL=https://api.fluentci.io/graphql vite --config vite.dev.config.ts",
+    "prod": "VITE_APP_API_URL=https://api.fluentci.io/graphql VITE_CLERK_PUBLISHABLE_KEY=pk_live_Y2xlcmsuZmx1ZW50Y2kuaW8k vite --config vite.dev.config.ts",
     "start": "electron .",
     "build:web": "vite build --config vite.dev.config.ts",
     "build": "tsc && vite build && electron-builder",
-    "build:prod": "VITE_APP_API_URL=https://api.fluentci.io/graphql tsc && vite build --config vite.dev.config.ts",
+    "build:prod": "VITE_APP_API_URL=https://api.fluentci.io/graphql VITE_CLERK_PUBLISHABLE_KEY=pk_live_Y2xlcmsuZmx1ZW50Y2kuaW8k tsc && vite build --config vite.dev.config.ts",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
@@ -30,6 +30,7 @@
     "@apollo/client": "^3.9.4",
     "@apollo/react-components": "^4.0.0",
     "@chakra-ui/react": "^2.8.2",
+    "@clerk/clerk-react": "^5.2.7",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@fontsource/inconsolata": "^5.0.16",
@@ -60,14 +61,12 @@
     "dayjs": "^1.11.10",
     "electron-squirrel-startup": "^1.0.1",
     "electron-updater": "^6.1.8",
-    "firebase": "^10.12.2",
     "graphql": "15.7.2",
     "nanoid": "^5.0.7",
     "prismjs": "^1.29.0",
     "react": "^18.2.0",
     "react-content-loader": "^7.0.0",
     "react-dom": "^18.2.0",
-    "react-firebase-hooks": "^5.1.1",
     "react-hook-form": "^7.51.4",
     "react-router-dom": "^6.22.0",
     "react-use-websocket": "^4.8.1",
@@ -120,5 +119,9 @@
     "vite-plugin-electron": "^0.28.7",
     "vite-plugin-electron-renderer": "^0.14.5",
     "vitest": "^1.6.0"
-  }
+  },
+  "trustedDependencies": [
+    "@clerk/shared",
+    "protobufjs"
+  ]
 }

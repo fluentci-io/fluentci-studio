@@ -1,47 +1,45 @@
 import { FC, useEffect } from "react";
 import Navbar from "./Navbar";
-import { signOut } from "firebase/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { AuthState } from "../../Containers/Auth/AuthState";
+import { useAuth, useUser } from "@clerk/clerk-react";
 
 const NavbarWithData: FC = () => {
+  const { getToken, isSignedIn, signOut } = useAuth();
+  const setMe = useRecoilState(AuthState)[1];
+  const { user } = useUser();
   const me = useRecoilValue(AuthState);
-  const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
 
   const onSignOut = async () => {
+    await signOut();
     localStorage.setItem("logout", "true");
-    localStorage.removeItem("idToken");
-    await signOut(auth);
-    window.location.href = "https://fluentci.io";
+    localStorage.removeItem("token");
+    setMe(null);
   };
 
   useEffect(() => {
-    if (loading) {
-      return;
-    }
-
     if (localStorage.getItem("logout") === "true") {
       localStorage.removeItem("logout");
       return;
     }
 
-    if (!user && location.host === "app.fluentci.io") {
+    if (isSignedIn === false /*&& location.host === "app.fluentci.io"*/) {
       if (
         location.pathname.startsWith("/settings") ||
         location.pathname.startsWith("/link-project")
       ) {
         navigate("/auth");
-        return;
       }
+      return;
     }
+    getToken().then((token) => {
+      localStorage.setItem("token", token!);
+    });
 
-    user &&
-      user.getIdToken().then((token) => localStorage.setItem("idToken", token));
-  }, [user, loading, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSignedIn]);
 
   return (
     <Navbar

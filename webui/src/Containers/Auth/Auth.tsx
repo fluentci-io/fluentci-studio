@@ -1,42 +1,18 @@
-import { FC, useEffect } from "react";
-import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../firebase";
-import { useNavigate } from "react-router-dom";
+import { SignIn } from "@clerk/clerk-react";
+import styled from "@emotion/styled";
 
-const Auth: FC = () => {
-  const navigate = useNavigate();
-  const [user, loading] = useAuthState(auth);
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+`;
 
-  useEffect(() => {
-    if (loading) {
-      return;
-    }
-    if (user) {
-      user.getIdToken().then((token) => {
-        localStorage.setItem("idToken", token);
-        navigate("/");
-      });
-
-      return;
-    }
-    const githubProvider = new GithubAuthProvider();
-    signInWithPopup(auth, githubProvider)
-      .then((result) => {
-        if (result?.user) {
-          result.user.getIdToken().then((token) => {
-            localStorage.setItem("idToken", token);
-            navigate("/");
-          });
-          return;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [user, loading, navigate]);
-
-  return <></>;
-};
-
-export default Auth;
+export default function Auth() {
+  return (
+    <Container>
+      <SignIn path="/auth" />
+    </Container>
+  );
+}
