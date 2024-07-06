@@ -14,7 +14,7 @@ const MainContentWithData: FC = () => {
       onTabChange={(value) => state[1](value)}
       displaySettings={
         (me?.github === project?.owner && !!me?.github) ||
-        !import.meta.env.VITE_APP_API_URL?.includes("api.fluentci.io")
+        location.hostname !== "app.fluentci.io"
       }
     />
   );
