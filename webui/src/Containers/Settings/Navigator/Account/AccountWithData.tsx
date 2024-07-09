@@ -1,15 +1,14 @@
 import { FC } from "react";
 import Account from "./Account";
+import { useUser } from "@clerk/clerk-react";
 
 const AccountWithData: FC = () => {
+  const { user } = useUser();
   return (
     <Account
-      email={""} // firebase
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      // username={(user as any)?.reloadUserInfo?.screenName}
-      // displayName={user?.displayName || ""}
-      username=""
-      displayName=""
+      email={user?.emailAddresses[0].emailAddress || ""}
+      username={user?.username || ""}
+      displayName={user?.fullName || ""}
     />
   );
 };
