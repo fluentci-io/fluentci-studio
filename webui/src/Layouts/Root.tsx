@@ -15,7 +15,11 @@ export default function RootLayout() {
       routerPush={(to) => navigate(to)}
       routerReplace={(to) => navigate(to, { replace: true })}
       publishableKey={PUBLISHABLE_KEY}
-      proxyUrl="https://fluentci.io/__clerk"
+      proxyUrl={
+        location.hostname === "app.fluentci.io"
+          ? "https://fluentci.io/__clerk"
+          : undefined
+      }
     >
       <ApolloProvider>
         <CurrentUserLayout>
