@@ -99,6 +99,14 @@ const filters = [
   "cypress",
   "flipt",
   "depot",
+  "nix",
+  "devenv",
+  "devbox",
+  "pkgx",
+  "vfox",
+  "mise",
+  "ssh",
+  "shell",
 ];
 
 export type Pipeline = {
