@@ -1,7 +1,7 @@
 {
   "name": "fluentci-studio",
   "private": true,
-  "version": "0.1.6",
+  "version": "0.1.7",
   "type": "module",
   "main": "dist-electron/main/index.js",
   "author": "Tsiry Sandratraina <tsiry.sndr@fluentci.io>",
