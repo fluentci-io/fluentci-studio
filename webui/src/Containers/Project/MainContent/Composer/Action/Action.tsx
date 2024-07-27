@@ -39,7 +39,7 @@ const Action: FC<ActionProps> = (props) => {
             return;
           }
         }
-        onClickAction(action, index ? 1 : index);
+        onClickAction(action, index);
       }}
     >
       {action.logo && (
