@@ -36,6 +36,13 @@ exports[`Navbar > should render the component 1`] = `
       >
         <a
           class="css-1tuzldf"
+          href="https://fluentci.io/ai"
+          target="_blank"
+        >
+          FluentCI AI
+        </a>
+        <a
+          class="css-1tuzldf"
           href="https://github.com/fluentci-io/fluentci_feedback/issues/new/choose"
           target="_blank"
         >
