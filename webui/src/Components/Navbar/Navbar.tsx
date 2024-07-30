@@ -70,6 +70,9 @@ const Navbar: FC<NavbarProps> = ({ user, onSignOut, showSignInButton }) => {
             alignItems: "center",
           }}
         >
+          <Menu href="https://fluentci.io/ai" target="_blank">
+            FluentCI AI
+          </Menu>
           <Menu
             href="https://github.com/fluentci-io/fluentci_feedback/issues/new/choose"
             target="_blank"
