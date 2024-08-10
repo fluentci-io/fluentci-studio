@@ -105,3 +105,26 @@ export const OrganizationFragment = gql`
     createdAt
   }
 `;
+
+export const PackageFragment = gql`
+  fragment PackageFragment on Package {
+    id
+    name
+    publisher
+    description
+    version
+    owner
+    downloads
+    repoName
+    logoUrl
+    githubUrl
+    license
+    createdAt
+    updatedAt
+    categories {
+      id
+      name
+      slug
+    }
+  }
+`;

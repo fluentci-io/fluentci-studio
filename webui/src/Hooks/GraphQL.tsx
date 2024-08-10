@@ -58,6 +58,13 @@ export type ActionInput = {
   useWasm: Scalars['Boolean'];
 };
 
+export type Category = {
+  __typename?: 'Category';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  slug: Scalars['String'];
+};
+
 /** A job is a task that is run in a project. */
 export type Job = {
   __typename?: 'Job';
@@ -92,8 +99,10 @@ export type Mutation = {
   runJob: Job;
   runPipeline?: Maybe<Run>;
   saveActions?: Maybe<Array<Action>>;
+  starPackage: Package;
   unarchiveProject?: Maybe<Project>;
   unlinkRepository?: Maybe<Repository>;
+  unstarPackage: Package;
   updateProject?: Maybe<Project>;
 };
 
@@ -153,6 +162,11 @@ export type MutationSaveActionsArgs = {
 };
 
 
+export type MutationStarPackageArgs = {
+  id: Scalars['ID'];
+};
+
+
 export type MutationUnarchiveProjectArgs = {
   id: Scalars['ID'];
 };
@@ -160,6 +174,11 @@ export type MutationUnarchiveProjectArgs = {
 
 export type MutationUnlinkRepositoryArgs = {
   repoName: Scalars['String'];
+};
+
+
+export type MutationUnstarPackageArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -180,6 +199,7 @@ export type Organization = {
 export type Package = {
   __typename?: 'Package';
   avatarUrl?: Maybe<Scalars['String']>;
+  categories?: Maybe<Array<Category>>;
   createdAt: Scalars['String'];
   defaultBranch?: Maybe<Scalars['String']>;
   description: Scalars['String'];
@@ -234,6 +254,7 @@ export type Query = {
   accessTokens: Array<AccessToken>;
   account?: Maybe<Account>;
   actions?: Maybe<Array<Action>>;
+  countPackageStars: Scalars['Int'];
   countPackages: Scalars['Int'];
   countProjects: Scalars['Int'];
   countRuns: Scalars['Int'];
@@ -252,6 +273,7 @@ export type Query = {
   project?: Maybe<Project>;
   projects: Array<Project>;
   repositories: Array<Repository>;
+  starredPackage: Scalars['Boolean'];
   versions: Array<Version>;
 };
 
@@ -263,6 +285,11 @@ export type QueryAccountArgs = {
 
 export type QueryActionsArgs = {
   projectId: Scalars['ID'];
+};
+
+
+export type QueryCountPackageStarsArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -328,6 +355,7 @@ export type QueryPackagesArgs = {
   all?: InputMaybe<Scalars['Boolean']>;
   category?: InputMaybe<Scalars['String']>;
   filter?: InputMaybe<Scalars['String']>;
+  orderBy?: InputMaybe<Scalars['String']>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
 };
@@ -350,6 +378,11 @@ export type QueryProjectsArgs = {
 export type QueryRepositoriesArgs = {
   organization: Scalars['String'];
   provider: Scalars['String'];
+};
+
+
+export type QueryStarredPackageArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -464,6 +497,8 @@ export type RepositoryFragmentFragment = { __typename?: 'Repository', id: string
 
 export type OrganizationFragmentFragment = { __typename?: 'Organization', id: string, name: string, createdAt: string };
 
+export type PackageFragmentFragment = { __typename?: 'Package', id: string, name: string, publisher?: string | null, description: string, version: string, owner: string, downloads: number, repoName?: string | null, logoUrl?: string | null, githubUrl?: string | null, license?: string | null, createdAt: string, updatedAt: string, categories?: Array<{ __typename?: 'Category', id: string, name: string, slug: string }> | null };
+
 export type RunJobMutationVariables = Exact<{
   projectId?: InputMaybe<Scalars['ID']>;
   jobName?: InputMaybe<Scalars['String']>;
@@ -505,6 +540,20 @@ export type GetOrganizationsQueryVariables = Exact<{
 
 
 export type GetOrganizationsQuery = { __typename?: 'Query', organizations: Array<{ __typename?: 'Organization', id: string, name: string, createdAt: string }> };
+
+export type StarPackageMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type StarPackageMutation = { __typename?: 'Mutation', starPackage: { __typename?: 'Package', id: string, name: string, publisher?: string | null, description: string, version: string, owner: string, downloads: number, repoName?: string | null, logoUrl?: string | null, githubUrl?: string | null, license?: string | null, createdAt: string, updatedAt: string, categories?: Array<{ __typename?: 'Category', id: string, name: string, slug: string }> | null } };
+
+export type UnstarPackageMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type UnstarPackageMutation = { __typename?: 'Mutation', unstarPackage: { __typename?: 'Package', id: string, name: string, publisher?: string | null, description: string, version: string, owner: string, downloads: number, repoName?: string | null, logoUrl?: string | null, githubUrl?: string | null, license?: string | null, createdAt: string, updatedAt: string, categories?: Array<{ __typename?: 'Category', id: string, name: string, slug: string }> | null } };
 
 export type CreateProjectMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -729,6 +778,28 @@ export const OrganizationFragmentFragmentDoc = gql`
   id
   name
   createdAt
+}
+    `;
+export const PackageFragmentFragmentDoc = gql`
+    fragment PackageFragment on Package {
+  id
+  name
+  publisher
+  description
+  version
+  owner
+  downloads
+  repoName
+  logoUrl
+  githubUrl
+  license
+  createdAt
+  updatedAt
+  categories {
+    id
+    name
+    slug
+  }
 }
     `;
 export const CreateAccessTokenDocument = gql`
@@ -1237,6 +1308,72 @@ export function useGetOrganizationsLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetOrganizationsQueryHookResult = ReturnType<typeof useGetOrganizationsQuery>;
 export type GetOrganizationsLazyQueryHookResult = ReturnType<typeof useGetOrganizationsLazyQuery>;
 export type GetOrganizationsQueryResult = Apollo.QueryResult<GetOrganizationsQuery, GetOrganizationsQueryVariables>;
+export const StarPackageDocument = gql`
+    mutation StarPackage($id: ID!) {
+  starPackage(id: $id) {
+    ...PackageFragment
+  }
+}
+    ${PackageFragmentFragmentDoc}`;
+export type StarPackageMutationFn = Apollo.MutationFunction<StarPackageMutation, StarPackageMutationVariables>;
+
+/**
+ * __useStarPackageMutation__
+ *
+ * To run a mutation, you first call `useStarPackageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStarPackageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [starPackageMutation, { data, loading, error }] = useStarPackageMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useStarPackageMutation(baseOptions?: Apollo.MutationHookOptions<StarPackageMutation, StarPackageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<StarPackageMutation, StarPackageMutationVariables>(StarPackageDocument, options);
+      }
+export type StarPackageMutationHookResult = ReturnType<typeof useStarPackageMutation>;
+export type StarPackageMutationResult = Apollo.MutationResult<StarPackageMutation>;
+export type StarPackageMutationOptions = Apollo.BaseMutationOptions<StarPackageMutation, StarPackageMutationVariables>;
+export const UnstarPackageDocument = gql`
+    mutation UnstarPackage($id: ID!) {
+  unstarPackage(id: $id) {
+    ...PackageFragment
+  }
+}
+    ${PackageFragmentFragmentDoc}`;
+export type UnstarPackageMutationFn = Apollo.MutationFunction<UnstarPackageMutation, UnstarPackageMutationVariables>;
+
+/**
+ * __useUnstarPackageMutation__
+ *
+ * To run a mutation, you first call `useUnstarPackageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnstarPackageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unstarPackageMutation, { data, loading, error }] = useUnstarPackageMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUnstarPackageMutation(baseOptions?: Apollo.MutationHookOptions<UnstarPackageMutation, UnstarPackageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnstarPackageMutation, UnstarPackageMutationVariables>(UnstarPackageDocument, options);
+      }
+export type UnstarPackageMutationHookResult = ReturnType<typeof useUnstarPackageMutation>;
+export type UnstarPackageMutationResult = Apollo.MutationResult<UnstarPackageMutation>;
+export type UnstarPackageMutationOptions = Apollo.BaseMutationOptions<UnstarPackageMutation, UnstarPackageMutationVariables>;
 export const CreateProjectDocument = gql`
     mutation CreateProject {
   createProject {

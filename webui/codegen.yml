@@ -1,4 +1,5 @@
 overwrite: true
+#schema: "https://api.fluentci.io/graphql"
 #schema: "http://127.0.0.1:6076/graphql"
 schema: "http://127.0.0.1:8787/graphql"
 documents: "src/**/*.tsx"
