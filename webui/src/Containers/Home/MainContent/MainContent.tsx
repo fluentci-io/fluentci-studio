@@ -24,6 +24,7 @@ import { Github, Calendar } from "@styled-icons/bootstrap";
 import { Buildings } from "@styled-icons/boxicons-regular";
 import { LockClosed } from "@styled-icons/ionicons-outline";
 import dayjs from "dayjs";
+import Loader from "./Loader";
 
 export type MainContentProps = {
   projects?: Project[];
@@ -80,86 +81,100 @@ const MainContent: FC<MainContentProps> = (props) => {
               )}
             </div>
           )}
-          <div style={{ flex: 1 }}>
-            <Header>
-              <Title>Projects</Title>
-              {props.displayNewProjectButton && (
-                <RunButton onClick={onNewProject}>New Project</RunButton>
-              )}
-            </Header>
-            {projects!.map((item, index) => (
-              <div
-                key={index}
-                style={{ marginBottom: 25, position: "relative" }}
-              >
-                <ProjectWrapper>
-                  <PictureWrapper>
-                    <Picture src={item.picture} />
-                  </PictureWrapper>
-                  <div style={{ width: "calc(50% - 40px)" }}>
-                    <Link to={`/project/${item.id}`} style={{ color: "#fff" }}>
-                      <Row>
-                        <div>{item.displayName || item.name}</div>
-                        {item.isPrivate === false && (
-                          <Visibility>Public</Visibility>
+          {loading && (
+            <div style={{ flex: 1 }}>
+              <Loader />
+            </div>
+          )}
+          {!loading && (
+            <div style={{ flex: 1 }}>
+              <Header>
+                <Title>Projects</Title>
+                {props.displayNewProjectButton && (
+                  <RunButton onClick={onNewProject}>New Project</RunButton>
+                )}
+              </Header>
+              {projects!.map((item, index) => (
+                <div
+                  key={index}
+                  style={{ marginBottom: 25, position: "relative" }}
+                >
+                  <ProjectWrapper>
+                    <PictureWrapper>
+                      <Picture src={item.picture} />
+                    </PictureWrapper>
+                    <div style={{ width: "calc(50% - 40px)" }}>
+                      <Link
+                        to={`/project/${item.id}`}
+                        style={{ color: "#fff" }}
+                      >
+                        <Row>
+                          <div>{item.displayName || item.name}</div>
+                          {item.isPrivate === false && (
+                            <Visibility>Public</Visibility>
+                          )}
+                          {item.archived === true && <Archive>Archive</Archive>}
+                        </Row>
+                        {item.path !== "empty" && !!item.path && (
+                          <Path>{item.path}</Path>
                         )}
-                        {item.archived === true && <Archive>Archive</Archive>}
-                      </Row>
-                      {item.path !== "empty" && !!item.path && (
-                        <Path>{item.path}</Path>
-                      )}
-                    </Link>
-                    <div>
-                      {item.tags
-                        ?.filter((x) => x)
-                        .map((tag, index) => (
-                          <Tag key={index}>{tag}</Tag>
-                        ))}
+                      </Link>
+                      <div>
+                        {item.tags
+                          ?.filter((x) => x)
+                          .map((tag, index) => (
+                            <Tag key={index}>{tag}</Tag>
+                          ))}
+                      </div>
                     </div>
-                  </div>
-                  {_.get(item, "recentRuns.0.status") && (
-                    <BuildHistory
-                      status={_.last(item.recentRuns)?.status || "PENDING"}
-                      reliability={item.reliability || 0}
-                      speed={item.speed || 0}
-                      buildsPerWeek={item.buildsPerWeek || 0}
-                      builds={
-                        Array.from(Array(18).keys()).map((i) => ({
-                          status: _.get(item, `recentRuns.${i}.status`, ""),
-                          duration: _.get(item, `recentRuns.${i}.duration`, 0),
-                        })) || []
-                      }
-                    />
+                    {_.get(item, "recentRuns.0.status") && (
+                      <BuildHistory
+                        status={_.last(item.recentRuns)?.status || "PENDING"}
+                        reliability={item.reliability || 0}
+                        speed={item.speed || 0}
+                        buildsPerWeek={item.buildsPerWeek || 0}
+                        builds={
+                          Array.from(Array(18).keys()).map((i) => ({
+                            status: _.get(item, `recentRuns.${i}.status`, ""),
+                            duration: _.get(
+                              item,
+                              `recentRuns.${i}.duration`,
+                              0
+                            ),
+                          })) || []
+                        }
+                      />
+                    )}
+                  </ProjectWrapper>
+                </div>
+              ))}
+              {!projects?.length && (
+                <>
+                  {!profile && !loading && (
+                    <div style={{ color: "rgba(115, 146, 177, 0.7)" }}>
+                      No projects found. Create a new project to get started.
+                    </div>
                   )}
-                </ProjectWrapper>
-              </div>
-            ))}
-            {!projects?.length && (
-              <>
-                {!profile && !loading && (
-                  <div style={{ color: "rgba(115, 146, 177, 0.7)" }}>
-                    No projects found. Create a new project to get started.
-                  </div>
-                )}
-                {profile && !loading && (
-                  <div
-                    style={{
-                      color: "#7392b1b2",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <LockClosed size={60} color="#7392b17d" />
-                    <div style={{ marginTop: 10 }}>
-                      This user has no public projects.
+                  {profile && !loading && (
+                    <div
+                      style={{
+                        color: "#7392b1b2",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <LockClosed size={60} color="#7392b17d" />
+                      <div style={{ marginTop: 10 }}>
+                        This user has no public projects.
+                      </div>
                     </div>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
+                  )}
+                </>
+              )}
+            </div>
+          )}
         </Row>
       </Container>
       <div style={{ height: 100 }} />
