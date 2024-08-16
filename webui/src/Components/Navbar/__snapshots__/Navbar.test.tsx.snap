@@ -13,7 +13,7 @@ exports[`Navbar > should render the component 1`] = `
       >
         <a
           href="/"
-          style="color: rgb(255, 255, 255); font-weight: 600;"
+          style="color: rgb(255, 255, 255); font-weight: 600; outline: none;"
         >
           <div
             style="display: flex; flex-direction: row; align-items: center;"
@@ -43,13 +43,6 @@ exports[`Navbar > should render the component 1`] = `
         </a>
         <a
           class="css-1tuzldf"
-          href="https://fluentci.io/ai"
-          target="_blank"
-        >
-          FluentCI AI
-        </a>
-        <a
-          class="css-1tuzldf"
           href="https://github.com/fluentci-io/fluentci_feedback/issues/new/choose"
           target="_blank"
         >
@@ -69,7 +62,7 @@ exports[`Navbar > should render the component 1`] = `
         >
           <svg
             aria-hidden="true"
-            class="StyledIconBase-sc-ea9ulj-0 jvZCGA"
+            class="StyledIconBase-sc-ea9ulj-0 gEpWWb"
             fill="currentColor"
             focusable="false"
             height="21"
