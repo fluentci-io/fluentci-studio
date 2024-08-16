@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import Titlebar from "../../Components/Titlebar";
 import Navbar from "../../Components/Navbar";
 import MainContent from "./MainContent";
+import AskAI from "../../Components/AskAI";
 
 const Container = styled.div`
   height: calc(100vh - 30px);
@@ -18,6 +19,7 @@ const LinkProject: FC = () => {
       <Container>
         <Navbar />
         <MainContent />
+        <AskAI />
       </Container>
     </>
   );

@@ -7,6 +7,7 @@ import Billing from "./Billing";
 import Account from "./Account";
 import AccessTokens from "./AccessTokens";
 import Titlebar from "../../../Components/Titlebar";
+import AskAI from "../../../Components/AskAI";
 import styles from "./styles";
 
 const Title = styled.h1`
@@ -80,6 +81,7 @@ const Navigator: FC<NavigatorProps> = ({ activeKey, setActiveKey }) => {
             </TabContainer>
           </Tab>
         </Tabs>
+        <AskAI />
       </Container>
     </div>
   );

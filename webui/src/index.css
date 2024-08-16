@@ -113,3 +113,41 @@ body {
   /*-ms-overflow-style: none;  /* Internet Explorer 10+ */
   /*scrollbar-width: none;     /* Firefox */
 }
+
+
+.markdown-dark > ol > li > pre > div {
+  background: #151236 !important;
+}
+
+.markdown-dark > pre > div {
+  background: #151236 !important;
+}
+
+.markdown-dark > pre > div > code {
+  background: #151236 !important;
+}
+
+.markdown-dark > ol > li > p {
+  color: rgb(242, 242, 244);
+}
+
+.markdown-dark > p {
+  color: rgb(242, 242, 244);
+}
+
+.markdown-dark {
+  color: rgb(242, 242, 244);
+}
+
+.markdown-dark > ol > li > pre > div > code {
+  background: #151236 !important;
+}
+
+.markdown-dark > ol > li {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.markdown-dark > ol > li::marker {
+  color: #fff;
+}

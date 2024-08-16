@@ -21,6 +21,7 @@ import { CloseCircle } from "@styled-icons/ionicons-sharp";
 import Duration from "../../Components/Duration";
 import Titlebar from "../../Components/Titlebar";
 import Navbar from "../../Components/Navbar";
+import AskAI from "../../Components/AskAI";
 
 export type RunProps = {
   actions: {
@@ -156,6 +157,7 @@ const Run: FC<RunProps> = (props) => {
               }
             />
           </Modal>
+          <AskAI />
         </Container>
       </Wrapper>
     </>
