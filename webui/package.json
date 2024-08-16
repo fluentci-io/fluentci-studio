@@ -56,6 +56,7 @@
     "@styled-icons/material-rounded": "^10.47.0",
     "@styled-icons/octicons": "^10.47.0",
     "@styled-icons/remix-line": "^10.46.0",
+    "@types/react-syntax-highlighter": "^15.5.13",
     "ansi-to-react": "^6.1.6",
     "baseui": "14",
     "copy-to-clipboard": "^3.3.3",
