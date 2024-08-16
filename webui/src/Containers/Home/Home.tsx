@@ -6,6 +6,7 @@ import Loading from "./Loading";
 import { useRecoilState } from "recoil";
 import { HomeState } from "./HomeState";
 import Navbar from "../../Components/Navbar";
+import AskAI from "../../Components/AskAI";
 import { useStarPackageMutation } from "../../Hooks/GraphQL";
 import { useAuth } from "@clerk/clerk-react";
 
@@ -82,6 +83,7 @@ const Home: FC = () => {
         {!location.host && loading && <Loading />}
         {!location.host && !loading && <MainContent />}
         {location.host && <MainContent />}
+        <AskAI />
       </Container>
     </>
   );

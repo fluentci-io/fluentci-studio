@@ -48,7 +48,7 @@ const Navbar: FC<NavbarProps> = ({ user, onSignOut, showSignInButton }) => {
             flex: 1,
           }}
         >
-          <Link to="/" style={{ color: "#fff", fontWeight: "600" }}>
+          <Link to="/" style={{ color: "#fff", fontWeight: "600", outline: 'none' }}>
             <div
               style={{
                 display: "flex",
@@ -72,9 +72,6 @@ const Navbar: FC<NavbarProps> = ({ user, onSignOut, showSignInButton }) => {
         >
           <Menu href="https://fluentci.io/marketplace" target="_blank">
             Extensions
-          </Menu>
-          <Menu href="https://fluentci.io/ai" target="_blank">
-            FluentCI AI
           </Menu>
           <Menu
             href="https://github.com/fluentci-io/fluentci_feedback/issues/new/choose"
