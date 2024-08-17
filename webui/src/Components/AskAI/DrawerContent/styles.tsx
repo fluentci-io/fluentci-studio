@@ -160,7 +160,8 @@ export const BubbleWrapper = styled.div`
 `;
 
 export const Bubble = styled.div`
-  background-color: #4902f314;
+  background-color: rgb(14 255 242 / 22%);
+  color: #02f3e6;
   margin-top: 20px;
   text-align: right;
   padding: 20px;
