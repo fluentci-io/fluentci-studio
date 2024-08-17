@@ -90,8 +90,12 @@ const Navbar: FC<NavbarProps> = ({ user, onSignOut, showSignInButton }) => {
               content={({ close }) => (
                 <PopoverMenu>
                   <UserDetails>
-                    <Avatar src={user?.imageUrl || ""} alt="avatar" size={88} />
-                    <Name>{user?.fullName}</Name>
+                    <Link to={user?.username || '/'}>
+                      <Avatar src={user?.imageUrl || ""} alt="avatar" size={88} />
+                    </Link>
+                    <Link to={user?.username || '/'}>
+                      <Name>{user?.fullName}</Name>
+                    </Link>
 
                     <div
                       style={{
