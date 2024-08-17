@@ -90,10 +90,10 @@ const Navbar: FC<NavbarProps> = ({ user, onSignOut, showSignInButton }) => {
               content={({ close }) => (
                 <PopoverMenu>
                   <UserDetails>
-                    <Link to={`/${user?.username}` || '/'}>
+                    <Link to={`/${user?.username}` || '/'} onClick={() => close()}>
                       <Avatar src={user?.imageUrl || ""} alt="avatar" size={88} />
                     </Link>
-                    <Link to={`/${user?.username}` || '/'}>
+                    <Link to={`/${user?.username}` || '/'} onClick={() => close()}>
                       <Name>{user?.fullName}</Name>
                     </Link>
 
