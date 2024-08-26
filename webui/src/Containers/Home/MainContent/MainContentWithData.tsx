@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import MainContent from "./MainContent";
 import {
   Account,
-  useCreateProjectMutation,
+  // useCreateProjectMutation,
   useGetAccountLazyQuery,
   useGetProjectsQuery,
 } from "../../../Hooks/GraphQL";
@@ -45,11 +45,8 @@ const MainContentWithData: FC = () => {
     },
   });
 
-  const [createProject] = useCreateProjectMutation();
-
   const onNewProject = async () => {
-    const response = await createProject();
-    navigate(`/project/${response.data?.createProject?.id}`);
+    navigate("/new-project");
   };
 
   useEffect(() => {
