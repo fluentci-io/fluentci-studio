@@ -84,5 +84,5 @@ export const CardFooter = styled.div`
 export const ForkAndRun = styled.div`
   font-size: 14px;
   cursor: pointer;
-  color: #06e0b0;
+  color: #06ffe0;
 `;

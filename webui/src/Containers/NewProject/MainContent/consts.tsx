@@ -40,7 +40,7 @@ export const examples = [
   {
     id: "6",
     title: "Android",
-    description: "Build the app",
+    description: "Install dependencies and build the app.",
     logoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/3/31/Android_robot_head.svg",
     repoUrl: "https://github.com/fluentci-demos/fluentci-demo-android",
@@ -71,7 +71,7 @@ export const examples = [
     id: "10",
     title: "Playwright",
     description: "Install dependencies and run playwright tests.",
-    logoUrl: "https://avatars.githubusercontent.com/u/8908513",
+    logoUrl: "https://playwright.dev/img/playwright-logo.svg",
     repoUrl: "https://github.com/fluentci-demos/fluentci-demo-playwright",
   },
   {
