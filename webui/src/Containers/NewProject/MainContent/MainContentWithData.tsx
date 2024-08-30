@@ -6,6 +6,7 @@ import {
   useGetOrganizationsLazyQuery,
 } from "../../../Hooks/GraphQL";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "@clerk/clerk-react";
 
 const chakraTheme = extendTheme({
   config: {
@@ -24,6 +25,7 @@ const chakraTheme = extendTheme({
 
 const MainContentWithData: FC = () => {
   const navigate = useNavigate();
+  const { user } = useUser();
   const [createProject] = useCreateProjectMutation();
   const [getOrganizations] = useGetOrganizationsLazyQuery({
     variables: {
@@ -35,7 +37,11 @@ const MainContentWithData: FC = () => {
   const onNewProject = async (example?: { id: string; repoUrl: string }) => {
     if (window.location.href.includes("app.fluentci.io")) {
       const response = await getOrganizations();
-      if ((response.data?.organizations || []).length === 0) {
+      if (
+        (response.data?.organizations || []).filter(
+          (x) => x.name === user?.username
+        ).length === 0
+      ) {
         await createProject();
         localStorage.setItem("redirected_from_new_project", "1");
         window.location.href =
