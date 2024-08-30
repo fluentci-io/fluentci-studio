@@ -5,6 +5,7 @@ import Navbar from "../../Components/Navbar";
 import MainContent from "./MainContent";
 import AskAI from "../../Components/AskAI";
 import { useNavigate, useParams } from "react-router-dom";
+import { useCreateProjectMutation } from "../../Hooks/GraphQL";
 
 const Container = styled.div`
   height: calc(100vh - 30px);
@@ -16,17 +17,23 @@ const Container = styled.div`
 const LinkProject: FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  
+  const [createProject] = useCreateProjectMutation();
+
   useEffect(() => {
-    if (!id || !navigate) {
+    if (!id || !navigate || !createProject) {
       return;
     }
-    const fromNewProject = localStorage.getItem("redirected_from_new_project");
-    if (fromNewProject) {
+    const fromRepository = localStorage.getItem("redirected_from_new_project");
+    if (fromRepository) {
       localStorage.removeItem("redirected_from_new_project");
+      createProject({
+        variables: {
+          fromRepository,
+        },
+      });
       navigate(`/project/${id}`);
     }
-  }, [navigate, id]);
+  }, [navigate, id, createProject]);
 
   return (
     <>

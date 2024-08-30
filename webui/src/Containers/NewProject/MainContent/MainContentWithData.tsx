@@ -40,10 +40,11 @@ const MainContentWithData: FC = () => {
       if (
         (response.data?.organizations || []).filter(
           (x) => x.name === user?.username
-        ).length === 0
+        ).length === 0 &&
+        example?.repoUrl
       ) {
         await createProject();
-        localStorage.setItem("redirected_from_new_project", "1");
+        localStorage.setItem("redirected_from_new_project", example.repoUrl);
         window.location.href =
           "https://github.com/apps/fluentci-io/installations/new";
         return;
