@@ -31,7 +31,7 @@ exports[`MainContent > should render the component 1`] = `
             style="margin-bottom: 25px; position: relative;"
           >
             <div
-              class="css-tg1f9m"
+              class="css-a8s7o1"
             >
               <div
                 class="css-hg9guf"
@@ -57,6 +57,7 @@ exports[`MainContent > should render the component 1`] = `
                   </div>
                   <div
                     class="css-dz1vxl"
+                    style="margin-bottom: 10px;"
                   >
                     /home/tsirysndr/Documents/github/base-pipeline/example
                   </div>
@@ -226,7 +227,7 @@ exports[`MainContent > should render the component 1`] = `
             style="margin-bottom: 25px; position: relative;"
           >
             <div
-              class="css-tg1f9m"
+              class="css-a8s7o1"
             >
               <div
                 class="css-hg9guf"
@@ -252,6 +253,7 @@ exports[`MainContent > should render the component 1`] = `
                   </div>
                   <div
                     class="css-dz1vxl"
+                    style="margin-bottom: 10px;"
                   >
                     /home/tsirysndr/Documents/github/bun-pipeline/example
                   </div>
@@ -421,7 +423,7 @@ exports[`MainContent > should render the component 1`] = `
             style="margin-bottom: 25px; position: relative;"
           >
             <div
-              class="css-tg1f9m"
+              class="css-a8s7o1"
             >
               <div
                 class="css-hg9guf"
@@ -447,6 +449,7 @@ exports[`MainContent > should render the component 1`] = `
                   </div>
                   <div
                     class="css-dz1vxl"
+                    style="margin-bottom: 10px;"
                   >
                     /home/tsirysndr/Documents/github/go-pipeline/example
                   </div>
@@ -616,7 +619,7 @@ exports[`MainContent > should render the component 1`] = `
             style="margin-bottom: 25px; position: relative;"
           >
             <div
-              class="css-tg1f9m"
+              class="css-a8s7o1"
             >
               <div
                 class="css-hg9guf"
@@ -642,6 +645,7 @@ exports[`MainContent > should render the component 1`] = `
                   </div>
                   <div
                     class="css-dz1vxl"
+                    style="margin-bottom: 10px;"
                   >
                     /home/tsirysndr/Documents/github/gleam-pipeline/example
                   </div>
