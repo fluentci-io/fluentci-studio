@@ -127,22 +127,6 @@ const MainContent: FC<MainContentProps> = (props) => {
                           </Path>
                         )}
                       </Link>
-
-                      {item.repositoryUrl && (
-                        <div>
-                          <GithubOutline
-                            size={18}
-                            color={"#fff"}
-                            style={{ marginRight: 10 }}
-                          />
-                          <LinkGithubRepo href={item.repositoryUrl!}>
-                            {item.repositoryUrl.replace(
-                              "https://github.com/",
-                              ""
-                            )}
-                          </LinkGithubRepo>
-                        </div>
-                      )}
                       <div>
                         {item.tags
                           ?.filter((x) => x)
@@ -150,6 +134,24 @@ const MainContent: FC<MainContentProps> = (props) => {
                             <Tag key={index}>{tag}</Tag>
                           ))}
                       </div>
+                      {item.repositoryUrl && (
+                        <div>
+                          <GithubOutline
+                            size={18}
+                            color={"#fff"}
+                            style={{ marginRight: 10 }}
+                          />
+                          <LinkGithubRepo
+                            href={item.repositoryUrl!}
+                            target="_blank"
+                          >
+                            {item.repositoryUrl.replace(
+                              "https://github.com/",
+                              ""
+                            )}
+                          </LinkGithubRepo>
+                        </div>
+                      )}
                     </div>
                     {_.get(item, "recentRuns.0.status") && (
                       <BuildHistory
