@@ -7,6 +7,9 @@ export type ForkAndRunProps = {
 };
 
 const ForkAndRun: FC<ForkAndRunProps> = ({ loading }) => {
+  const text = window.location.hostname.includes("app.fluentci.io")
+    ? "Fork & Run"
+    : "Clone & Run";
   return (
     <>
       {loading && (
@@ -21,7 +24,7 @@ const ForkAndRun: FC<ForkAndRunProps> = ({ loading }) => {
           }}
         />
       )}
-      {!loading && <Container>Fork & Run</Container>}
+      {!loading && <Container>{text}</Container>}
     </>
   );
 };
