@@ -9,3 +9,12 @@ export const RUN_PIPELNE = gql`
   }
   ${RunFragment}
 `;
+
+export const CANCEL_RUN = gql`
+  mutation CancelRun($id: ID!) {
+    cancelRun(id: $id) {
+      ...RunFragment
+    }
+  }
+  ${RunFragment}
+`;

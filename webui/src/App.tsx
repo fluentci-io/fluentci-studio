@@ -13,6 +13,7 @@ import {
 } from "react-router-dom";
 import RootLayout from "./Layouts/Root";
 import { AuthenticateWithRedirectCallback } from "@clerk/clerk-react";
+import NewProject from "./Containers/NewProject";
 
 const createRouter = location.host ? createBrowserRouter : createHashRouter;
 
@@ -57,6 +58,10 @@ const router = createRouter([
       {
         path: "/link-project/:id",
         element: <LinkProject />,
+      },
+      {
+        path: "/new-project",
+        element: <NewProject />,
       },
       {
         path: "/:id",

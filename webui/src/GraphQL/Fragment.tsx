@@ -75,6 +75,8 @@ export const ActionFragment = gql`
     plugin
     useWasm
     githubUrl
+    env
+    workingDirectory
   }
 `;
 

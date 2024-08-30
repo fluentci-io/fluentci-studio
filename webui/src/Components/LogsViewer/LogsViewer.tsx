@@ -54,14 +54,16 @@ const LogsViewer: FC<LogsViewerProps> = (props) => {
 
   return (
     <Container ref={logContainerRef} height={props.height}>
-      {logs.map((log, index) => (
-        <Row key={index}>
-          <LineNumber>{index + 1}</LineNumber>
-          <Line>
-            <Ansi>{log}</Ansi>
-          </Line>
-        </Row>
-      ))}
+      {logs
+        .filter((x) => x.trim().length)
+        .map((log, index) => (
+          <Row key={index}>
+            <LineNumber>{index + 1}</LineNumber>
+            <Line>
+              <Ansi>{log}</Ansi>
+            </Line>
+          </Row>
+        ))}
     </Container>
   );
 };
