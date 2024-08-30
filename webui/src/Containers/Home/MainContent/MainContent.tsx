@@ -127,15 +127,9 @@ const MainContent: FC<MainContentProps> = (props) => {
                           </Path>
                         )}
                       </Link>
-                      <div>
-                        {item.tags
-                          ?.filter((x) => x)
-                          .map((tag, index) => (
-                            <Tag key={index}>{tag}</Tag>
-                          ))}
-                      </div>
+
                       {item.repositoryUrl && (
-                        <div>
+                        <div style={{ marginBottom: 10, marginTop: 5 }}>
                           <GithubOutline
                             size={18}
                             color={"#fff"}
@@ -152,6 +146,13 @@ const MainContent: FC<MainContentProps> = (props) => {
                           </LinkGithubRepo>
                         </div>
                       )}
+                      <div>
+                        {item.tags
+                          ?.filter((x) => x)
+                          .map((tag, index) => (
+                            <Tag key={index}>{tag}</Tag>
+                          ))}
+                      </div>
                     </div>
                     {_.get(item, "recentRuns.0.status") && (
                       <BuildHistory

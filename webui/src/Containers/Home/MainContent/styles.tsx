@@ -72,7 +72,7 @@ export const Picture = styled.img`
 export const ProjectWrapper = styled.div`
   color: #fff;
   background-color: #10072c;
-  height: 80px;
+  height: 100px;
   border: 1px solid #ffffff1f;
   border-radius: 6px;
   padding: 20px;
