@@ -15,6 +15,7 @@ import {
   Separator,
   GithubUserName,
   Archive,
+  LinkGithubRepo,
 } from "./styles";
 import { Account, Project } from "../../../Hooks/GraphQL";
 import { Link } from "react-router-dom";
@@ -23,6 +24,7 @@ import _ from "lodash";
 import { Github, Calendar } from "@styled-icons/bootstrap";
 import { Buildings } from "@styled-icons/boxicons-regular";
 import { LockClosed } from "@styled-icons/ionicons-outline";
+import { GithubOutline } from "@styled-icons/evaicons-outline";
 import dayjs from "dayjs";
 import Loader from "./Loader";
 
@@ -116,9 +118,31 @@ const MainContent: FC<MainContentProps> = (props) => {
                           {item.archived === true && <Archive>Archive</Archive>}
                         </Row>
                         {item.path !== "empty" && !!item.path && (
-                          <Path>{item.path}</Path>
+                          <Path
+                            style={{
+                              marginBottom: item.repositoryUrl ? 0 : 10,
+                            }}
+                          >
+                            {item.path}
+                          </Path>
                         )}
                       </Link>
+
+                      {item.repositoryUrl && (
+                        <div>
+                          <GithubOutline
+                            size={18}
+                            color={"#fff"}
+                            style={{ marginRight: 10 }}
+                          />
+                          <LinkGithubRepo href={item.repositoryUrl!}>
+                            {item.repositoryUrl.replace(
+                              "https://github.com/",
+                              ""
+                            )}
+                          </LinkGithubRepo>
+                        </div>
+                      )}
                       <div>
                         {item.tags
                           ?.filter((x) => x)

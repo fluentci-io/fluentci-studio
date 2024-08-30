@@ -151,6 +151,14 @@ export const GithubUserName = styled.div`
   margin-left: 5px;
 `;
 
+export const LinkGithubRepo = styled.a`
+  font-family: monospace;
+  color: #fff;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 export default {
   Tab: {
     Tab: {
