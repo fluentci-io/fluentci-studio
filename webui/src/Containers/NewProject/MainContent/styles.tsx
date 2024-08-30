@@ -80,9 +80,3 @@ export const CardFooter = styled.div`
   justify-content: space-between;
   width: calc(100% - 40px);
 `;
-
-export const ForkAndRun = styled.div`
-  font-size: 14px;
-  cursor: pointer;
-  color: #06ffe0;
-`;

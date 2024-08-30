@@ -27,11 +27,21 @@ export type HeaderProps = {
   project?: Project | null;
   isPublic?: boolean;
   isArchived?: boolean;
+  running?: boolean;
+  onCancelRun?: () => void;
 };
 
 const Header: FC<HeaderProps> = (props) => {
-  const { id, breadcrumbs, onRun, menu, showRunButton, linkedRepository } =
-    props;
+  const {
+    id,
+    breadcrumbs,
+    onRun,
+    menu,
+    showRunButton,
+    linkedRepository,
+    onCancelRun,
+    running,
+  } = props;
   return (
     <Container>
       <div
@@ -131,7 +141,10 @@ const Header: FC<HeaderProps> = (props) => {
       )}
       {showRunButton && (
         <>
-          {!props.loading && (
+          {!props.loading && running && (
+            <RunButton onClick={() => onCancelRun!()}>Cancel Run</RunButton>
+          )}
+          {!props.loading && !running && (
             <RunButton onClick={() => onRun(id)} disabled={props.isArchived}>
               Run
             </RunButton>

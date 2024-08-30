@@ -169,6 +169,8 @@ export type Pipeline = {
   defaultBranch: string;
   updatedAt: string;
   comingSoon: boolean;
+  env?: string[] | null;
+  workingDirectory?: string | null;
 };
 
 type NewActionModalWithDataProps = {

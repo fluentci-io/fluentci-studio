@@ -34,6 +34,8 @@ const ComposerWithData: FC = () => {
           plugin: action.name!,
           useWasm: !!action.useWasmPlugin,
           githubUrl: action.githubUrl,
+          env: action.env,
+          workingDirectory: action.workingDirectory,
         })),
       },
     });
@@ -60,6 +62,8 @@ const ComposerWithData: FC = () => {
           defaultBranch: "",
           updatedAt: "",
           comingSoon: false,
+          env: action.env,
+          workingDirectory: action.workingDirectory,
         }))
       );
       return;

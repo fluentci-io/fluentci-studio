@@ -193,6 +193,6 @@ export const examples = [
     title: "Ruby (Sinatra)",
     description: "Install dependencies and run tests for a Sinatra project.",
     logoUrl: "https://avatars.githubusercontent.com/u/8312",
-    repoUrl: "https://github.com/fluentci-demos/fluentci-demo-ruby-sinatra",
+    repoUrl: "https://github.com/fluentci-demos/fluentci-demo-ruby",
   },
 ];

@@ -40,22 +40,26 @@ export type Action = {
   __typename?: 'Action';
   commands: Scalars['String'];
   enabled: Scalars['Boolean'];
+  env?: Maybe<Array<Scalars['String']>>;
   githubUrl?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['ID']>;
   logo?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   plugin: Scalars['String'];
   useWasm: Scalars['Boolean'];
+  workingDirectory?: Maybe<Scalars['String']>;
 };
 
 export type ActionInput = {
   commands: Scalars['String'];
   enabled: Scalars['Boolean'];
+  env?: InputMaybe<Array<Scalars['String']>>;
   githubUrl?: InputMaybe<Scalars['String']>;
   logo?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   plugin: Scalars['String'];
   useWasm: Scalars['Boolean'];
+  workingDirectory?: InputMaybe<Scalars['String']>;
 };
 
 export type Category = {
@@ -89,6 +93,7 @@ export type Log = {
 export type Mutation = {
   __typename?: 'Mutation';
   archiveProject?: Maybe<Project>;
+  cancelRun?: Maybe<Run>;
   changeProjectVisibility?: Maybe<Project>;
   createAccessToken: AccessToken;
   createOrganization?: Maybe<Organization>;
@@ -112,6 +117,11 @@ export type MutationArchiveProjectArgs = {
 };
 
 
+export type MutationCancelRunArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+
 export type MutationChangeProjectVisibilityArgs = {
   id: Scalars['ID'];
   isPublic: Scalars['Boolean'];
@@ -125,6 +135,11 @@ export type MutationCreateAccessTokenArgs = {
 
 export type MutationCreateOrganizationArgs = {
   name: Scalars['String'];
+};
+
+
+export type MutationCreateProjectArgs = {
+  fromRepository?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -464,14 +479,14 @@ export type SaveActionsMutationVariables = Exact<{
 }>;
 
 
-export type SaveActionsMutation = { __typename?: 'Mutation', saveActions?: Array<{ __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean, githubUrl?: string | null }> | null };
+export type SaveActionsMutation = { __typename?: 'Mutation', saveActions?: Array<{ __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean, githubUrl?: string | null, env?: Array<string> | null, workingDirectory?: string | null }> | null };
 
 export type GetActionsQueryVariables = Exact<{
   projectId: Scalars['ID'];
 }>;
 
 
-export type GetActionsQuery = { __typename?: 'Query', actions?: Array<{ __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean, githubUrl?: string | null }> | null };
+export type GetActionsQuery = { __typename?: 'Query', actions?: Array<{ __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean, githubUrl?: string | null, env?: Array<string> | null, workingDirectory?: string | null }> | null };
 
 export type ExportActionsQueryVariables = Exact<{
   projectId: Scalars['ID'];
@@ -489,7 +504,7 @@ export type LogFragmentFragment = { __typename?: 'Log', id: string, message: str
 
 export type JobFragmentFragment = { __typename?: 'Job', id: string, name: string, createdAt: string, duration?: number | null, status: string };
 
-export type ActionFragmentFragment = { __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean, githubUrl?: string | null };
+export type ActionFragmentFragment = { __typename?: 'Action', id?: string | null, commands: string, enabled: boolean, logo?: string | null, name: string, plugin: string, useWasm: boolean, githubUrl?: string | null, env?: Array<string> | null, workingDirectory?: string | null };
 
 export type AccessTokenFragmentFragment = { __typename?: 'AccessToken', id: string, name: string, token: string, created: string };
 
@@ -555,7 +570,9 @@ export type UnstarPackageMutationVariables = Exact<{
 
 export type UnstarPackageMutation = { __typename?: 'Mutation', unstarPackage: { __typename?: 'Package', id: string, name: string, publisher?: string | null, description: string, version: string, owner: string, downloads: number, repoName?: string | null, logoUrl?: string | null, githubUrl?: string | null, license?: string | null, createdAt: string, updatedAt: string, categories?: Array<{ __typename?: 'Category', id: string, name: string, slug: string }> | null } };
 
-export type CreateProjectMutationVariables = Exact<{ [key: string]: never; }>;
+export type CreateProjectMutationVariables = Exact<{
+  fromRepository?: InputMaybe<Scalars['String']>;
+}>;
 
 
 export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'Project', id: string, name: string, displayName?: string | null, description?: string | null, tags?: Array<string> | null, path?: string | null, createdAt: string, picture: string, speed?: number | null, reliability?: number | null, buildsPerWeek?: number | null, isPrivate?: boolean | null, owner?: string | null, archived?: boolean | null, recentRuns?: Array<{ __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> }> | null } };
@@ -659,6 +676,13 @@ export type RunPipelineMutationVariables = Exact<{
 
 export type RunPipelineMutation = { __typename?: 'Mutation', runPipeline?: { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> } | null };
 
+export type CancelRunMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type CancelRunMutation = { __typename?: 'Mutation', cancelRun?: { __typename?: 'Run', id: string, branch?: string | null, commit?: string | null, date: string, project: string, projectId: string, duration?: number | null, message?: string | null, name: string, title: string, cursor?: string | null, status?: string | null, jobs: Array<{ __typename?: 'Job', id: string, name: string, createdAt: string, status: string, duration?: number | null }> } | null };
+
 export type GetRunQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -753,6 +777,8 @@ export const ActionFragmentFragmentDoc = gql`
   plugin
   useWasm
   githubUrl
+  env
+  workingDirectory
 }
     `;
 export const AccessTokenFragmentFragmentDoc = gql`
@@ -1375,8 +1401,8 @@ export type UnstarPackageMutationHookResult = ReturnType<typeof useUnstarPackage
 export type UnstarPackageMutationResult = Apollo.MutationResult<UnstarPackageMutation>;
 export type UnstarPackageMutationOptions = Apollo.BaseMutationOptions<UnstarPackageMutation, UnstarPackageMutationVariables>;
 export const CreateProjectDocument = gql`
-    mutation CreateProject {
-  createProject {
+    mutation CreateProject($fromRepository: String) {
+  createProject(fromRepository: $fromRepository) {
     ...ProjectFragment
   }
 }
@@ -1396,6 +1422,7 @@ export type CreateProjectMutationFn = Apollo.MutationFunction<CreateProjectMutat
  * @example
  * const [createProjectMutation, { data, loading, error }] = useCreateProjectMutation({
  *   variables: {
+ *      fromRepository: // value for 'fromRepository'
  *   },
  * });
  */
@@ -1856,6 +1883,39 @@ export function useRunPipelineMutation(baseOptions?: Apollo.MutationHookOptions<
 export type RunPipelineMutationHookResult = ReturnType<typeof useRunPipelineMutation>;
 export type RunPipelineMutationResult = Apollo.MutationResult<RunPipelineMutation>;
 export type RunPipelineMutationOptions = Apollo.BaseMutationOptions<RunPipelineMutation, RunPipelineMutationVariables>;
+export const CancelRunDocument = gql`
+    mutation CancelRun($id: ID!) {
+  cancelRun(id: $id) {
+    ...RunFragment
+  }
+}
+    ${RunFragmentFragmentDoc}`;
+export type CancelRunMutationFn = Apollo.MutationFunction<CancelRunMutation, CancelRunMutationVariables>;
+
+/**
+ * __useCancelRunMutation__
+ *
+ * To run a mutation, you first call `useCancelRunMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCancelRunMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [cancelRunMutation, { data, loading, error }] = useCancelRunMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useCancelRunMutation(baseOptions?: Apollo.MutationHookOptions<CancelRunMutation, CancelRunMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CancelRunMutation, CancelRunMutationVariables>(CancelRunDocument, options);
+      }
+export type CancelRunMutationHookResult = ReturnType<typeof useCancelRunMutation>;
+export type CancelRunMutationResult = Apollo.MutationResult<CancelRunMutation>;
+export type CancelRunMutationOptions = Apollo.BaseMutationOptions<CancelRunMutation, CancelRunMutationVariables>;
 export const GetRunDocument = gql`
     query GetRun($id: ID!) {
   getRun(id: $id) {

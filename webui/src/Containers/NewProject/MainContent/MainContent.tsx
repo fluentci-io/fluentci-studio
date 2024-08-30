@@ -11,18 +11,19 @@ import {
   Description,
   LinkGithubRepo,
   CardFooter,
-  ForkAndRun,
 } from "./styles";
+import ForkAndRun from "./ForkAndRun";
 import { Rocket } from "@styled-icons/boxicons-regular";
 import { GithubOutline } from "@styled-icons/evaicons-outline";
 import { Grid } from "@chakra-ui/react";
 import { examples } from "./consts";
 
 export type MainContentProps = {
-  onNewProject: (repoUrl?: string) => Promise<void>;
+  onNewProject: (example?: { id: string; repoUrl: string }) => Promise<void>;
+  loading?: string | undefined | null;
 };
 
-const MainContent: FC<MainContentProps> = ({ onNewProject }) => {
+const MainContent: FC<MainContentProps> = ({ onNewProject, loading }) => {
   return (
     <Container>
       <Title>Let's set up a project!</Title>
@@ -61,9 +62,9 @@ const MainContent: FC<MainContentProps> = ({ onNewProject }) => {
                   {item.repoUrl.split("/").pop()}
                 </LinkGithubRepo>
               </div>
-              <ForkAndRun onClick={() => onNewProject(item.repoUrl)}>
-                Fork & Run
-              </ForkAndRun>
+              <div onClick={() => onNewProject(item)}>
+                <ForkAndRun loading={loading === item.id} />
+              </div>
             </CardFooter>
           </Card>
         ))}

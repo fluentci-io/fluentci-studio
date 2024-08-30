@@ -5,6 +5,7 @@ import {
   Project,
   Repository,
   Run,
+  useCancelRunMutation,
   useGetActionsLazyQuery,
   useGetActionsQuery,
   useGetLinkedRepositoryLazyQuery,
@@ -16,6 +17,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { ComposerState } from "../../Containers/Project/MainContent/Composer/ComposerState";
 import { AuthState } from "../../Containers/Auth/AuthState";
 import { ProjectState } from "../../Containers/Project/ProjectState";
+import { PipelineState } from "./PipelineState";
 
 export type HeaderWithDataProps = {
   breadcrumbs?: { title: string; link?: string }[];
@@ -23,7 +25,9 @@ export type HeaderWithDataProps = {
 
 const HeaderWithData: FC<HeaderWithDataProps> = () => {
   const me = useRecoilValue(AuthState);
+  const [runId, setRunId] = useState<string | null | undefined>(null);
   const composerState = useRecoilValue(ComposerState);
+  const [{ runs }, setPipelineState] = useRecoilState(PipelineState);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { id } = useParams();
@@ -43,6 +47,7 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
     },
   });
   const [runPipeline] = useRunPipelineMutation();
+  const [cancelRun] = useCancelRunMutation();
   const [getActions] = useGetActionsLazyQuery();
   const { data } = useGetActionsQuery({
     variables: {
@@ -61,6 +66,7 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
 
   useEffect(() => {
     if (pathname.startsWith("/run")) {
+      setRunId(id);
       getRun().then(({ data }) => {
         setRun(data?.getRun);
         if (data?.getRun?.projectId) {
@@ -116,10 +122,24 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
     }).then(({ data }) => {
       setLoading(false);
       if (data?.runPipeline) {
+        setPipelineState({
+          runs: { ...runs, [data.runPipeline.id]: true },
+        });
         navigate(`/run/${data.runPipeline.id}`);
       }
     });
     setLoading(true);
+  };
+
+  const onCancelRun = async () => {
+    await cancelRun({
+      variables: {
+        id: runId!,
+      },
+    });
+    setPipelineState({
+      runs: { ...runs, [runId!]: false },
+    });
   };
 
   const isOwner =
@@ -185,6 +205,8 @@ const HeaderWithData: FC<HeaderWithDataProps> = () => {
       project={project}
       isPublic={project?.isPrivate === false}
       isArchived={project?.archived === true}
+      // running={!!runs[runId!] || run?.status === "RUNNING"}
+      onCancelRun={onCancelRun}
     />
   );
 };

@@ -41,6 +41,8 @@ const SetupActionModalWithData: FC<SetupActionModalWithDataProps> = (props) => {
           plugin: action.name!,
           useWasm: !!action.useWasmPlugin,
           githubUrl: action.githubUrl,
+          env: action.env,
+          workingDirectory: action.workingDirectory,
         })),
       },
     });
